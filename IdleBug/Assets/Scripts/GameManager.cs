@@ -135,11 +135,12 @@ public class GameManager : MonoBehaviour
         {
             totalManzanas -= costeHormigueroActual;
             costeHormigueroActual = costeHormigueroBase * Mathf.Pow(ratioCrecimientoHormiguero, hormiguerosTotal);
-            hormiguerosTotal += 1;
-            if (hormiguerosTotal - hormiguerosDesactivados.Length >= 0 && hormiguerosDesactivados[hormiguerosTotal - hormiguerosDesactivados.Length] != null)
+         
+            if (hormiguerosTotal - hormiguerosDesactivados.Length < 0 && hormiguerosDesactivados[hormiguerosTotal] != null)
             {
-                hormiguerosDesactivados[hormiguerosTotal - hormiguerosDesactivados.Length].gameObject.SetActive(true);
+                hormiguerosDesactivados[hormiguerosTotal-1].gameObject.SetActive(true);
             }
+            hormiguerosTotal += 1;
         }
         ActualizarTextoHormigas();
         TextoBotones();
@@ -154,11 +155,12 @@ public class GameManager : MonoBehaviour
             totalManzanas -= costeManzanoActual;
 
             costeManzanoActual = costeManzanoBase * Mathf.Pow(ratioCrecimientoManzano, totalManzanos);
-            totalManzanos += 1;
-            if ((int)totalManzanos - manzanosDesactivados.Length >= 0 && manzanosDesactivados[(int)totalManzanos - manzanosDesactivados.Length] != null)
+          
+            if ((int)totalManzanos - manzanosDesactivados.Length < 0 && manzanosDesactivados[(int)totalManzanos ] != null)
             {
-                manzanosDesactivados[(int)totalManzanos - manzanosDesactivados.Length].gameObject.SetActive(true);
+                manzanosDesactivados[(int)totalManzanos-1 ].gameObject.SetActive(true);
             }
+            totalManzanos += 1;
         }
         TextoBotones();
     }
