@@ -3,6 +3,7 @@ using System.Collections;
 
 public class InsectGenerator : MonoBehaviour
 {
+    public float porcentajeAbejas = 30;
     public GameObject prefabInsectoGenerado;
     public GameObject[] arrayHijos;
     public int radioHijos;
@@ -13,6 +14,7 @@ public class InsectGenerator : MonoBehaviour
     public float tiempoMaxInsecto = 5f;
     public float actualTiempoInsecto = 0;
     private Hormiguero hormiguero;
+
 
     public Hormiguero Hormiguero
     {
@@ -27,12 +29,29 @@ public class InsectGenerator : MonoBehaviour
             hormiguero = value;
         }
     }
+    private Panal panal;
+
+
+    public Panal Panal
+    {
+        get
+        {
+            Panal = GameObject.FindObjectOfType<Panal>();
+            return panal;
+        }
+
+        set
+        {
+            panal = value;
+        }
+    }
 
     // Use this for initialization
     void Start()
     {
 
         Hormiguero = GameObject.FindObjectOfType<Hormiguero>();
+        Panal = GameObject.FindObjectOfType<Panal>();
     }
 
     // Update is called once per frame
@@ -72,7 +91,22 @@ public class InsectGenerator : MonoBehaviour
     void GenerarInsecto(Vector3 posicion)
     {
         lastInsectoGenerado = (GameObject)Instantiate(prefabInsectoGenerado, posicion, Quaternion.identity);
-        lastInsectoGenerado.GetComponent<InsecGenerado>().tipo = InsecGenerado.Tipos.Hormiga;
+        if (GameManager.Instance.desbloqueadasAbejas)
+        {
+            if (Random.Range(0, 100) < porcentajeAbejas)
+            {
+                lastInsectoGenerado.GetComponent<InsecGenerado>().tipo = InsecGenerado.Tipos.Abeja;
+            }
+            else
+            {
+                lastInsectoGenerado.GetComponent<InsecGenerado>().tipo = InsecGenerado.Tipos.Hormiga;
+            }
+
+        }
+        else
+        {
+            lastInsectoGenerado.GetComponent<InsecGenerado>().tipo = InsecGenerado.Tipos.Hormiga;
+        }
 
 
     }
@@ -93,14 +127,31 @@ public class InsectGenerator : MonoBehaviour
                 //MENSAJE NO CABEN MAS HORMIGAS
             }
         }
+        else if (objeto.GetComponent<InsecGenerado>().tipo == InsecGenerado.Tipos.Abeja)
+        {
+            {
+                if (panal.poblacionActual < panal.capacidadActual)
+                {
+                    for (int i = 0; i < GameManager.Instance.cantidadAbejasCogidas; i++)
+                    {
+                        GameManager.Instance.CogerAbeja();
+                    }
+                }
+                else
+                {
+
+                }
+            }
+         
+        }
         actualCd = cooldownEntreInsectos;
-        hayInsecto = false;
-        Destroy(objeto);
+            hayInsecto = false;
+            Destroy(objeto);
     }
-    public void PerderInsecto(GameObject objeto)
-    {//SUMAR ALGO
-        actualCd = cooldownEntreInsectos;
-        hayInsecto = false;
-        Destroy(objeto);
+        public void PerderInsecto(GameObject objeto)
+        {//SUMAR ALGO
+            actualCd = cooldownEntreInsectos;
+            hayInsecto = false;
+            Destroy(objeto);
+        }
     }
-}

@@ -8,7 +8,6 @@ public class CamaraChange : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         maxCam = Camaras.Length;
-        print(maxCam);
 	}
 	
 	// Update is called once per frame
