@@ -13,6 +13,7 @@ public class EnviromentLightingPrueba : MonoBehaviour
     [Range (0,1)]
     public float seasonValue;
     public GameObject[] leaves;
+    public Material heatMaterial;
 
     // Start is called before the first frame update
     void Start()
@@ -40,6 +41,14 @@ public class EnviromentLightingPrueba : MonoBehaviour
             {
                 particleEmission.rateOverTime = 0;
             }
+        }
+        if(seasonValue >= 0.3 && seasonValue <= 0.6)
+        {
+            heatMaterial.SetFloat("_Strength", 0.005f);
+        }
+        else
+        {
+            heatMaterial.SetFloat("_Strength", 0);
         }
         
 
