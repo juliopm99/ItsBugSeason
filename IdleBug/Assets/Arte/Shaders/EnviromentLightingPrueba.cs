@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class EnviromentLightingPrueba : MonoBehaviour
 {
@@ -13,6 +12,8 @@ public class EnviromentLightingPrueba : MonoBehaviour
     public Color bottomColor2;
     [Range (0,1)]
     public float seasonValue;
+    public GameObject[] leaves;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -28,6 +29,19 @@ public class EnviromentLightingPrueba : MonoBehaviour
 
         RenderSettings.skybox.SetFloat("_SeasonValue", Mathf.Lerp(0,4,seasonValue));
 
+        for(int i = 0; i < leaves.Length; i++)
+        {
+            var particleEmission = leaves[i].GetComponentInChildren<ParticleSystem>().emission;
+            if (seasonValue >= 0.6f)
+            {
+                particleEmission.rateOverTime = Mathf.Lerp(0, 6, seasonValue);
+            }
+            else
+            {
+                particleEmission.rateOverTime = 0;
+            }
+        }
+        
 
     }
 }
