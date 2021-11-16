@@ -29,18 +29,21 @@ public class Panal : MonoBehaviour
         if (poblacionActual >= poblacionMinimaEnBase + poblacionMinimaMision && poblacionActual - poblacionOcupada >= poblacionMinimaMision/*&&!spawneando*/)
         {
             //DIFERENCIAR MANZANAS DISPONIBLES
-       
-            foreach(Flor go in GameObject.FindObjectsOfType<Flor>())
-            {
-                if (go.targeted == false)
-                {
-                    go.targeted = true;
-                    EmpezarMision( go.transform.gameObject);
-                    spawneando = true;
+            int random = Random.Range(0, GameObject.FindObjectsOfType<Flor>().Length);
+            EmpezarMision(GameObject.FindObjectsOfType<Flor>()[random].transform.gameObject);
+            spawneando = true;
+            //foreach (Flor go in GameObject.FindObjectsOfType<Flor>())
+            //{
+            //    if (go.targeted == false)
+            //    {
+            //        print(go.gameObject.name);
+            //        go.targeted = true;
+            //        EmpezarMision( go.transform.gameObject);
+            //        spawneando = true;
 
-                }break;
-            }
-           
+                //    }break;
+                //}
+
 
         }
     }
