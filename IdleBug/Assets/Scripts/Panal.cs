@@ -8,6 +8,9 @@ public class Panal : MonoBehaviour
     public int poblacionOcupada;
     public int poblacionMinimaEnBase = 3;
     public int poblacionMinimaMision = 1;
+    public float tiempoDescanso = 15f;
+
+    public float tiempoPolinizando = 5f;
     public GameObject prefabAbeja;
     public bool spawneando = false;
     public GameObject textoabejas;
@@ -68,8 +71,8 @@ public class Panal : MonoBehaviour
                 rand = 0;
             }
         }
-       
-        StartCoroutine(SpawnAbejaMision(flor,spawnPoses[rand].transform.position));
+        Vector2 vec = new Vector2(Random.Range(0, 0.3f), Random.Range(0, 0.3f));
+        StartCoroutine(SpawnAbejaMision(flor,spawnPoses[rand].transform.position+new Vector3(vec.x,0,vec.y)));
         spawneando = false;
     }
     public void TerminarMision()
@@ -82,7 +85,11 @@ public class Panal : MonoBehaviour
         
        
         yield return new WaitForSeconds(tiempoEntreAbejasSpawn);
+
         GameObject abejaInstanciada = (GameObject)Instantiate(prefabAbeja,spawnPos, Quaternion.identity);
+        abejaInstanciada.GetComponent<Abeja>().tiempoDescanso = tiempoDescanso;
+        abejaInstanciada.GetComponent<Abeja>().tiempoPolinizando = tiempoPolinizando;
+
         abejaInstanciada.GetComponent<Abeja>().enMision = true;
         abejaInstanciada.GetComponent<Abeja>().destinoFlor = manz;
         abejaInstanciada.GetComponent<Abeja>().ultimaDeLaFila = true;

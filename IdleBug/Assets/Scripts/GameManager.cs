@@ -81,12 +81,12 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        totalManzanas += totalManzanasPorSegundo * Time.deltaTime;
-        if (totalManzanas > 10 && !desbloqueadoCompraManzano)
-        {
-            desbloqueadoCompraManzano = true;
-            VisiblesLista++;
-        }
+        //totalManzanas += totalManzanasPorSegundo * Time.deltaTime;
+        //if (totalManzanas > 10 && !desbloqueadosManzanos)
+        //{
+        //    desbloqueadosManzanos = true;
+        //    VisiblesLista++;
+        //}
         ActualizarTextoMenu();
     }
 
@@ -113,9 +113,9 @@ public class GameManager : MonoBehaviour
         if (hormigasTotal + 1 <= capacidadTotalHormigas)
         {
             hormigasTotal++;
-            if (hormigasTotal == capacidadPorHormigueroActual && desbloqueadoCompraHormiguero == false)
+            if (hormigasTotal == capacidadPorHormigueroActual && desbloqueadosHormigueros == false)
             {
-                desbloqueadoCompraHormiguero = true;
+                desbloqueadosHormigueros = true;
                 VisiblesLista++;
             }
             print("Tengo" + hormigasTotal + " hormigas");
@@ -140,9 +140,9 @@ public class GameManager : MonoBehaviour
         if (abejasTotal + 1 <= capacidadTotalAbejas)
         {
             abejasTotal++;
-            if (abejasTotal == capacidadAbejasPorPanal && desbloqueadoCompraPanal == false)
+            if (abejasTotal == capacidadAbejasPorPanal && desbloqueadosPanales == false)
             {
-                desbloqueadoCompraPanal = true;
+                desbloqueadosPanales = true;
                 VisiblesLista++;
             }
             print("Tengo" + abejasTotal + " abejas");
@@ -191,38 +191,38 @@ public class GameManager : MonoBehaviour
                 listaBotones[i].GetComponentInChildren<Text>().text = textoBloq;
             }
         }
-        if (desbloqueadoCompraHormiguero)
-        {
-            GameObject.Find("BuyAnthill").GetComponentInChildren<Text>().text = (string)("Buy Anthill " + costeHormigueroActual);
-        }
+        //if (desbloqueadosHormigueros)
+        //{
+        //    GameObject.Find("BuyAnthill").GetComponentInChildren<Text>().text = (string)("Buy Anthill " + costeHormigueroActual);
+        //}
 
-        if (desbloqueadoCompraManzano)
-        {
-            GameObject.Find("BuyAppleTree").GetComponentInChildren<Text>().text = (string)("Buy Apple tree " + costeManzanoActual);
-        }
-        if (desbloqueadoCompraPanal)
-        {
-            GameObject.Find("BuyPanal").GetComponentInChildren<Text>().text = (string)("Buy beehive " + costePanalActual);
-        }
-        if (desbloqueadoCompraFlores)
-        {
-            GameObject.Find("BuyFlores").GetComponentInChildren<Text>().text = (string)("Buy flowers " + costeFloresBase);
-        }
+        //if (desbloqueadosManzanos)
+        //{
+        //    GameObject.Find("BuyAppleTree").GetComponentInChildren<Text>().text = (string)("Buy Apple tree " + costeManzanoActual);
+        //}
+        //if (desbloqueadosPanales)
+        //{
+        //    GameObject.Find("BuyPanal").GetComponentInChildren<Text>().text = (string)("Buy beehive " + costePanalActual);
+        //}
+        //if (desbloqueadasFlores)
+        //{
+        //    GameObject.Find("BuyFlores").GetComponentInChildren<Text>().text = (string)("Buy flowers " + costeFloresBase);
+        //}
 
     }
 
     // MEJORAS 
-    public bool desbloqueadoCompraHormiguero = false;
-    public bool desbloqueadoCompraManzano = false;
-    public bool desbloqueadoCompraPanal = false;
-    public bool desbloqueadoCompraFlores = false;
+    public bool desbloqueadosHormigueros = true;
+    public bool desbloqueadosManzanos = false;
+    public bool desbloqueadosPanales = false;
+    public bool desbloqueadasFlores = false;
     public string textoBloq = "Blocked";
     public float costeHormigueroBase = 50;
     public float costeHormigueroActual;
     public float ratioCrecimientoHormiguero = 1.1f;
     public void ComprarHormiguero()
     {
-        if (totalManzanas > costeHormigueroActual && desbloqueadoCompraHormiguero)
+        if (totalManzanas > costeHormigueroActual/* && desbloqueadosHormigueros*/)
         {
             totalManzanas -= costeHormigueroActual;
             costeHormigueroActual = costeHormigueroBase * Mathf.Pow(ratioCrecimientoHormiguero, hormiguerosTotal);
@@ -241,7 +241,7 @@ public class GameManager : MonoBehaviour
     public float ratioCrecimientoManzano = 1.17f;
     public void ComprarManzano()
     {
-        if (totalManzanas > costeManzanoActual && desbloqueadoCompraManzano)
+        if (totalManzanas > costeManzanoActual && desbloqueadosManzanos)
         {
             totalManzanas -= costeManzanoActual;
 
@@ -266,7 +266,7 @@ public class GameManager : MonoBehaviour
     public GameObject[] panalesDesactivados;
     public void ComprarPanal()
     {
-        if (totalMiel > costePanalActual && desbloqueadoCompraPanal)
+        if (totalMiel > costePanalActual && desbloqueadosPanales)
         {
             totalMiel -= costePanalActual;
             costePanalActual = costePanalBase * Mathf.Pow(ratioCrecimientoPanal, panalesTotal);
@@ -296,7 +296,7 @@ public class GameManager : MonoBehaviour
     public float mielSumadaExpedicion = 1;
     public void ComprarFlores()
     {
-        if (totalMiel > costeFloresActual && desbloqueadoCompraFlores)
+        if (totalMiel > costeFloresActual && desbloqueadasFlores)
         {
             totalMiel -= costeFloresActual;
 
@@ -314,5 +314,200 @@ public class GameManager : MonoBehaviour
     public void DesbloquearAbejas()
     {
         desbloqueadasAbejas = true;
+    }
+
+
+    public GameObject menuBlock;
+    public GameObject menuCompras;
+    public Text descripcion;
+    public Text nombre;
+    public Text nombreBlocked;
+    
+
+    public string descripcionHormiguero;
+    public string descripcionManzano;
+    public string descripcionPanal;
+    public string descripcionFlores;
+    public string nombreBlock = "Blocked";
+    public string botonBlockText = "Blocked x money";
+    public string blockHormiguero = "Blocked x money";
+    public string blockManzano = "Blocked x money";
+    public string blockPanal = "Blocked x money";
+    public string blockFlores = "Blocked x money";
+    public float costeDesbloqueoHormiguero;
+    public float costeDesbloqueoManzano;
+    public float costeDesbloqueoPanal;
+    public float costeDesbloqueoFlores;
+
+    public GameObject botonBlock;
+    public string tipoOpen;
+
+
+    public void MenuOpen(GameObject go)
+    {
+        MenuClose();
+        if (go.GetComponent<Panal>())
+        {
+            if (GameManager.Instance.desbloqueadosPanales)
+            {
+                OpenCompras("Panal");
+            }
+            else
+            {
+                OpenBlock("Panal");
+            }
+        }
+        else if (go.GetComponent<FlorHub>())
+        {
+            if (GameManager.Instance.desbloqueadasFlores)
+            {
+                OpenCompras("Flor");
+            }
+            else
+            {
+                OpenBlock("Flor");
+            }
+        }
+        else if (go.GetComponent<Hormiguero>())
+        {
+            if (GameManager.Instance.desbloqueadosHormigueros)
+            {
+                OpenCompras("Hormiguero");
+            }
+            else
+            {
+                OpenBlock("Hormiguero");
+            }
+        }
+        else if (go.GetComponent<Manzano>())
+        {
+            if (GameManager.Instance.desbloqueadosManzanos)
+            {
+                OpenCompras("Manzano");
+            }
+            else
+            {
+                OpenBlock("Manzano");
+            }
+        }
+        
+    }
+    public void OpenBlock(string tipo)
+    {
+        menuBlock.SetActive(true);
+        tipoOpen = tipo;
+        if (tipo == "Hormiguero")
+        {
+            //nada
+        }
+        else if (tipo == "Manzano")
+        {
+            nombreBlocked.text = nombreBlock;
+            botonBlock.GetComponentInChildren<Text>().text = blockManzano + " " + costeDesbloqueoManzano + " Apples";
+        }
+        else if (tipo == "Panal")
+        {
+            nombreBlocked.text = nombreBlock;
+            botonBlock.GetComponentInChildren<Text>().text = blockPanal + " " + costeDesbloqueoPanal+" Apples";
+        }
+        else if (tipo == "Flor")
+        {
+            nombreBlocked.text = nombreBlock;
+            botonBlock.GetComponentInChildren<Text>().text = blockFlores + " " + costeDesbloqueoFlores+" Honey";
+        }
+    }
+    public void OpenCompras(string tipo)
+    {
+        menuCompras.SetActive(true);
+        tipoOpen = tipo;
+        if (tipo == "Hormiguero")
+        {
+            nombre.text = "Anthill";
+            descripcion.text = descripcionHormiguero;
+
+        }
+        else if (tipo == "Manzano")
+        {
+            nombre.text = "Apple Tree";
+            descripcion.text = descripcionManzano;
+        }
+        else if (tipo == "Panal")
+        {
+            nombre.text = "Beehive";
+            descripcion.text = descripcionPanal;
+        }
+        else if (tipo == "Flor")
+        {
+            nombre.text = "Flowers";
+            descripcion.text = descripcionFlores;
+        }
+    }
+    public void ClickBotonBlock()
+    {
+        print("clickbotonblock"+tipoOpen);
+        string tipo = tipoOpen;
+        if (tipo == "Hormiguero")
+        {
+//nada
+        }
+        else if (tipo == "Manzano")
+        {
+            if (totalManzanas >= costeDesbloqueoManzano)
+            {
+                totalManzanas -= costeDesbloqueoManzano;
+                desbloqueadosManzanos = true;
+                MenuClose();
+                OpenCompras("Manzano");
+            }
+          
+
+        }
+        else if (tipo == "Panal")
+        {
+            if (totalManzanas >= costeDesbloqueoPanal)
+            {
+                totalManzanas -= costeDesbloqueoPanal;
+                desbloqueadasAbejas = true;
+                desbloqueadosPanales = true;
+                MenuClose();
+                OpenCompras("Panal");
+            }
+        }
+        else if (tipo == "Flor")
+        {
+            if (totalMiel >= costeDesbloqueoFlores)
+            {
+                totalMiel -= costeDesbloqueoFlores;
+                desbloqueadasFlores = true;
+               
+                MenuClose();
+                OpenCompras("Flor");
+            }
+        }
+    }
+    public void ClickBotonCompras()
+    {
+        string tipo = tipoOpen;
+        if (tipo == "Hormiguero")
+        {
+
+        }
+        else if (tipo == "Manzano")
+        {
+
+        }
+        else if (tipo == "Panal")
+        {
+
+        }
+        else if (tipo == "Flores")
+        {
+
+        }
+    }
+    public void MenuClose()
+    {
+        menuBlock.SetActive(false);
+        menuCompras.SetActive(false);
     }
 }
