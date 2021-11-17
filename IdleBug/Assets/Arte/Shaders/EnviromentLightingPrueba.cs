@@ -14,6 +14,8 @@ public class EnviromentLightingPrueba : MonoBehaviour
     public float seasonValue;
     public GameObject[] leaves;
     public Material heatMaterial;
+    public float desviacionCalor = 0.002f;
+    public float cantidadHojas = 6;
 
     // Start is called before the first frame update
     void Start()
@@ -35,7 +37,7 @@ public class EnviromentLightingPrueba : MonoBehaviour
             var particleEmission = leaves[i].GetComponentInChildren<ParticleSystem>().emission;
             if (seasonValue >= 0.6f)
             {
-                particleEmission.rateOverTime = Mathf.Lerp(0, 6, seasonValue);
+                particleEmission.rateOverTime = Mathf.Lerp(0, cantidadHojas, seasonValue);
             }
             else
             {
@@ -44,7 +46,7 @@ public class EnviromentLightingPrueba : MonoBehaviour
         }
         if(seasonValue >= 0.3 && seasonValue <= 0.6)
         {
-            heatMaterial.SetFloat("_Strength", 0.005f);
+            heatMaterial.SetFloat("_Strength", desviacionCalor);
         }
         else
         {
