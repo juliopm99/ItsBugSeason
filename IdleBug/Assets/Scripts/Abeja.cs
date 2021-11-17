@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Abeja : MonoBehaviour {
+public class Abeja : MonoBehaviour
+{
     public bool enMision = false;
     public bool ultimaDeLaFila = false;
     public bool volviendo;
@@ -13,14 +14,18 @@ public class Abeja : MonoBehaviour {
     public float speedMission;
     public GameObject destinoFlor;
     public Vector3 origen;
-	// Use this for initialization
-	void Start () {
+    public float tiempoPolinizando;
+    public float tiempoDescanso;
+    // Use this for initialization
+    void Start()
+    {
         wanderCenter = GameObject.Find("WanderCenterAbejas");
         origen = this.transform.position;
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
         if (enMision == false)
         {
             if (conDireccion == false)
@@ -55,37 +60,49 @@ public class Abeja : MonoBehaviour {
                 {
                     if (volviendo == false)
                     {
-                        destino = VolverManzana();
-                        volviendo = true;
-                        //if (ultimaDeLaFila)
-                        //{
-                        //    Destroy(destinoFlor);
-                        //}
+                        if (tiempoPolinizando > 0)
+                        {
+                            tiempoPolinizando -= Time.deltaTime;
+                            if (tiempoPolinizando <= 0)
+                            {
+                                destino = VolverManzana();
+                                volviendo = true;
+                            }
+                        }
+
+                      
                     }
+
                     else
                     {
-                        if (ultimaDeLaFila)
+                        if (GetComponent<MeshRenderer>().enabled)
                         {
-                            GameObject.FindObjectOfType<Panal>().TerminarMision();
+                            GetComponent<MeshRenderer>().enabled = false;
                             GameManager.Instance.SumarMiel((int)GameManager.Instance.mielSumadaExpedicion);
-                           
                         }
-                        GameObject.FindObjectOfType<Panal>().DesocuparAbeja();
-                        Destroy(this.gameObject);
+                        tiempoDescanso -= Time.deltaTime;
+                        if (ultimaDeLaFila && tiempoDescanso <= 0)
+                        {
+                          
+                            GameObject.FindObjectOfType<Panal>().DesocuparAbeja();
+                            Destroy(this.gameObject);
+                        }
+
+
                     }
-                  
+
                 }
             }
 
         }
     }
     void InitDirecc()
-    { 
+    {
         int randx = Random.Range(0, radioWander);
         int randy = Random.Range(0, radioWander);
         int randz = Random.Range(0, radioWander);
-       Vector3 destinyPos=new Vector3(wanderCenter.transform.position.x + randx, wanderCenter.transform.position.y + randy, wanderCenter.transform.position.z + randz);
-     
+        Vector3 destinyPos = new Vector3(wanderCenter.transform.position.x + randx, wanderCenter.transform.position.y + randy, wanderCenter.transform.position.z + randz);
+
         if (Random.Range(0, 11) == 2)
         {
             destino = GameObject.Find("TextoAbejas").transform.parent.transform.position;
@@ -98,7 +115,7 @@ public class Abeja : MonoBehaviour {
     Vector3 BuscarManzana()
     {
         Vector3 posManzana = destinoFlor.transform.position;
-    
+
         return posManzana;
     }
     Vector3 VolverManzana()
