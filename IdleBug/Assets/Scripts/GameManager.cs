@@ -26,13 +26,12 @@ public class GameManager : MonoBehaviour
     public float totalManzanas;
     public float totalManzanos = 1;
     Manzano manzano;
-
+  
+    Flor flor;
     public GameObject[] hormiguerosDesactivados;
     public GameObject[] manzanosDesactivados;
 
-    public List<GameObject> listaBotones=new List<GameObject>();
-    public int visiblesLista = 0;
-    public int VisiblesLista { get => visiblesLista; set { TextoBotones(); visiblesLista = value; } }
+   
     private static GameManager _instance;
 
     public static GameManager Instance
@@ -71,7 +70,8 @@ public class GameManager : MonoBehaviour
         ActualizarTextoHormigas();
         ActualizarTextoAbejas();
         manzano = FindObjectOfType<Manzano>();
-        TextoBotones();
+        flor = FindObjectOfType<FlorHub>().gameObject.GetComponentInChildren<Flor>();
+      
     }
     void Start()
     {
@@ -116,7 +116,7 @@ public class GameManager : MonoBehaviour
             if (hormigasTotal == capacidadPorHormigueroActual && desbloqueadosHormigueros == false)
             {
                 desbloqueadosHormigueros = true;
-                VisiblesLista++;
+               
             }
             print("Tengo" + hormigasTotal + " hormigas");
             if (hormigasFuera < maxHormigasFuera)
@@ -143,7 +143,7 @@ public class GameManager : MonoBehaviour
             if (abejasTotal == capacidadAbejasPorPanal && desbloqueadosPanales == false)
             {
                 desbloqueadosPanales = true;
-                VisiblesLista++;
+             
             }
             print("Tengo" + abejasTotal + " abejas");
             if (abejasFuera < maxAbejasFuera)
@@ -173,43 +173,43 @@ public class GameManager : MonoBehaviour
         GameObject.Find("TextoHormigas").GetComponent<TextMesh>().text = (string)(hormigasTotal + " / " + capacidadTotalHormigas);
 
     }
-    public void TextoBotones()
-    {
-        for (int i = 0; i < listaBotones.Count; i++)
-        {
+    //public void TextoBotones()
+    //{
+    //    for (int i = 0; i < listaBotones.Count; i++)
+    //    {
 
-            if (i > visiblesLista + 2)
-            {
+    //        if (i > visiblesLista + 2)
+    //        {
 
-                listaBotones[i].SetActive(false);
-                print(listaBotones[i].name);
-                print(listaBotones[i].activeSelf);
-            }
-            else if (i > visiblesLista)
-            {
-                listaBotones[i].SetActive(true);
-                listaBotones[i].GetComponentInChildren<Text>().text = textoBloq;
-            }
-        }
-        //if (desbloqueadosHormigueros)
-        //{
-        //    GameObject.Find("BuyAnthill").GetComponentInChildren<Text>().text = (string)("Buy Anthill " + costeHormigueroActual);
-        //}
+    //            listaBotones[i].SetActive(false);
+    //            print(listaBotones[i].name);
+    //            print(listaBotones[i].activeSelf);
+    //        }
+    //        else if (i > visiblesLista)
+    //        {
+    //            listaBotones[i].SetActive(true);
+    //            listaBotones[i].GetComponentInChildren<Text>().text = textoBloq;
+    //        }
+    //    }
+    //    //if (desbloqueadosHormigueros)
+    //    //{
+    //    //    GameObject.Find("BuyAnthill").GetComponentInChildren<Text>().text = (string)("Buy Anthill " + costeHormigueroActual);
+    //    //}
 
-        //if (desbloqueadosManzanos)
-        //{
-        //    GameObject.Find("BuyAppleTree").GetComponentInChildren<Text>().text = (string)("Buy Apple tree " + costeManzanoActual);
-        //}
-        //if (desbloqueadosPanales)
-        //{
-        //    GameObject.Find("BuyPanal").GetComponentInChildren<Text>().text = (string)("Buy beehive " + costePanalActual);
-        //}
-        //if (desbloqueadasFlores)
-        //{
-        //    GameObject.Find("BuyFlores").GetComponentInChildren<Text>().text = (string)("Buy flowers " + costeFloresBase);
-        //}
+    //    //if (desbloqueadosManzanos)
+    //    //{
+    //    //    GameObject.Find("BuyAppleTree").GetComponentInChildren<Text>().text = (string)("Buy Apple tree " + costeManzanoActual);
+    //    //}
+    //    //if (desbloqueadosPanales)
+    //    //{
+    //    //    GameObject.Find("BuyPanal").GetComponentInChildren<Text>().text = (string)("Buy beehive " + costePanalActual);
+    //    //}
+    //    //if (desbloqueadasFlores)
+    //    //{
+    //    //    GameObject.Find("BuyFlores").GetComponentInChildren<Text>().text = (string)("Buy flowers " + costeFloresBase);
+    //    //}
 
-    }
+    //}
 
     // MEJORAS 
     public bool desbloqueadosHormigueros = true;
@@ -234,7 +234,7 @@ public class GameManager : MonoBehaviour
             hormiguerosTotal += 1;
         }
         ActualizarTextoHormigas();
-        TextoBotones();
+       
     }
     public float costeManzanoBase = 70;
     public float costeManzanoActual;
@@ -253,7 +253,7 @@ public class GameManager : MonoBehaviour
             }
             totalManzanos += 1;
         }
-        TextoBotones();
+      
     }
 
     public float totalMiel;
@@ -278,7 +278,7 @@ public class GameManager : MonoBehaviour
             panalesTotal += 1;
         }
         ActualizarTextoAbejas();
-        TextoBotones();
+       
     }
     void ActualizarTextoAbejas()
     {
@@ -308,7 +308,7 @@ public class GameManager : MonoBehaviour
             }
             totalFlores += 1;
         }
-        TextoBotones();
+       
     }
     public bool desbloqueadasAbejas = false;
     public void DesbloquearAbejas()
@@ -340,8 +340,114 @@ public class GameManager : MonoBehaviour
     public float costeDesbloqueoFlores;
 
     public GameObject botonBlock;
-    public string tipoOpen;
+    public GameObject botonMejora1;
+    public GameObject botonMejora2;
+    public GameObject botonMejora3;
+    public GameObject textoInfo1;
+    public GameObject textoInfo2;
+    public GameObject textoInfo3;
+    public GameObject textoInfo4;
 
+    public string tipoOpen;
+    public float mejorasTotalesH = 0;
+    public string nombreMejora1Hormiguero="Anthill";
+    public string descripcionMejora1Hormiguero="Max capacity increased";
+    public float mejora1HCosteBase = 10;
+    public float mejora1HCosteActual;
+    public float mejora1HRatio = 1.1f;
+    public float mejora1HnivelActual = 0;
+    public float cantidadSumadaMejora1H = 15;
+
+    public string nombreMejora2Hormiguero = "Speed";
+    public string descripcionMejora2Hormiguero = "Ants speed increased";
+    public float mejora2HCosteBase = 10;
+    public float mejora2HCosteActual;
+    public float mejora2HRatio = 1.1f;
+    public float mejora2HnivelActual = 0;
+    public float cantidadSumadaMejora2HPorcentaje = 2;
+
+    public string nombreMejora3Hormiguero = "Blocked";
+    public string descripcionMejora3Hormiguero = "Blocked";
+    public float mejora3HCosteBase = 10;
+    public float mejora3HCosteActual;
+    public float mejora3HRatio = 1.1f;
+    public float mejora3HnivelActual = 0;
+    public float cantidadSumadaMejora3H = 0;
+
+    public float mejorastotalesM = 0;
+    public string nombreMejora1Manzano = "Apple tree";
+    public string descripcionMejora1Manzano = "Apples generated increased";
+    public float mejora1MCosteBase = 10;
+    public float mejora1MCosteActual;
+    public float mejora1MRatio = 1.1f;
+    public float mejora1MnivelActual = 0;
+    public float cantidadSumadaMejora1M = 1;
+
+    public string nombreMejora2Manzano = "Amount";
+    public string descripcionMejora2Manzano = "Apples given per unit increased";
+    public float mejora2MCosteBase = 10;
+    public float mejora2MCosteActual;
+    public float mejora2MRatio = 1.1f;
+    public float mejora2MnivelActual = 0;
+    public float cantidadSumadaMejora2M = 1;
+
+    public string nombreMejora3Manzano = "Generation";
+    public string descripcionMejora3Manzano = "Generating time decreased";
+    public float mejora3MCosteBase = 10;
+    public float mejora3MCosteActual;
+    public float mejora3MRatio = 1.1f;
+    public float mejora3MnivelActual = 0;
+    public float cantidadSumadaMejora3MPorcentaje = 3;
+
+    public float mejorasTotalesP = 0;
+    public string nombreMejora1Panal = "Beehive";
+    public string descripcionMejora1Panal = "Max capacity increased";
+    public float mejora1PCosteBase = 10;
+    public float mejora1PCosteActual;
+    public float mejora1PRatio = 1.1f;
+    public float mejora1PnivelActual = 0;
+    public float cantidadSumadaMejora1P = 15;
+
+    public string nombreMejora2Panal = "Rest";
+    public string descripcionMejora2Panal = "Bee rest time decreased";
+    public float mejora2PCosteBase = 10;
+    public float mejora2PCosteActual;
+    public float mejora2PRatio = 1.1f;
+    public float mejora2PnivelActual = 0;
+    public float cantidadSumadaMejora2PPorcentaje = 5;
+
+    public string nombreMejora3Panal = "Blocked";
+    public string descripcionMejora3Panal = "Blocked";
+    public float mejora3PCosteBase = 10;
+    public float mejora3PCosteActual;
+    public float mejora3PRatio = 1.1f;
+    public float mejora3PnivelActual = 0;
+    public float cantidadSumadaMejora3P = 0;
+
+    public float mejorasTotalesF = 0;
+    public string nombreMejora1Flores = "Flowers quality";
+    public string descripcionMejora1Flores = "Bees speed increased";
+    public float mejora1FCosteBase = 10;
+    public float mejora1FCosteActual;
+    public float mejora1FRatio = 1.1f;
+    public float mejora1FnivelActual = 0;
+    public float cantidadSumadaMejora1FPorcentaje = 2;
+
+    public string nombreMejora2Flores = "Pollination";
+    public string descripcionMejora2Flores = "Bee pollination time decreased";
+    public float mejora2FCosteBase = 10;
+    public float mejora2FCosteActual;
+    public float mejora2FRatio = 1.1f;
+    public float mejora2FnivelActual = 0;
+    public float cantidadSumadaMejora2FPorcentaje = 3;
+
+    public string nombreMejora3Flores = "Honey";
+    public string descripcionMejora3Flores = "Honey per pollination increased";
+    public float mejora3FCosteBase = 10;
+    public float mejora3FCosteActual;
+    public float mejora3FRatio = 1.1f;
+    public float mejora3FnivelActual = 0;
+    public float cantidadSumadaMejora3F = 1;
 
     public void MenuOpen(GameObject go)
     {
@@ -424,22 +530,154 @@ public class GameManager : MonoBehaviour
         {
             nombre.text = "Anthill";
             descripcion.text = descripcionHormiguero;
+            botonMejora1.GetComponentInChildren<Text>().text = nombreMejora1Hormiguero;
+            botonMejora2.GetComponentInChildren<Text>().text = nombreMejora2Hormiguero;
+            botonMejora3.GetComponentInChildren<Text>().text = nombreMejora3Hormiguero;
+            textoInfo1.GetComponent<Text>().text = "Total upgrades = " + mejorasTotalesH;
+            textoInfo2.GetComponent<Text>().text = "Max capacity = " + capacidadTotalHormigas;
+            textoInfo3.GetComponent<Text>().text = "";
+            textoInfo4.GetComponent<Text>().text = "";
 
         }
         else if (tipo == "Manzano")
         {
             nombre.text = "Apple Tree";
             descripcion.text = descripcionManzano;
+            botonMejora1.GetComponentInChildren<Text>().text = nombreMejora1Manzano;
+            botonMejora2.GetComponentInChildren<Text>().text = nombreMejora2Manzano;
+            botonMejora3.GetComponentInChildren<Text>().text = nombreMejora3Manzano;
+            textoInfo1.GetComponent<Text>().text = "Total upgrades = " + mejorastotalesM;
+            textoInfo2.GetComponent<Text>().text = "Apples spawned = " + manzano.manzanasSpawned;
+            textoInfo3.GetComponent<Text>().text = "Time between generations = " + manzano.TiempoEntreManzanas;
+            textoInfo4.GetComponent<Text>().text = "Apples given per unit = " + manzanasSumadasExpedicion;
         }
         else if (tipo == "Panal")
         {
             nombre.text = "Beehive";
             descripcion.text = descripcionPanal;
+            botonMejora1.GetComponentInChildren<Text>().text = nombreMejora1Panal;
+            botonMejora2.GetComponentInChildren<Text>().text = nombreMejora2Panal;
+            botonMejora3.GetComponentInChildren<Text>().text = nombreMejora3Panal;
+            textoInfo1.GetComponent<Text>().text = "Total upgrades = " + mejorasTotalesP;
+            textoInfo2.GetComponent<Text>().text = "Max capacity = " + capacidadTotalAbejas;
+            textoInfo3.GetComponent<Text>().text = "";
+            textoInfo4.GetComponent<Text>().text = "";
         }
         else if (tipo == "Flor")
         {
             nombre.text = "Flowers";
             descripcion.text = descripcionFlores;
+            botonMejora1.GetComponentInChildren<Text>().text = nombreMejora1Flores;
+            botonMejora2.GetComponentInChildren<Text>().text = nombreMejora2Flores;
+            botonMejora3.GetComponentInChildren<Text>().text = nombreMejora3Flores;
+            textoInfo1.GetComponent<Text>().text = "Total upgrades = " + mejorasTotalesF;
+            textoInfo2.GetComponent<Text>().text = "Speed boost = " + flor.totalSpeedBost;
+            textoInfo3.GetComponent<Text>().text = "Pollination speed boost = " + flor.velocidadPolinizacion;
+            textoInfo4.GetComponent<Text>().text = "Honey given per pollination = " + flor.mielPorViaje;
+        }
+    }
+    public void SetDescripcionMejora1()
+    {
+       
+        if (tipoOpen == "Hormiguero")
+        {
+          
+            descripcion.text = descripcionMejora1Hormiguero;
+            //PONER STATS CON TEXTOINFO1,2,3,4
+           
+        }
+        else if (tipoOpen == "Manzano")
+        {
+            descripcion.text = descripcionMejora1Manzano;
+        }
+        else if (tipoOpen == "Panal")
+        {
+            descripcion.text = descripcionMejora1Panal;
+        }
+        else if (tipoOpen == "Flor")
+        {
+            descripcion.text = descripcionMejora1Flores;
+        }
+      
+    }
+    public void SetDescripcionMejora2()
+    {
+        if (tipoOpen == "Hormiguero")
+        {
+
+            descripcion.text = descripcionMejora2Hormiguero;
+
+        }
+        else if (tipoOpen == "Manzano")
+        {
+            descripcion.text = descripcionMejora2Manzano;
+        }
+        else if (tipoOpen == "Panal")
+        {
+            descripcion.text = descripcionMejora2Panal;
+        }
+        else if (tipoOpen == "Flor")
+        {
+            descripcion.text = descripcionMejora2Flores;
+        }
+    }
+    public void SetDescripcionMejora3()
+    {
+        if (tipoOpen == "Hormiguero")
+        {
+
+            descripcion.text = descripcionMejora3Hormiguero;
+
+        }
+        else if (tipoOpen == "Manzano")
+        {
+            descripcion.text = descripcionMejora3Manzano;
+        }
+        else if (tipoOpen == "Panal")
+        {
+            descripcion.text = descripcionMejora3Panal;
+        }
+        else if (tipoOpen == "Flor")
+        {
+            descripcion.text = descripcionMejora3Flores;
+        }
+    }
+    public void DescripcionOriginal()
+    {
+        if (tipoOpen == "Hormiguero")
+        {
+
+            descripcion.text = descripcionHormiguero;
+            textoInfo1.GetComponent<Text>().text = "Total upgrades = " + mejorasTotalesH;
+            textoInfo2.GetComponent<Text>().text = "Max capacity = " + capacidadTotalHormigas;
+            textoInfo3.GetComponent<Text>().text = "";
+            textoInfo4.GetComponent<Text>().text = "";
+
+        }
+        else if (tipoOpen == "Manzano")
+        {
+            descripcion.text = descripcionManzano;
+            textoInfo1.GetComponent<Text>().text = "Total upgrades = " + mejorastotalesM;
+            textoInfo2.GetComponent<Text>().text = "Apples spawned = " + manzano.manzanasSpawned;
+            textoInfo3.GetComponent<Text>().text = "Time between generations = "+manzano.TiempoEntreManzanas;
+            textoInfo4.GetComponent<Text>().text = "Apples given per unit = "+ manzanasSumadasExpedicion;
+
+        }
+        else if (tipoOpen == "Panal")
+        {
+            descripcion.text = descripcionPanal;
+            textoInfo1.GetComponent<Text>().text = "Total upgrades = " + mejorasTotalesP;
+            textoInfo2.GetComponent<Text>().text = "Max capacity = " + capacidadTotalAbejas;
+            textoInfo3.GetComponent<Text>().text = "";
+            textoInfo4.GetComponent<Text>().text = "";
+        }
+        else if (tipoOpen == "Flor")
+        {
+            descripcion.text = descripcionFlores;
+            textoInfo1.GetComponent<Text>().text = "Total upgrades = " + mejorasTotalesF;
+            textoInfo2.GetComponent<Text>().text = "Speed boost = " + flor.totalSpeedBost;
+            textoInfo3.GetComponent<Text>().text = "Pollination speed boost = " + flor.velocidadPolinizacion;
+            textoInfo4.GetComponent<Text>().text = "Honey given per pollination = " + flor.mielPorViaje;
         }
     }
     public void ClickBotonBlock()
@@ -485,7 +723,47 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-    public void ClickBotonCompras()
+    public void ClickBotonMejora1()
+    {
+        string tipo = tipoOpen;
+        if (tipo == "Hormiguero")
+        {
+            //Gestionar las mejoras
+        }
+        else if (tipo == "Manzano")
+        {
+
+        }
+        else if (tipo == "Panal")
+        {
+
+        }
+        else if (tipo == "Flores")
+        {
+
+        }
+    }
+    public void ClickBotonMejora2()
+    {
+        string tipo = tipoOpen;
+        if (tipo == "Hormiguero")
+        {
+
+        }
+        else if (tipo == "Manzano")
+        {
+
+        }
+        else if (tipo == "Panal")
+        {
+
+        }
+        else if (tipo == "Flores")
+        {
+
+        }
+    }
+    public void ClickBotonMejora3()
     {
         string tipo = tipoOpen;
         if (tipo == "Hormiguero")

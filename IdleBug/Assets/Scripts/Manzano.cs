@@ -9,6 +9,8 @@ public class Manzano : MonoBehaviour
     public GameObject prefabManzana;
     public float radioAparicion = 6;
     public float radioMin = 0.5f;
+    public float manzanasSpawned = 1;
+  
     Vector3 centro;
 
     public float TiempoEntreManzanas
@@ -42,7 +44,7 @@ public class Manzano : MonoBehaviour
             if (actualCd < 0)
             {
                 actualCd = tiempoEntreManzanas;
-                for (int i = 0; i < GameManager.Instance.totalManzanos; i++)
+                for (int i = 0; i < manzanasSpawned; i++)
                 {
                     SpawnManzana();
                 }
