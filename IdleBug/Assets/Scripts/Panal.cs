@@ -9,7 +9,7 @@ public class Panal : MonoBehaviour
     public int poblacionMinimaEnBase = 3;
     public int poblacionMinimaMision = 1;
     public float tiempoDescanso = 15f;
-
+    public float speedMission=5;
     public float tiempoPolinizando = 5f;
     public GameObject prefabAbeja;
     public bool spawneando = false;
@@ -89,7 +89,7 @@ public class Panal : MonoBehaviour
         GameObject abejaInstanciada = (GameObject)Instantiate(prefabAbeja,spawnPos, Quaternion.identity);
         abejaInstanciada.GetComponent<Abeja>().tiempoDescanso = tiempoDescanso;
         abejaInstanciada.GetComponent<Abeja>().tiempoPolinizando = tiempoPolinizando;
-
+        abejaInstanciada.GetComponent<Abeja>().speedMission = speedMission;
         abejaInstanciada.GetComponent<Abeja>().enMision = true;
         abejaInstanciada.GetComponent<Abeja>().destinoFlor = manz;
         abejaInstanciada.GetComponent<Abeja>().ultimaDeLaFila = true;

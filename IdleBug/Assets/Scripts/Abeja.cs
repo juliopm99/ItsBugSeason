@@ -75,9 +75,12 @@ public class Abeja : MonoBehaviour
 
                     else
                     {
-                        if (GetComponent<MeshRenderer>().enabled)
+                        if (GetComponentInChildren<MeshRenderer>().enabled)
                         {
-                            GetComponent<MeshRenderer>().enabled = false;
+                           foreach(MeshRenderer mr in GetComponentsInChildren<MeshRenderer>())
+                            {
+                                mr.enabled = false;
+                            }
                             GameManager.Instance.SumarMiel((int)GameManager.Instance.mielSumadaExpedicion);
                         }
                         tiempoDescanso -= Time.deltaTime;
