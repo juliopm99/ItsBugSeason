@@ -481,6 +481,8 @@ public class GameManager : MonoBehaviour
     public float mejora3FnivelActual = 1;
     public float cantidadSumadaMejora3F = 1;
 
+  
+
     public void MenuOpen(GameObject go)
     {
         MenuClose();
@@ -578,6 +580,7 @@ public class GameManager : MonoBehaviour
             botonMejora1.GetComponentInChildren<Text>().text = nombreMejora1Manzano;
             botonMejora2.GetComponentInChildren<Text>().text = nombreMejora2Manzano;
             botonMejora3.GetComponentInChildren<Text>().text = nombreMejora3Manzano;
+
             textoInfo1.GetComponent<Text>().text = "Total upgrades = " + mejorastotalesM;
             textoInfo2.GetComponent<Text>().text = "Apples spawned = " + manzano.manzanasSpawned;
             textoInfo3.GetComponent<Text>().text = "Time between generations = " + manzano.TiempoEntreManzanas;
@@ -954,6 +957,7 @@ public class GameManager : MonoBehaviour
                 totalManzanas -= mejora3MCosteActual;
                 mejora3MCosteActual = (int)mejora3MCosteBase * Mathf.Pow(mejora3MRatio, mejora3MnivelActual);
                 manzano.TiempoEntreManzanas -= manzano.TiempoEntreManzanas * cantidadSumadaMejora3MPorcentaje / 100;
+
                 SetDescripcionMejora3();
 
                 manzano.manzanasSpawned++;
