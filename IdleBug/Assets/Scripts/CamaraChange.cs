@@ -68,6 +68,7 @@ public class CamaraChange : MonoBehaviour {
                     if (!EventSystem.current.IsPointerOverGameObject())
                     {  GameManager.Instance.MenuClose();
                         Debug.Log("Its over UI elements");
+                        print(hitInfo.collider.name);
                     }
                 }
               
