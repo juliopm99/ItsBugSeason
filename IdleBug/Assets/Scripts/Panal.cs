@@ -33,7 +33,7 @@ public class Panal : MonoBehaviour
         {
             //DIFERENCIAR MANZANAS DISPONIBLES
             int random = Random.Range(0, GameObject.FindObjectsOfType<Flor>().Length);
-            EmpezarMision(GameObject.FindObjectsOfType<Flor>()[random].transform.gameObject);
+            EmpezarMision(GameObject.FindObjectsOfType<Flor>()[random-1].transform.gameObject);//CAMBIAR
             spawneando = true;
             //foreach (Flor go in GameObject.FindObjectsOfType<Flor>())
             //{
@@ -72,7 +72,7 @@ public class Panal : MonoBehaviour
             }
         }
         Vector2 vec = new Vector2(Random.Range(0, 0.3f), Random.Range(0, 0.3f));
-        StartCoroutine(SpawnAbejaMision(flor,spawnPoses[rand].transform.position+new Vector3(vec.x,0,vec.y)));
+        StartCoroutine(SpawnAbejaMision(flor,this.transform.position));//CAMBIAR
         spawneando = false;
     }
     public void TerminarMision()
@@ -85,8 +85,11 @@ public class Panal : MonoBehaviour
         
        
         yield return new WaitForSeconds(tiempoEntreAbejasSpawn);
+        SpawnAbe[] posSpawn = FindObjectsOfType<SpawnAbe>();
+        int random = Random.Range(0, posSpawn.Length);
 
-        GameObject abejaInstanciada = (GameObject)Instantiate(prefabAbeja,spawnPos, Quaternion.identity);
+          GameObject abejaInstanciada =Instantiate(prefabAbeja, posSpawn[random].gameObject.transform.position, Quaternion.identity);
+       
         abejaInstanciada.GetComponent<Abeja>().tiempoDescanso = tiempoDescanso;
         abejaInstanciada.GetComponent<Abeja>().tiempoPolinizando = tiempoPolinizando;
         abejaInstanciada.GetComponent<Abeja>().speedMission = speedMission;

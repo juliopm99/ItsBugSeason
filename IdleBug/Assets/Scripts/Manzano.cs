@@ -10,7 +10,7 @@ public class Manzano : MonoBehaviour
     public float radioAparicion = 6;
     public float radioMin = 0.5f;
     public float manzanasSpawned = 1;
-  
+    public GameObject centroManzanas;
     Vector3 centro;
 
     public float TiempoEntreManzanas
@@ -53,8 +53,10 @@ public class Manzano : MonoBehaviour
     }
     void SpawnManzana()
     {
-        float randx = Random.Range(radioMin, radioAparicion);
-        float randz = Random.Range(radioMin, radioAparicion);
-        Instantiate(prefabManzana, new Vector3(centro.x + randx, centro.y, centro.z + randz), Quaternion.identity);
+      
+
+        float randx = Random.Range(-radioAparicion, radioAparicion);
+        float randz = Random.Range(-radioAparicion, radioAparicion);
+        Instantiate(prefabManzana, new Vector3( centroManzanas.transform.position.x+ randx, centroManzanas.transform.position.y,  centroManzanas.transform.position.z+ randz), Quaternion.identity);
     }
 }

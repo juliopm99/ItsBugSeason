@@ -29,19 +29,20 @@ public class Hormiguero : MonoBehaviour
     {
         if (poblacionActual >= poblacionMinimaEnBase + poblacionMinimaMision && poblacionActual - poblacionOcupada >= poblacionMinimaMision/*&&!spawneando*/)
         {
+            print("SE CUMPE");
             //DIFERENCIAR MANZANAS DISPONIBLES
-       
-            foreach(Manzana go in GameObject.FindObjectsOfType<Manzana>())
+
+            foreach (Manzana go in GameObject.FindObjectsOfType<Manzana>())
             {
                 if (go.targeted == false)
                 {
                     go.targeted = true;
-                    EmpezarMision( go.transform.gameObject);
-                    spawneando = true;
+                    EmpezarMision(go.transform.gameObject);
 
-                }break;
+                    break;
+                }
             }
-           
+
 
         }
     }
@@ -56,18 +57,18 @@ public class Hormiguero : MonoBehaviour
     public void EmpezarMision(GameObject manz)
     {
         poblacionOcupada += poblacionMinimaMision;
-        int rand=0;
+        int rand = 0;
         if (GameManager.Instance.hormiguerosTotal > 1)
         {
-             rand = Random.Range(0, GameManager.Instance.hormiguerosTotal-1 );
+            rand = Random.Range(0, GameManager.Instance.hormiguerosTotal - 1);
             print(rand + "randomgeeeeee");
             if (rand > GameManager.Instance.hormiguerosDesactivados.Length)
             {
                 rand = 0;
             }
         }
-        print(rand+"randomg");
-        StartCoroutine(SpawnHormigasMision(manz,spawnPoses[rand].transform.position));
+        print(rand + "randomg");
+        StartCoroutine(SpawnHormigasMision(manz, this.transform.position));//CAMBIAR
         spawneando = false;
     }
     public void TerminarMision()
@@ -75,12 +76,17 @@ public class Hormiguero : MonoBehaviour
         //poblacionOcupada -= poblacionMinimaMision;
         //print("TERMINAMISION"+ poblacionOcupada);
     }
-    public IEnumerator SpawnHormigasMision(GameObject manz,Vector3 spawnPos)
+    public IEnumerator SpawnHormigasMision(GameObject manz, Vector3 spawnPos)
     {
-        
-       
+        SpawnHor[] posSpawn = FindObjectsOfType<SpawnHor>();
+        int random = Random.Range(0, posSpawn.Length);
+
+        spawnPos = posSpawn[random].gameObject.transform.position;
+
         yield return new WaitForSeconds(tiempoEntreHormigasSpawn);
-        GameObject hormigaInstanciada = (GameObject)Instantiate(prefabHormiga,spawnPos, Quaternion.identity);
+
+        GameObject hormigaInstanciada = (GameObject)Instantiate(prefabHormiga, spawnPos, Quaternion.identity);
+        print("primerahormiga" + spawnPos);
         hormigaInstanciada.GetComponent<Hormiga>().enMision = true;
         hormigaInstanciada.GetComponent<Hormiga>().destinoManzana = manz;
         hormigaInstanciada.GetComponent<Hormiga>().speedMission = speedMission;
@@ -97,7 +103,7 @@ public class Hormiguero : MonoBehaviour
         hormigaInstanciada3.GetComponent<Hormiga>().speedMission = speedMission;
 
         yield return new WaitForSeconds(tiempoEntreHormigasSpawn);
-       
+
         GameObject hormigaInstanciada4 = (GameObject)Instantiate(prefabHormiga, spawnPos, Quaternion.identity);
         hormigaInstanciada4.GetComponent<Hormiga>().enMision = true;
         hormigaInstanciada4.GetComponent<Hormiga>().destinoManzana = manz;

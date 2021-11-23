@@ -132,7 +132,7 @@ public class InsectGenerator : MonoBehaviour
                 Destroy(lastG);
             }
         }
-        if (hayAbeja == false && GameManager.Instance.desbloqueadasAbejas)
+        if (hayAbeja == false && GameManager.Instance.desbloqueadosPanales)
         {
             actualCdA -= Time.deltaTime;
             if (actualCdA <= 0)
@@ -268,7 +268,7 @@ public class InsectGenerator : MonoBehaviour
             }
             actualCdG = cooldownEntreGusanos;
             hayGusano = false;
-            Destroy(objeto);
+        Destroy(objeto);
 
 
         }
