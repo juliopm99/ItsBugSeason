@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnviromentLightingPrueba : MonoBehaviour
+public class SeasonVisuales : MonoBehaviour
 {
     public Color colorbase1;
     public Color colorbase2;
