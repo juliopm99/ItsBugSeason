@@ -8,6 +8,8 @@ public class GameManager : MonoBehaviour
 {
     TextMesh textoAlmacen;
     [Header("No se toca")]
+    public int chanceShiny = 0;
+    public int multiplicadorShiny = 3;
     public int cantidadHormigasCogidas = 1;
     public int cantidadAbejasCogidas = 1;
     public int cantidadGusanosCogidos = 1;
@@ -93,7 +95,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-   
+
     public float MejorasTotalesH
     {
         get => mejorasTotalesH;
@@ -222,9 +224,25 @@ public class GameManager : MonoBehaviour
 
     void CalcularComienzo()
     {
+        if (currentYear != 0)
+        {
+
+        }
+        else
+        {
+            costeMejora1Actual = costeMejora1Base;
+            costeMejora2Actual = costeMejora2Base;
+            costeMejora3Actual = costeMejora3Base;
+            costeMejora4Actual = costeMejora4Base;
+            costeMejora5Actual = costeMejora5Base;
+            capacidadPorHormigueroActual = capacidadPorHormigueroBase;
+            capacidadPorMariposeroActual = capacidadPorMariposeroBase;
+            capacidadPorGusaneroActual = capacidadPorGusaneroBase;
+            capacidadAbejasActual = capacidadAbejasBase;
+        }
 
         capacidadTotalHormigas = hormiguerosTotal * capacidadPorHormigueroActual;
-        capacidadTotalAbejas = panalesTotal * capacidadAbejasPorPanal;
+        capacidadTotalAbejas = panalesTotal * capacidadAbejasActual;
         capacidadTotalGusanos = gusanerosTotal * capacidadPorGusaneroActual;
         capacidadTotalMariposas = mariposerosTotal * capacidadPorMariposeroActual;
         abejasFuera = 0;
@@ -265,10 +283,30 @@ public class GameManager : MonoBehaviour
         mejora1MACosteActual = mejora1MACosteBase;
         mejora2MACosteActual = mejora2MACosteBase;
         mejora3MACosteActual = mejora3MACosteBase;
-
+      
+        añoCheck = GameObject.Find("AñoCheck").GetComponent<Text>();
+        manzNeed = GameObject.Find("ManzNeed").GetComponent<Text>();
+        sedaNeed = GameObject.Find("SedaNeed").GetComponent<Text>();
+        mielNeed = GameObject.Find("MielNeed").GetComponent<Text>();
+        petalosNeed = GameObject.Find("PetalsNeed").GetComponent<Text>();
         textoAlmacen = GameObject.Find("TextoAlmacen").GetComponent<TextMesh>();
         GameObject.Find("TextoCreador").GetComponent<TextMesh>().text = "Cost: " + gusanosNecesarios + " worms";
+        CalculosCheck();
 
+    }
+    public Text añoCheck;
+    public Text manzNeed;
+    public Text sedaNeed;
+    public Text mielNeed;
+    public Text petalosNeed;
+    public void CalculosCheck()
+    {
+
+        añoCheck.text = "Year: " + propiedadesAñosCheck[currentYear].año + " ";
+        manzNeed.text = "Apples: " + totalManzanas + " /" + propiedadesAñosCheck[currentYear].manzanas + " ";
+        sedaNeed.text = "Silk: " + totalSeda + " /" + propiedadesAñosCheck[currentYear].seda + " ";
+        mielNeed.text = "Honey: " + totalMiel + " /" + propiedadesAñosCheck[currentYear].miel + " ";
+        petalosNeed.text = "Petals: " + totalPetalos + " /" + propiedadesAñosCheck[currentYear].petalos + " ";
     }
     void Start()
     {
@@ -279,29 +317,38 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.J))
         {
+            if (Input.GetKeyDown(KeyCode.I))
+            {
+                OpenCloseInviernoMenu();
+
+            }
             if (Input.GetKeyDown(KeyCode.M))
             {
-                totalManzanas += 20;
-               
+                totalManzanas += 2000;
+
             }
             if (Input.GetKeyDown(KeyCode.H))
             {
-                totalMiel += 20;
+                totalMiel += 2000;
             }
             if (Input.GetKeyDown(KeyCode.S))
             {
-                totalSeda += 20;
+                totalSeda += 2000;
             }
             if (Input.GetKeyDown(KeyCode.P))
             {
-                totalPetalos += 20;
+                totalPetalos += 2000;
             }
             if (Input.GetKeyDown(KeyCode.R))
             {
-                SceneManager.LoadScene(0);
+                ReiniciarEscena();
             }
         }
 
+    }
+  void  ReiniciarEscena()
+    {
+        SceneManager.LoadScene(0);
     }
     void Update()
     {
@@ -330,7 +377,7 @@ public class GameManager : MonoBehaviour
             petalosPorSegundo = mariposasTotal * petalosPorMariposaSegundo + (mariposasTotal * petalosPorMariposaSegundo * multiplicadorPetalosSegundo / 100);
             totalPetalos += petalosPorSegundo * Time.deltaTime;
         }
-
+        CalculosCheck();
         ActualizarTextoMenu();
     }
 
@@ -349,7 +396,7 @@ public class GameManager : MonoBehaviour
         textoMiel.text = (string)("Honey:" + totalMiel.ToString("0"));
         textoSeda.text = (string)("Silk :" + totalSeda.ToString("0"));
         textoPetalos.text = (string)("Petals:" + totalPetalos.ToString("0"));
-
+        TextoHormigas.text = "";
 
     }
     public void CogerHormiga()
@@ -387,7 +434,7 @@ public class GameManager : MonoBehaviour
         if (abejasTotal + 1 <= capacidadTotalAbejas)
         {
             abejasTotal++;
-            if (abejasTotal == capacidadAbejasPorPanal && desbloqueadosPanales == false)
+            if (abejasTotal == capacidadAbejasBase && desbloqueadosPanales == false)
             {
                 desbloqueadosPanales = true;
 
@@ -398,7 +445,7 @@ public class GameManager : MonoBehaviour
                 abejasFuera++;
                 SpawnAbe[] posSpawn = FindObjectsOfType<SpawnAbe>();
                 int random = Random.Range(0, posSpawn.Length);
-              
+
                 Instantiate(prefabAbeja, posSpawn[random].gameObject.transform.position, Quaternion.identity);
                 panal.OcuparAbeja();
             }
@@ -472,7 +519,7 @@ public class GameManager : MonoBehaviour
         if (gusanosTotal >= maxGusanosFuera)
         {
             gusanosTotal--;
-            
+
         }
         else
         {
@@ -558,12 +605,13 @@ public class GameManager : MonoBehaviour
 
     public int panalesTotal = 1;
     public int capacidadTotalAbejas = 0;
-    public int capacidadAbejasPorPanal = 20;
+    public int capacidadAbejasBase = 20;
+    public int capacidadAbejasActual = 20;
 
 
     void ActualizarTextoAbejas()
     {
-        capacidadTotalAbejas = capacidadAbejasPorPanal * panalesTotal;
+        capacidadTotalAbejas = capacidadAbejasActual * panalesTotal;
         panal.poblacionActual = (int)abejasTotal;
         panal.capacidadActual = capacidadTotalAbejas;
         GameObject.Find("TextoAbejas").GetComponent<TextMesh>().text = (string)(abejasTotal + " / " + capacidadTotalAbejas);
@@ -944,7 +992,7 @@ public class GameManager : MonoBehaviour
             textoInfo1.GetComponent<Text>().text = "Total upgrades = " + MejorasTotalesG;
             textoInfo2.GetComponent<Text>().text = "Max capacity = " + capacidadTotalGusanos;
             textoInfo3.GetComponent<Text>().text = "Production boost = " + cantidadSumadaMejora2GPorcentaje * mejora2GnivelActual + "%";
-            textoInfo4.GetComponent<Text>().text = "Max silk storage = " + cantidadSumadaMejora3GPorcentaje*mejora3GnivelActual+"%";
+            textoInfo4.GetComponent<Text>().text = "Max silk storage = " + cantidadSumadaMejora3GPorcentaje * mejora3GnivelActual + "%";
         }
         else if (tipo == "Mariposero")
         {
@@ -1116,7 +1164,7 @@ public class GameManager : MonoBehaviour
             descripcion.text = descripcionMejora3G;
             textoInfo1.GetComponent<Text>().text = "Cost = " + mejora3GCosteActual + " Silk";
             textoInfo2.GetComponent<Text>().text = "Level = " + mejora3GnivelActual;
-            textoInfo3.GetComponent<Text>().text = "Amount add = " + cantidadSumadaMejora3GPorcentaje+ "%";
+            textoInfo3.GetComponent<Text>().text = "Amount add = " + cantidadSumadaMejora3GPorcentaje + "%";
             textoInfo4.GetComponent<Text>().text = "";
         }
         else if (tipoOpen == "Mariposero")
@@ -1485,7 +1533,7 @@ public class GameManager : MonoBehaviour
                 MejorasTotalesG++;
                 totalSeda -= mejora3GCosteActual;
                 mejora3GCosteActual = (int)mejora3GCosteBase * Mathf.Pow(mejora3GRatio, mejora3GnivelActual);
-                maxSilk += (int)(cantidadSumadaMejora3GPorcentaje * maxSilk/100);
+                maxSilk += (int)(cantidadSumadaMejora3GPorcentaje * maxSilk / 100);
                 SetDescripcionMejora3();
             }
         }
@@ -1507,4 +1555,401 @@ public class GameManager : MonoBehaviour
         menuBlock.SetActive(false);
         menuCompras.SetActive(false);
     }
+    public GameObject menuCheck;
+    public GameObject menuStats;
+
+    public void MenuCheckClose()
+    {
+        menuCheck.SetActive(!menuCheck.activeSelf);
+    }
+
+    public void MenuStatsClose()
+    {
+        menuStats.SetActive(!menuStats.activeSelf);
+    }
+
+    public CheckProperties[] propiedadesAñosCheck;
+    public int currentYear = 0;
+    public GameObject menuInvierno;
+    public GameObject infoInvierno;
+    public GameObject upgradesInvierno;
+    public GameObject descripcionFail;
+    
+    public int actualTokens = 0;
+    public int costeTokenManzBase;
+    public float ratioCrecTokenMan;
+    public int costeTokenSedaBase;
+    public float ratioCrecTokenSed;
+    public int costeTokenMielBase;
+    public float ratioCrecTokenMiel;
+    public int costeTokenPetBase;
+    public float ratioCrecTokenPet;
+
+    public string nombreMejora1;
+    public int nivelMejora1 = 0;
+    public float ratioMejora1;
+    public int costeMejora1Base;
+    public int costeMejora1Actual;
+    public float cantidadMejora1;
+    public string nombreMejora2;
+    public int nivelMejora2 = 0;
+    public float ratioMejora2;
+    public int costeMejora2Base;
+    public int costeMejora2Actual;
+    public float cantidadMejora2;
+    public string nombreMejora3;
+    public int nivelMejora3=1;
+    public float ratioMejora3;
+    public int costeMejora3Base;
+    public int costeMejora3Actual;
+    public float cantidadMejora3Porcentaje;
+    public string nombreMejora4;
+    public int nivelMejora4 = 0;
+    public float ratioMejora4;
+    public int costeMejora4Base;
+    public int costeMejora4Actual;
+    public float cantidadMejora4;
+    public string nombreMejora5;
+    public int nivelMejora5 = 0;
+    public float ratioMejora5;
+    public int costeMejora5Base;
+    public int costeMejora5Actual;
+    public float cantidadMejora5;
+
+    public string descripcionMejora1;
+    public string descripcionMejora2;
+    public string descripcionMejora3;
+    public string descripcionMejora4;
+    public string descripcionMejora5;
+   
+     
+
+    public void TerminarAño()
+    {
+        currentYear++;
+        ResetearTodo();
+    }
+    public void CloseInfoMenu()
+    {
+        if (!CalcularSiPasa())
+        {
+            //RESTART GAMEEEEEE
+            print("PERDITE");
+            ReiniciarEscena();
+        }
+        else
+        {
+            infoInvierno.SetActive(false);
+            upgradesInvierno.SetActive(true);
+            SetTokensArriba();
+         
+            SetDescripcionOriginalUpgrades();
+        }
+    }
+    public void CloseUpgradesMenu()
+    {
+        if (!CalcularSiPasa())
+        {
+            //RESTART GAMEEEEEE
+            print("PERDITE");
+        }
+        else
+        {
+           
+            upgradesInvierno.SetActive(false);
+            menuInvierno.SetActive(false);
+           
+        }
+    }
+    public void SetTokensArriba()
+    {
+        if (actualTokens > 0)
+        {
+        GameObject.Find("TextoUpgrades").GetComponent<Text>().text = "YOU HAVE " + actualTokens + " TOKENS TO SPEND";
+
+        }
+        else
+        {
+            GameObject.Find("TextoUpgrades").GetComponent<Text>().text = "YOU HAVE NO TOKENS LEFT";
+        }
+    }
+    public void SetDescripcionOriginalUpgrades()
+    {
+        GameObject.Find("NombreMejora").GetComponent<Text>().text = "Click any upgrade to buy it";
+        GameObject.Find("NivelMejora").GetComponent<Text>().text = "";
+        GameObject.Find("TotalMejora").GetComponent<Text>().text = "";
+        GameObject.Find("CosteMejora").GetComponent<Text>().text = "";
+        GameObject.Find("DescripcionMejora").GetComponent<Text>().text = "";
+    }
+    public void SetDescripcionMejora1Token()
+    {
+        GameObject.Find("NombreMejora").GetComponent<Text>().text = nombreMejora1;
+        GameObject.Find("NivelMejora").GetComponent<Text>().text = nivelMejora1.ToString();
+        GameObject.Find("TotalMejora").GetComponent<Text>().text = ((int)(nivelMejora1*cantidadMejora1)).ToString("0");
+        GameObject.Find("CosteMejora").GetComponent<Text>().text = costeMejora1Actual.ToString();
+        GameObject.Find("DescripcionMejora").GetComponent<Text>().text =descripcionMejora1+" "+cantidadMejora1;
+    }
+    public void SetDescripcionMejora2Token()
+    {
+        GameObject.Find("NombreMejora").GetComponent<Text>().text = nombreMejora2;
+        GameObject.Find("NivelMejora").GetComponent<Text>().text = nivelMejora2.ToString();
+        GameObject.Find("TotalMejora").GetComponent<Text>().text = ((int)(nivelMejora2 * cantidadMejora2)).ToString("0");
+        GameObject.Find("CosteMejora").GetComponent<Text>().text = costeMejora2Actual.ToString();
+        GameObject.Find("DescripcionMejora").GetComponent<Text>().text = descripcionMejora2 + " " + cantidadMejora2;
+    }
+    public void SetDescripcionMejora3Token()
+    {
+        GameObject.Find("NombreMejora").GetComponent<Text>().text = nombreMejora3;
+        GameObject.Find("NivelMejora").GetComponent<Text>().text = nivelMejora3.ToString();
+        GameObject.Find("TotalMejora").GetComponent<Text>().text = ((int)(nivelMejora3 * cantidadMejora3Porcentaje)).ToString("0")+"%";
+        GameObject.Find("CosteMejora").GetComponent<Text>().text = costeMejora3Actual.ToString();
+        GameObject.Find("DescripcionMejora").GetComponent<Text>().text = descripcionMejora3 + " " + cantidadMejora3Porcentaje+"%";
+    }
+    public void SetDescripcionMejora4Token()
+    {
+        GameObject.Find("NombreMejora").GetComponent<Text>().text = nombreMejora4;
+        GameObject.Find("NivelMejora").GetComponent<Text>().text = nivelMejora4.ToString();
+        GameObject.Find("TotalMejora").GetComponent<Text>().text = ((int)(nivelMejora4 * cantidadMejora4)).ToString("0");
+        GameObject.Find("CosteMejora").GetComponent<Text>().text = costeMejora4Actual.ToString();
+        GameObject.Find("DescripcionMejora").GetComponent<Text>().text = descripcionMejora4 + " " + cantidadMejora4;
+    }
+    public void SetDescripcionMejora5Token()
+    {
+        GameObject.Find("NombreMejora").GetComponent<Text>().text = nombreMejora5;
+        GameObject.Find("NivelMejora").GetComponent<Text>().text = nivelMejora5.ToString();
+        GameObject.Find("TotalMejora").GetComponent<Text>().text = ((int)(nivelMejora5 * cantidadMejora5)).ToString("0");
+        GameObject.Find("CosteMejora").GetComponent<Text>().text = costeMejora5Actual.ToString();
+        GameObject.Find("DescripcionMejora").GetComponent<Text>().text = descripcionMejora5 + " " + cantidadMejora5; 
+    }
+
+    public float totalMejora1Tokens;
+    public void CompraMejora1()
+    {
+        if (costeMejora1Actual <= actualTokens)
+        {
+            actualTokens -= costeMejora1Actual;
+            nivelMejora1++;
+            costeMejora1Actual = (int)(costeMejora1Base * Mathf.Pow(ratioMejora1, nivelMejora1));
+            totalMejora1Tokens = nivelMejora1 * cantidadMejora1;
+            cantidadAbejasCogidas += 1;
+            cantidadGusanosCogidos += 1;
+            cantidadHormigasCogidas += 1;
+            SetTokensArriba();
+        }
+    }
+    public float totalMejora2Tokens;
+    public void CompraMejora2()
+    {
+        if (costeMejora2Actual <= actualTokens)
+        {
+            actualTokens -= costeMejora2Actual;
+            nivelMejora2++;
+            costeMejora2Actual = (int)(costeMejora2Base * Mathf.Pow(ratioMejora2, nivelMejora2));
+            totalMejora2Tokens = nivelMejora2 * cantidadMejora2;
+            capacidadAbejasActual += (int) totalMejora2Tokens;
+            capacidadPorGusaneroActual += (int)totalMejora2Tokens;
+            capacidadPorHormigueroActual += (int)totalMejora2Tokens;
+            capacidadPorMariposeroActual += (int)totalMejora2Tokens;
+           
+            SetTokensArriba();
+        }
+    }
+    public float totalMejora3Tokens;
+    public void CompraMejora3()
+    {
+        if (costeMejora3Actual <= actualTokens)
+        {
+            actualTokens -= costeMejora3Actual;
+            nivelMejora3++;
+            costeMejora3Actual = (int)(costeMejora3Base * Mathf.Pow(ratioMejora3, nivelMejora3));
+            totalMejora3Tokens = nivelMejora3 * cantidadMejora3Porcentaje;
+            costeDesbloqueoFlores -= costeDesbloqueoFlores *totalMejora3Tokens / 100;
+            costeDesbloqueoGusanos -= costeDesbloqueoGusanos * totalMejora3Tokens / 100;
+            costeDesbloqueoManzano -= costeDesbloqueoManzano * totalMejora3Tokens / 100;
+            costeDesbloqueoMariposas -= costeDesbloqueoMariposas * totalMejora3Tokens / 100;
+            costeDesbloqueoPanal -= costeDesbloqueoPanal * totalMejora3Tokens / 100;
+            SetTokensArriba();
+        }
+    }
+    public float totalMejora4Tokens;
+    public void CompraMejora4()
+    {
+        if (costeMejora4Actual <= actualTokens)
+        {
+            actualTokens -= costeMejora4Actual;
+            nivelMejora4++;
+            costeMejora4Actual = (int)(costeMejora4Base * Mathf.Pow(ratioMejora4, nivelMejora4));
+            totalMejora4Tokens = nivelMejora4 * cantidadMejora4;
+            chanceShiny = (int)totalMejora4Tokens;
+            SetTokensArriba();
+        }
+    }
+    public float totalMejora5Tokens;
+    public void CompraMejora5()
+    {
+        if (costeMejora5Actual <= actualTokens)
+        {
+            actualTokens -= costeMejora5Actual;
+            nivelMejora5++;
+            costeMejora5Actual = (int)(costeMejora5Base * Mathf.Pow(ratioMejora5, nivelMejora5));
+            totalMejora5Tokens = nivelMejora5 * cantidadMejora5;
+            //SIN EFECTOOOOOOOOOOOOOOOOOO
+            SetTokensArriba();
+        }
+    }
+
+
+    public void OpenCloseInviernoMenu()
+    {
+        if (menuInvierno.activeSelf)
+        {
+            menuInvierno.SetActive(false);
+        }
+        else
+        {
+            menuInvierno.SetActive(true);
+            if (CalcularSiPasa())
+            {
+                infoInvierno.SetActive(true);
+                GameObject.Find("TextoCompletar").GetComponent<Text>().text = "YOU HAVE COMPLETED YEAR " + currentYear;
+                GameObject.Find("TextoCompletar").GetComponent<Text>().text = "YOU HAVE COMPLETED YEAR " + currentYear;
+                GameObject.Find("ManzanasNecesarias").GetComponent<Text>().text = "Apples need: " + totalManzanas + " / " + propiedadesAñosCheck[currentYear].manzanas;
+                GameObject.Find("SedaNecesarias").GetComponent<Text>().text = "Silk need: " + totalSeda + " / " + propiedadesAñosCheck[currentYear].seda;
+                GameObject.Find("MielNecesarias").GetComponent<Text>().text = "Honey need: " + totalMiel + " / " + propiedadesAñosCheck[currentYear].miel;
+                GameObject.Find("PetalosNecesarias").GetComponent<Text>().text = "Petals need: " + totalPetalos + " / " + propiedadesAñosCheck[currentYear].petalos;
+                int[]valores=CalcularTokens();
+               
+                actualTokens = valores[4];
+                GameObject.Find("ManzanasTokens").GetComponent<Text>().text = "Bonus tokens : + "+valores[0];
+                GameObject.Find("SedaTokens").GetComponent<Text>().text = "Bonus tokens : + " + valores[1];
+                GameObject.Find("MielTokens").GetComponent<Text>().text = "Bonus tokens : + " + valores[2];
+                GameObject.Find("PetalosTokens").GetComponent<Text>().text = "Bonus tokens : + " + valores[3];
+                GameObject.Find("TextoBotonCompletar").GetComponent<Text>().text = "Continue to winter upgrades. Get "+propiedadesAñosCheck[currentYear].tokensbase+" extra tokens for surviving year"+currentYear;
+            
+            }
+            else
+            {
+                infoInvierno.SetActive(true);
+                GameObject.Find("TextoCompletar").GetComponent<Text>().text = "YOU HAVE COMPLETED YEAR " + currentYear;
+                GameObject.Find("ManzanasNecesarias").GetComponent<Text>().text = "Apples need: "+totalManzanas+" / "+ propiedadesAñosCheck[currentYear].manzanas;
+                GameObject.Find("SedaNecesarias").GetComponent<Text>().text = "Silk need: " + totalSeda + " / " + propiedadesAñosCheck[currentYear].seda;
+                GameObject.Find("MielNecesarias").GetComponent<Text>().text = "Honey need: " + totalMiel + " / " + propiedadesAñosCheck[currentYear].miel;
+                GameObject.Find("PetalosNecesarias").GetComponent<Text>().text = "Petals need: " + totalPetalos + " / " + propiedadesAñosCheck[currentYear].petalos;
+                descripcionFail.SetActive(true);
+                descripcionFail.GetComponent<Text>().text = "You didn´t gather all the needed resources. You have failed to survive this year.";
+                GameObject.Find("ManzanasTokens").GetComponent<Text>().text = " ";
+                GameObject.Find("SedaTokens").GetComponent<Text>().text = "  ";
+                GameObject.Find("MielTokens").GetComponent<Text>().text = "   ";
+                GameObject.Find("PetalosTokens").GetComponent<Text>().text = "   ";
+                GameObject.Find("TextoBotonCompletar").GetComponent<Text>().text = "Restart the year from the start";
+              
+            }
+        }
+    }
+    public int[] CalcularTokens()
+    {
+        int tokenManz=0;
+        int actualManz = (int)totalManzanas;
+        int actualCosteM = costeTokenManzBase;
+        for (int i = 0; i < i+2; i++)
+        {
+          
+            if (actualManz >= actualCosteM)
+            {
+                print("HUM2"+actualCosteM+ actualManz);
+
+                actualManz -= actualCosteM;
+                tokenManz++;
+                actualCosteM = (int)(costeTokenManzBase * Mathf.Pow(ratioCrecTokenMan, i+1));
+            }
+            else
+            {
+                print("HUM3" + actualCosteM + actualManz);
+                break;
+            }
+        }
+        int tokenSed = 0;
+        int actualSed = (int)totalSeda;
+        int actualCostSed = costeTokenSedaBase;
+        for (int i = 0; i < i + 2; i++)
+        {
+            if (actualSed >= actualCostSed)
+            {
+                actualSed -= actualCosteM;
+                tokenSed++;
+                actualCostSed = (int)(costeTokenSedaBase * Mathf.Pow(ratioCrecTokenSed, i+1));
+            }
+            else
+            {
+                break;
+            }
+        }
+        int tokenMiel = 0;
+        int actualMiel = (int)totalMiel;
+        int actualCostMiel = costeTokenMielBase;
+        for (int i = 0; i < i + 2; i++)
+        {
+            if (actualMiel >= actualCostMiel)
+            {
+                actualMiel -= actualCostMiel;
+                tokenMiel++;
+                actualCostMiel = (int)(costeTokenMielBase * Mathf.Pow(ratioCrecTokenMiel, i+1));
+            }
+            else
+            {
+                break;
+            }
+        }
+        int tokenPet = 0;
+        int actualPet = (int)totalPetalos;
+        int actualCostPet = costeTokenPetBase;
+        for (int i = 0; i < i + 2; i++)
+        {
+            if (actualPet >= actualCostPet)
+            {
+                actualPet -= actualCostPet;
+                tokenPet++;
+                actualCostPet = (int)(costeTokenPetBase * Mathf.Pow(ratioCrecTokenPet, i+1));
+            }
+            else
+            {
+                break;
+            }
+        }
+        int totalTokens=propiedadesAñosCheck[currentYear].tokensbase+tokenSed+tokenPet+tokenMiel+tokenManz;
+        int[] returned = new int[] { tokenManz, tokenSed, tokenMiel, tokenPet,totalTokens };
+        return returned;
+    }
+    bool CalcularSiPasa()
+    {
+        bool condition = false;
+        if(totalManzanas>=propiedadesAñosCheck[currentYear].manzanas&& totalSeda >= propiedadesAñosCheck[currentYear].seda&& totalMiel >= propiedadesAñosCheck[currentYear].miel&& totalPetalos >= propiedadesAñosCheck[currentYear].petalos)
+        {
+            condition = true;
+        }
+        return condition;
+    }
+    public void ResetearTodo()
+    {
+        //Reset
+    }
 }
+[System.Serializable]
+public class CheckProperties
+{
+    public int año, manzanas, seda, miel, petalos,tokensbase;
+    public CheckProperties(int añoCheck, int manzanasCheck, int sedaCheck, int mielCheck, int petalosCheck,int tokensBase)
+    {
+        año = añoCheck;
+        seda = sedaCheck;
+        manzanas = manzanasCheck;
+        miel = mielCheck;
+        petalos = petalosCheck;
+        tokensbase = tokensBase;
+    }
+
+}
+
+
+
+

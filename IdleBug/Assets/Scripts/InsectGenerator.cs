@@ -209,14 +209,33 @@ public class InsectGenerator : MonoBehaviour
 
 
     }
+    bool CalcularShiny()
+    {
+        bool n = false;
+        if (Random.Range(1, 100) <= GameManager.Instance.chanceShiny)
+        {
+            n = true;
+        }
+
+        return n;
+    }
     public void CogerInsecto(GameObject objeto)
     {//SUMAR ALGO Y DIFERENCIAR TIPO DE INSECTO
-
+        
         if (objeto.GetComponent<InsecGenerado>().tipo == InsecGenerado.Tipos.Hormiga)
         {
+            int extraShiny = 0;
+            if (CalcularShiny())
+            {
+                extraShiny = GameManager.Instance.multiplicadorShiny * GameManager.Instance.cantidadHormigasCogidas;
+            }
+            else
+            {
+                extraShiny = 1 * GameManager.Instance.cantidadHormigasCogidas;
+            }
             if (hormiguero.poblacionActual < hormiguero.capacidadActual)
             {
-                for (int i = 0; i < GameManager.Instance.cantidadHormigasCogidas; i++)
+                for (int i = 0; i < extraShiny; i++)
                 {
                     GameManager.Instance.CogerHormiga();
 
@@ -232,10 +251,18 @@ public class InsectGenerator : MonoBehaviour
         }
         else if (objeto.GetComponent<InsecGenerado>().tipo == InsecGenerado.Tipos.Abeja)
         {
+            int extraShiny = 0;
+            if (CalcularShiny())
             {
-                if (panal.poblacionActual < panal.capacidadActual)
+                extraShiny = GameManager.Instance.multiplicadorShiny * GameManager.Instance.cantidadAbejasCogidas;
+            }
+            else
+            {
+                extraShiny = 1 * GameManager.Instance.cantidadAbejasCogidas;
+            }
+            if (panal.poblacionActual < panal.capacidadActual)
                 {
-                    for (int i = 0; i < GameManager.Instance.cantidadAbejasCogidas; i++)
+                    for (int i = 0; i < extraShiny; i++)
                     {
                         GameManager.Instance.CogerAbeja();
 
@@ -248,15 +275,23 @@ public class InsectGenerator : MonoBehaviour
                 actualCdA = cooldownEntreAbejas;
                 hayAbeja = false;
                 Destroy(objeto);
-            }
+            
 
         }
         else if (objeto.GetComponent<InsecGenerado>().tipo == InsecGenerado.Tipos.Gusano)
         {
-
+            int extraShiny = 0;
+            if (CalcularShiny())
+            {
+                extraShiny = GameManager.Instance.multiplicadorShiny * GameManager.Instance.cantidadGusanosCogidos;
+            }
+            else
+            {
+                extraShiny = 1 * GameManager.Instance.cantidadGusanosCogidos;
+            }
             if (GameManager.Instance.gusanosTotal < GameManager.Instance.capacidadTotalGusanos)
             {
-                for (int i = 0; i < GameManager.Instance.cantidadGusanosCogidos; i++)
+                for (int i = 0; i < extraShiny; i++)
                 {
                     GameManager.Instance.CogerGusano();
 
