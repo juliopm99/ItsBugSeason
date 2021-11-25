@@ -21,7 +21,7 @@ public class Hormiguero : MonoBehaviour
         textoHormigas = GetComponentInChildren<TextMesh>().gameObject;
         poblacionActual = 2;
         poblacionOcupada = 2;
-        capacidadActual = GameManager.Instance.capacidadPorHormigueroActual * GameManager.Instance.hormiguerosTotal;
+        capacidadActual = GameManager.Instance.capacidadPorHormigueroBase ;
     }
 
     // Update is called once per frame

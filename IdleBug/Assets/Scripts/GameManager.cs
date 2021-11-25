@@ -251,10 +251,10 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        capacidadTotalHormigas = hormiguerosTotal * capacidadPorHormigueroActual;
-        capacidadTotalAbejas = panalesTotal * capacidadAbejasActual;
-        capacidadTotalGusanos = gusanerosTotal * capacidadPorGusaneroActual;
-        capacidadTotalMariposas = mariposerosTotal * capacidadPorMariposeroActual;
+        capacidadTotalHormigas =( ((int)mejora1HnivelActual-1) * (int)cantidadSumadaMejora1H) +capacidadPorHormigueroBase;
+        capacidadTotalAbejas = (((int)mejora1PnivelActual-1) * (int)cantidadSumadaMejora1P) +capacidadAbejasBase;
+        capacidadTotalGusanos = (((int)mejora1GnivelActual-1)* (int)cantidadSumadaMejora1G) +capacidadPorGusaneroBase;
+        capacidadTotalMariposas = (((int)mejora1HnivelActual-1 )* (int)cantidadSumadaMejora1MA) +capacidadPorMariposeroBase;
         abejasFuera = 0;
         gusanosFuera = 0;
         mariposasFuera = 0;
@@ -399,8 +399,7 @@ public class GameManager : MonoBehaviour
 
     public void ActualizarTextoMenu()
     {
-        totalManzanasPorSegundo = hormigasTotal * manzanasXHormiga;
-        capacidadTotalHormigas = hormiguerosTotal * capacidadPorHormigueroActual;
+       
 
         TextoManzanas.text = (string)("Apples:" + totalManzanas.ToString("0"));
         textoMiel.text = (string)("Honey:" + totalMiel.ToString("0"));
@@ -474,7 +473,8 @@ public class GameManager : MonoBehaviour
     }
     void ActualizarTextoHormigas()
     {
-        capacidadTotalHormigas = capacidadPorHormigueroActual * hormiguerosTotal;
+        capacidadTotalHormigas = (((int)mejora1HnivelActual - 1) * (int)cantidadSumadaMejora1H) + capacidadPorHormigueroBase;
+       
         hormiguero.poblacionActual = hormigasTotal;
         hormiguero.capacidadActual = capacidadTotalHormigas;
         GameObject.Find("TextoHormigas").GetComponent<TextMesh>().text = (string)(hormigasTotal + " / " + capacidadTotalHormigas);
@@ -543,8 +543,9 @@ public class GameManager : MonoBehaviour
     }
     void ActualizarTextoGusanos()
     {
-        capacidadTotalGusanos = capacidadPorGusaneroActual * gusanerosTotal;
-
+       
+        capacidadTotalGusanos = (((int)mejora1GnivelActual - 1 )* (int)cantidadSumadaMejora1G) + capacidadPorGusaneroBase;
+      
         GameObject.Find("TextoGusanos").GetComponent<TextMesh>().text = (string)(gusanosTotal + " / " + capacidadTotalGusanos);
 
     }
@@ -595,7 +596,9 @@ public class GameManager : MonoBehaviour
     }
     void ActualizarTextoMariposas()
     {
-        capacidadTotalMariposas = capacidadPorMariposeroActual * mariposerosTotal;
+     
+        capacidadTotalMariposas = (((int)mejora1MAnivelActual - 1 )* (int)cantidadSumadaMejora1MA) + capacidadPorMariposeroBase;
+      
         GameObject.Find("TextoCreador").GetComponent<TextMesh>().text = "Cost: " + gusanosNecesarios + " worms";
         GameObject.Find("TextoMariposas").GetComponent<TextMesh>().text = (string)(mariposasTotal + " / " + capacidadTotalMariposas);
 
@@ -621,7 +624,7 @@ public class GameManager : MonoBehaviour
 
     void ActualizarTextoAbejas()
     {
-        capacidadTotalAbejas = capacidadAbejasActual * panalesTotal;
+        capacidadTotalAbejas = (((int)mejora1PnivelActual - 1) * (int)cantidadSumadaMejora1P) + capacidadAbejasBase;
         panal.poblacionActual = (int)abejasTotal;
         panal.capacidadActual = capacidadTotalAbejas;
         GameObject.Find("TextoAbejas").GetComponent<TextMesh>().text = (string)(abejasTotal + " / " + capacidadTotalAbejas);

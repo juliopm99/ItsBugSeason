@@ -23,7 +23,7 @@ public class Panal : MonoBehaviour
         textoabejas = GetComponentInChildren<TextMesh>().gameObject;
         poblacionActual = 0;
         poblacionOcupada = 0;
-        capacidadActual = GameManager.Instance.capacidadAbejasBase * GameManager.Instance.panalesTotal;
+        capacidadActual = GameManager.Instance.capacidadAbejasBase;
     }
 
     // Update is called once per frame
