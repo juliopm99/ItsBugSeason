@@ -27,6 +27,7 @@ public class SeasonManager : MonoBehaviour
         //firstYear = true;
         DecidirCondiciones();
         tmp = tiempoComprobarEvento;
+        probActualEvento = probBaseEvento;
     }
 
     // Update is called once per frame
@@ -120,12 +121,22 @@ public class SeasonManager : MonoBehaviour
                     if (randomLluviaSequia <= baseSequiaEvento)
                     {
                         sequia = true;
+
+                        GetComponent<SeasonVisuales>().tmp = 0;
+                        GetComponent<SeasonVisuales>().sequia = true;
                         eventoActivo = true;
+                        tmp = tiempoEventoDuracion;
+                        print("sequia");
                     }
                     if (randomLluviaSequia >= baseLluviaEvento)
                     {
                         lluvia = true;
+                        GetComponent<SeasonVisuales>().tmp = 0;
+                        GetComponent<SeasonVisuales>().lluvia = true;
+                        
                         eventoActivo = true;
+                        tmp = tiempoEventoDuracion;
+                        print("lluvia");
                     }
                 }
                 else
@@ -139,22 +150,27 @@ public class SeasonManager : MonoBehaviour
         {
             if(tmp <= 0)
             {
-                eventoActivo = false;
                 lluvia = false;
+                GetComponent<SeasonVisuales>().tmp = 0;
+                GetComponent<SeasonVisuales>().lluvia = false;
+                GetComponent<SeasonVisuales>().sequia = false;
                 sequia = false;
                 tmp = tiempoComprobarEvento * 2;
+                eventoActivo = false;
+                
             }
         }
        
 
         if (lluvia)
         {
-            //GetComponent<SeasonVisuales>().Lluvia();
+
+            //Datos
         }
 
         if (sequia)
         {
-            //GetComponent<SeasonVisuales>().Sequia();
+            //Datos
         }
 
     }
