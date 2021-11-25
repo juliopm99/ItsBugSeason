@@ -99,7 +99,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
     public float MejorasTotalesH
     {
         get => mejorasTotalesH;
@@ -251,10 +250,10 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        capacidadTotalHormigas =( ((int)mejora1HnivelActual-1) * (int)cantidadSumadaMejora1H) +capacidadPorHormigueroBase;
-        capacidadTotalAbejas = (((int)mejora1PnivelActual-1) * (int)cantidadSumadaMejora1P) +capacidadAbejasBase;
-        capacidadTotalGusanos = (((int)mejora1GnivelActual-1)* (int)cantidadSumadaMejora1G) +capacidadPorGusaneroBase;
-        capacidadTotalMariposas = (((int)mejora1HnivelActual-1 )* (int)cantidadSumadaMejora1MA) +capacidadPorMariposeroBase;
+        capacidadTotalHormigas = (((int)mejora1HnivelActual - 1) * (int)cantidadSumadaMejora1H) + capacidadPorHormigueroBase;
+        capacidadTotalAbejas = (((int)mejora1PnivelActual - 1) * (int)cantidadSumadaMejora1P) + capacidadAbejasBase;
+        capacidadTotalGusanos = (((int)mejora1GnivelActual - 1) * (int)cantidadSumadaMejora1G) + capacidadPorGusaneroBase;
+        capacidadTotalMariposas = (((int)mejora1HnivelActual - 1) * (int)cantidadSumadaMejora1MA) + capacidadPorMariposeroBase;
         abejasFuera = 0;
         gusanosFuera = 0;
         mariposasFuera = 0;
@@ -360,6 +359,82 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.LoadScene(0);
     }
+
+  
+    public float tGenManzPrimaveraPorcentaje = 0;
+    public float tPolinVeranoPorcentaje = 0;
+    public float tMenosGenManzOtonoPorcentaje = 0;
+    public float tMenosPolinOtonoPorcentaje = 0;
+
+    public float reduccionVelocidadHormLLuvia = 0;
+    public float reduccionProdGusanLLuvia = 0;
+    public float aumentoDescansoAbejasSequia = 0;
+    public float reduccionProdMaripSequia = 0;
+
+    public float tGenManzPrimaveraPorcentajeB = 20;
+    public float tPolinVeranoPorcentajeB = 30;
+    public float tMenosGenManzOtonoPorcentajeB = 20;
+    public float tMenosPolinOtonoPorcentajeB = 20;
+
+    public float reduccionVelocidadHormLLuviaB = 20;
+    public float reduccionProdGusanLLuviaB = 30;
+    public float aumentoDescansoAbejasSequiaB = 30;
+    public float reduccionProdMaripSequiaB = 30;
+
+    public void SetEvento(string evento)
+    {
+
+
+        if (evento == "lluvia")
+        {
+            reduccionVelocidadHormLLuvia = reduccionVelocidadHormLLuviaB;
+            reduccionProdGusanLLuvia = reduccionProdGusanLLuviaB;
+
+        }
+        else if (evento == "sequia")
+        {
+            aumentoDescansoAbejasSequia = aumentoDescansoAbejasSequiaB;
+            reduccionProdMaripSequia = reduccionProdMaripSequiaB;
+        }
+
+    }
+    public void UnSetEvento()
+    {
+        reduccionVelocidadHormLLuvia = 0;
+        reduccionProdGusanLLuvia = 0;
+        aumentoDescansoAbejasSequia = 0;
+        reduccionProdMaripSequia = 0;
+
+
+    }
+    public void SetSeason(string season)
+    {
+     
+        if (season == "spring")
+        {
+            tGenManzPrimaveraPorcentaje = tGenManzPrimaveraPorcentajeB;
+            tPolinVeranoPorcentaje = 0;
+            tMenosGenManzOtonoPorcentaje = 0;
+            tMenosPolinOtonoPorcentaje = 0;
+          
+        }
+        else if (season == "summer")
+        {
+            tGenManzPrimaveraPorcentaje = 0;
+            tPolinVeranoPorcentaje = tPolinVeranoPorcentajeB;
+            tMenosGenManzOtonoPorcentaje = 0;
+            tMenosPolinOtonoPorcentaje = 0;
+            
+        }
+        else if (season == "autumn")
+        {
+            tGenManzPrimaveraPorcentaje = 0;
+            tPolinVeranoPorcentaje = 0;
+            tMenosGenManzOtonoPorcentaje = tMenosGenManzOtonoPorcentajeB;
+            tMenosPolinOtonoPorcentaje = tMenosPolinOtonoPorcentajeB;
+          
+        }
+    }
     void Update()
     {
         Cheats();
@@ -367,7 +442,7 @@ public class GameManager : MonoBehaviour
         textoAlmacen.text = actualStorageSilk.ToString("0.0") + " / " + maxSilk;
         if (desbloqueadosGusanos)
         {
-            sedaPorSegundo = gusanosTotal * sedaPorGusanoSegundo + (gusanosTotal * sedaPorGusanoSegundo * multiplicadorSedaSegundo / 100);
+            sedaPorSegundo = (gusanosTotal * sedaPorGusanoSegundo + (gusanosTotal * sedaPorGusanoSegundo * multiplicadorSedaSegundo / 100))- ((gusanosTotal * sedaPorGusanoSegundo + (gusanosTotal * sedaPorGusanoSegundo * multiplicadorSedaSegundo / 100))*reduccionProdGusanLLuvia/100);
             if (actualStorageSilk < maxSilk)
             {
                 actualStorageSilk += sedaPorSegundo * Time.deltaTime;
@@ -384,7 +459,7 @@ public class GameManager : MonoBehaviour
         }
         if (desbloqueadasMariposas)
         {
-            petalosPorSegundo = mariposasTotal * petalosPorMariposaSegundo + (mariposasTotal * petalosPorMariposaSegundo * multiplicadorPetalosSegundo / 100);
+            petalosPorSegundo = (mariposasTotal * petalosPorMariposaSegundo + (mariposasTotal * petalosPorMariposaSegundo * multiplicadorPetalosSegundo / 100))- ((mariposasTotal * petalosPorMariposaSegundo + (mariposasTotal * petalosPorMariposaSegundo * multiplicadorPetalosSegundo / 100))*reduccionProdMaripSequia/100);
             totalPetalos += petalosPorSegundo * Time.deltaTime;
         }
         CalculosCheck();
@@ -399,7 +474,7 @@ public class GameManager : MonoBehaviour
 
     public void ActualizarTextoMenu()
     {
-       
+
 
         TextoManzanas.text = (string)("Apples:" + totalManzanas.ToString("0"));
         textoMiel.text = (string)("Honey:" + totalMiel.ToString("0"));
@@ -474,7 +549,7 @@ public class GameManager : MonoBehaviour
     void ActualizarTextoHormigas()
     {
         capacidadTotalHormigas = (((int)mejora1HnivelActual - 1) * (int)cantidadSumadaMejora1H) + capacidadPorHormigueroBase;
-       
+
         hormiguero.poblacionActual = hormigasTotal;
         hormiguero.capacidadActual = capacidadTotalHormigas;
         GameObject.Find("TextoHormigas").GetComponent<TextMesh>().text = (string)(hormigasTotal + " / " + capacidadTotalHormigas);
@@ -543,9 +618,9 @@ public class GameManager : MonoBehaviour
     }
     void ActualizarTextoGusanos()
     {
-       
-        capacidadTotalGusanos = (((int)mejora1GnivelActual - 1 )* (int)cantidadSumadaMejora1G) + capacidadPorGusaneroBase;
-      
+
+        capacidadTotalGusanos = (((int)mejora1GnivelActual - 1) * (int)cantidadSumadaMejora1G) + capacidadPorGusaneroBase;
+
         GameObject.Find("TextoGusanos").GetComponent<TextMesh>().text = (string)(gusanosTotal + " / " + capacidadTotalGusanos);
 
     }
@@ -596,9 +671,9 @@ public class GameManager : MonoBehaviour
     }
     void ActualizarTextoMariposas()
     {
-     
-        capacidadTotalMariposas = (((int)mejora1MAnivelActual - 1 )* (int)cantidadSumadaMejora1MA) + capacidadPorMariposeroBase;
-      
+
+        capacidadTotalMariposas = (((int)mejora1MAnivelActual - 1) * (int)cantidadSumadaMejora1MA) + capacidadPorMariposeroBase;
+
         GameObject.Find("TextoCreador").GetComponent<TextMesh>().text = "Cost: " + gusanosNecesarios + " worms";
         GameObject.Find("TextoMariposas").GetComponent<TextMesh>().text = (string)(mariposasTotal + " / " + capacidadTotalMariposas);
 
@@ -799,7 +874,7 @@ public class GameManager : MonoBehaviour
     public float mejora3GCosteActual;
     public float mejora3GRatio = 1.1f;
     public float mejora3GnivelActual = 1;
-    public float cantidadSumadaMejora3GPorcentaje = 0;
+    public float cantidadSumadaMejora3G = 0;
 
     private float mejorasTotalesMA = 0;
     public string nombreMejora1MA = "Butterfly house";
@@ -898,11 +973,11 @@ public class GameManager : MonoBehaviour
         }
         else if (go.GetComponent<AlmacenSeda>())
         {
-            VaciarAlmacenSeda();
+          if(desbloqueadosGusanos)  VaciarAlmacenSeda();
         }
         else if (go.GetComponent<CreadorMariposas>())
         {
-            CrearMariposa();
+          if(desbloqueadasMariposas)  CrearMariposa();
         }
 
     }
@@ -1005,7 +1080,7 @@ public class GameManager : MonoBehaviour
             textoInfo1.GetComponent<Text>().text = "Total upgrades = " + MejorasTotalesG;
             textoInfo2.GetComponent<Text>().text = "Max capacity = " + capacidadTotalGusanos;
             textoInfo3.GetComponent<Text>().text = "Production boost = " + cantidadSumadaMejora2GPorcentaje * mejora2GnivelActual + "%";
-            textoInfo4.GetComponent<Text>().text = "Max silk storage = " + cantidadSumadaMejora3GPorcentaje * mejora3GnivelActual + "%";
+            textoInfo4.GetComponent<Text>().text = "Max silk storage = " + cantidadSumadaMejora3G * mejora3GnivelActual + "%";
         }
         else if (tipo == "Mariposero")
         {
@@ -1177,7 +1252,7 @@ public class GameManager : MonoBehaviour
             descripcion.text = descripcionMejora3G;
             textoInfo1.GetComponent<Text>().text = "Cost = " + mejora3GCosteActual + " Silk";
             textoInfo2.GetComponent<Text>().text = "Level = " + mejora3GnivelActual;
-            textoInfo3.GetComponent<Text>().text = "Amount add = " + cantidadSumadaMejora3GPorcentaje + "%";
+            textoInfo3.GetComponent<Text>().text = "Amount add = " + cantidadSumadaMejora3G + "%";
             textoInfo4.GetComponent<Text>().text = "";
         }
         else if (tipoOpen == "Mariposero")
@@ -1235,7 +1310,7 @@ public class GameManager : MonoBehaviour
             textoInfo1.GetComponent<Text>().text = "Total upgrades = " + MejorasTotalesG;
             textoInfo2.GetComponent<Text>().text = "Max capacity = " + capacidadTotalGusanos;
             textoInfo3.GetComponent<Text>().text = "Production boost = " + cantidadSumadaMejora2GPorcentaje * mejora2GnivelActual + "%";
-            textoInfo4.GetComponent<Text>().text = "Max silk storage = " + cantidadSumadaMejora3GPorcentaje * mejora3GnivelActual + "%";
+            textoInfo4.GetComponent<Text>().text = "Max silk storage = " + cantidadSumadaMejora3G * mejora3GnivelActual + "%";
         }
         else if (tipoOpen == "Mariposero")
         {
@@ -1546,7 +1621,7 @@ public class GameManager : MonoBehaviour
                 MejorasTotalesG++;
                 totalSeda -= mejora3GCosteActual;
                 mejora3GCosteActual = (int)mejora3GCosteBase * Mathf.Pow(mejora3GRatio, mejora3GnivelActual);
-                maxSilk += (int)(cantidadSumadaMejora3GPorcentaje * maxSilk / 100);
+                maxSilk += (int)(cantidadSumadaMejora3G);
                 SetDescripcionMejora3();
             }
         }

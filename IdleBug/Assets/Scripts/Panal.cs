@@ -9,7 +9,7 @@ public class Panal : MonoBehaviour
     public int poblacionMinimaEnBase = 3;
     public int poblacionMinimaMision = 1;
     public float tiempoDescanso = 15f;
-    public float speedMission=5;
+    public float speedMission = 5;
     public float tiempoPolinizando = 5f;
     public GameObject prefabAbeja;
     public bool spawneando = false;
@@ -31,9 +31,16 @@ public class Panal : MonoBehaviour
     {
         if (poblacionActual >= poblacionMinimaEnBase + poblacionMinimaMision && poblacionActual - poblacionOcupada >= poblacionMinimaMision/*&&!spawneando*/)
         {
+            foreach (Flor go in GameObject.FindObjectsOfType<Flor>())
+            {
+               
+                    EmpezarMision(go.transform.gameObject);
+
+                    break;
+                
+            }
             //DIFERENCIAR MANZANAS DISPONIBLES
-            int random = Random.Range(0, GameObject.FindObjectsOfType<Flor>().Length);
-            EmpezarMision(GameObject.FindObjectsOfType<Flor>()[random-1].transform.gameObject);//CAMBIAR
+          //CAMBIAR
             spawneando = true;
             //foreach (Flor go in GameObject.FindObjectsOfType<Flor>())
             //{
@@ -44,8 +51,8 @@ public class Panal : MonoBehaviour
             //        EmpezarMision( go.transform.gameObject);
             //        spawneando = true;
 
-                //    }break;
-                //}
+            //    }break;
+            //}
 
 
         }
@@ -61,18 +68,18 @@ public class Panal : MonoBehaviour
     public void EmpezarMision(GameObject flor)
     {
         poblacionOcupada += poblacionMinimaMision;
-        int rand=0;
+        int rand = 0;
         if (GameManager.Instance.panalesTotal > 1)
         {
-             rand = Random.Range(0, GameManager.Instance.panalesTotal-1 );
-          
+            rand = Random.Range(0, GameManager.Instance.panalesTotal - 1);
+
             if (rand > GameManager.Instance.panalesDesactivados.Length)
             {
                 rand = 0;
             }
         }
         Vector2 vec = new Vector2(Random.Range(0, 0.3f), Random.Range(0, 0.3f));
-        StartCoroutine(SpawnAbejaMision(flor,this.transform.position));//CAMBIAR
+        StartCoroutine(SpawnAbejaMision(flor, this.transform.position));//CAMBIAR
         spawneando = false;
     }
     public void TerminarMision()
@@ -80,24 +87,26 @@ public class Panal : MonoBehaviour
         //poblacionOcupada -= poblacionMinimaMision;
         //print("TERMINAMISION"+ poblacionOcupada);
     }
-    public IEnumerator SpawnAbejaMision(GameObject manz,Vector3 spawnPos)
+    public IEnumerator SpawnAbejaMision(GameObject manz, Vector3 spawnPos)
     {
-        
-       
+
+
         yield return new WaitForSeconds(tiempoEntreAbejasSpawn);
         SpawnAbe[] posSpawn = FindObjectsOfType<SpawnAbe>();
         int random = Random.Range(0, posSpawn.Length);
 
-          GameObject abejaInstanciada =Instantiate(prefabAbeja, posSpawn[random].gameObject.transform.position, Quaternion.identity);
-       
-        abejaInstanciada.GetComponent<Abeja>().tiempoDescanso = tiempoDescanso;
-        abejaInstanciada.GetComponent<Abeja>().tiempoPolinizando = tiempoPolinizando;
+        GameObject abejaInstanciada = Instantiate(prefabAbeja, posSpawn[random].gameObject.transform.position, Quaternion.identity);
+
+        abejaInstanciada.GetComponent<Abeja>().tiempoDescanso =
+            tiempoDescanso + tiempoDescanso * GameManager.Instance.aumentoDescansoAbejasSequia/ 100;
+        abejaInstanciada.GetComponent<Abeja>().tiempoPolinizando =
+            tiempoPolinizando + (tiempoPolinizando * GameManager.Instance.tPolinVeranoPorcentaje / 100) - (tiempoPolinizando * GameManager.Instance.tMenosPolinOtonoPorcentaje / 100);
         abejaInstanciada.GetComponent<Abeja>().speedMission = speedMission;
         abejaInstanciada.GetComponent<Abeja>().enMision = true;
         abejaInstanciada.GetComponent<Abeja>().destinoFlor = manz;
         abejaInstanciada.GetComponent<Abeja>().ultimaDeLaFila = true;
-       
-      
+
+
 
     }
 }

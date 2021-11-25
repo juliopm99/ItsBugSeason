@@ -19,8 +19,8 @@ public class Hormiguero : MonoBehaviour
     void Start()
     {
         textoHormigas = GetComponentInChildren<TextMesh>().gameObject;
-        poblacionActual = 2;
-        poblacionOcupada = 2;
+        poblacionActual = 0;
+        poblacionOcupada = 0;
         capacidadActual = GameManager.Instance.capacidadPorHormigueroBase ;
     }
 
@@ -89,32 +89,32 @@ public class Hormiguero : MonoBehaviour
         print("primerahormiga" + spawnPos);
         hormigaInstanciada.GetComponent<Hormiga>().enMision = true;
         hormigaInstanciada.GetComponent<Hormiga>().destinoManzana = manz;
-        hormigaInstanciada.GetComponent<Hormiga>().speedMission = speedMission;
+        hormigaInstanciada.GetComponent<Hormiga>().speedMission = speedMission-(speedMission*GameManager.Instance.reduccionVelocidadHormLLuvia/100);
         yield return new WaitForSeconds(tiempoEntreHormigasSpawn);
         GameObject hormigaInstanciada2 = (GameObject)Instantiate(prefabHormiga, spawnPos, Quaternion.identity);
         hormigaInstanciada2.GetComponent<Hormiga>().enMision = true;
         hormigaInstanciada2.GetComponent<Hormiga>().destinoManzana = manz;
-        hormigaInstanciada2.GetComponent<Hormiga>().speedMission = speedMission;
+        hormigaInstanciada2.GetComponent<Hormiga>().speedMission = speedMission - (speedMission * GameManager.Instance.reduccionVelocidadHormLLuvia / 100);
 
         yield return new WaitForSeconds(tiempoEntreHormigasSpawn);
         GameObject hormigaInstanciada3 = (GameObject)Instantiate(prefabHormiga, spawnPos, Quaternion.identity);
         hormigaInstanciada3.GetComponent<Hormiga>().enMision = true;
         hormigaInstanciada3.GetComponent<Hormiga>().destinoManzana = manz;
-        hormigaInstanciada3.GetComponent<Hormiga>().speedMission = speedMission;
+        hormigaInstanciada3.GetComponent<Hormiga>().speedMission = speedMission - (speedMission * GameManager.Instance.reduccionVelocidadHormLLuvia / 100);
 
         yield return new WaitForSeconds(tiempoEntreHormigasSpawn);
 
         GameObject hormigaInstanciada4 = (GameObject)Instantiate(prefabHormiga, spawnPos, Quaternion.identity);
         hormigaInstanciada4.GetComponent<Hormiga>().enMision = true;
         hormigaInstanciada4.GetComponent<Hormiga>().destinoManzana = manz;
-        hormigaInstanciada4.GetComponent<Hormiga>().speedMission = speedMission;
+        hormigaInstanciada4.GetComponent<Hormiga>().speedMission = speedMission - (speedMission * GameManager.Instance.reduccionVelocidadHormLLuvia / 100);
 
         yield return new WaitForSeconds(tiempoEntreHormigasSpawn);
         GameObject hormigaInstanciada5 = (GameObject)Instantiate(prefabHormiga, spawnPos, Quaternion.identity);
         hormigaInstanciada5.GetComponent<Hormiga>().enMision = true;
         hormigaInstanciada5.GetComponent<Hormiga>().destinoManzana = manz;
         hormigaInstanciada5.GetComponent<Hormiga>().ultimaDeLaFila = true;
-        hormigaInstanciada5.GetComponent<Hormiga>().speedMission = speedMission;
+        hormigaInstanciada5.GetComponent<Hormiga>().speedMission = speedMission - (speedMission * GameManager.Instance.reduccionVelocidadHormLLuvia / 100);
 
 
 

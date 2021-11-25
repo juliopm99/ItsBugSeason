@@ -5,11 +5,12 @@ using UnityEngine;
 public class SeasonManager : MonoBehaviour
 {
     public bool firstYear = true;
-    public bool spring =  false;
+    public bool spring = false;
     public bool summer = false;
     public bool autumn = false;
     public bool calor = false;
     public bool frio = false;
+
     public float tiempoPartida = 360;
     public float probBaseEvento = 10f;
     public float probActualEvento;
@@ -21,6 +22,9 @@ public class SeasonManager : MonoBehaviour
     float tmp;
     public float tiempoEventoDuracion;
     public bool eventoActivo;
+
+
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -33,11 +37,13 @@ public class SeasonManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        bool sequiainicio = sequia;
+        bool lluviainicio = lluvia;
         GetComponent<SeasonVisuales>().seasonValue = Mathf.Lerp(0, 1, Time.realtimeSinceStartup / tiempoPartida);
-        if(Time.realtimeSinceStartup < tiempoPartida / 3) { spring = true; summer = false; autumn = false; }
-        if(Time.realtimeSinceStartup >= tiempoPartida / 3 && Time.realtimeSinceStartup < (tiempoPartida * 2) / 3) { spring = false; summer = true; autumn = false; }
-        if(Time.realtimeSinceStartup >= (tiempoPartida * 2) / 3 && Time.realtimeSinceStartup < tiempoPartida) { spring = false; summer = false; autumn = true; }
-        if(Time.realtimeSinceStartup >= tiempoPartida) { print("Sacabo");  Time.timeScale = 0;  }
+        if (Time.realtimeSinceStartup < tiempoPartida / 3) { spring = true; GameManager.Instance.SetSeason("spring"); summer = false; autumn = false; }
+        if (Time.realtimeSinceStartup >= tiempoPartida / 3 && Time.realtimeSinceStartup < (tiempoPartida * 2) / 3) { spring = false; summer = true; GameManager.Instance.SetSeason("summer"); autumn = false; }
+        if (Time.realtimeSinceStartup >= (tiempoPartida * 2) / 3 && Time.realtimeSinceStartup < tiempoPartida) { spring = false; summer = false; GameManager.Instance.SetSeason("autumn"); autumn = true; }
+      if(Time.timeScale==1)  if (Time.realtimeSinceStartup >= tiempoPartida) { print("Sacabo"); Time.timeScale = 0;GameManager.Instance.OpenCloseInviernoMenu(); }
         if (spring)
         {
             //manzanos + 20%
@@ -133,7 +139,7 @@ public class SeasonManager : MonoBehaviour
                         lluvia = true;
                         GetComponent<SeasonVisuales>().tmp = 0;
                         GetComponent<SeasonVisuales>().lluvia = true;
-                        
+
                         eventoActivo = true;
                         tmp = tiempoEventoDuracion;
                         print("lluvia");
@@ -148,7 +154,7 @@ public class SeasonManager : MonoBehaviour
         }
         else
         {
-            if(tmp <= 0)
+            if (tmp <= 0)
             {
                 lluvia = false;
                 GetComponent<SeasonVisuales>().tmp = 0;
@@ -157,37 +163,46 @@ public class SeasonManager : MonoBehaviour
                 sequia = false;
                 tmp = tiempoComprobarEvento * 2;
                 eventoActivo = false;
-                
+
             }
         }
-       
 
-        if (lluvia)
+
+        if (lluvia==true&&lluviainicio==false)
         {
-
+            GameManager.Instance.SetEvento("lluvia");
             //Datos
         }
-
-        if (sequia)
+        else if(lluvia==false&&lluviainicio==true)
         {
+            GameManager.Instance.UnSetEvento();
+        }
+
+        if (sequia==true&&sequiainicio==false)
+        {
+            GameManager.Instance.SetEvento("sequia");
             //Datos
+        }
+        else if (sequia == false && sequiainicio == true)
+        {
+            GameManager.Instance.UnSetEvento();
         }
 
     }
 
     void DecidirCondiciones()
     {
-        if (firstYear)
+        if (GameManager.Instance.currentYear == 0 && FindObjectOfType<DataAscension>() == null)
         {
             calor = false;
-            frio = true;
+            frio = false;
         }
         else
         {
-            int decision = Random.Range(0,2);
+            int decision = Random.Range(0, 2);
             if (decision == 0) { calor = false; frio = false; }
             if (decision == 1) { calor = true; frio = false; }
-            if(decision == 2) { calor = false; frio = true; }
+            if (decision == 2) { calor = false; frio = true; }
         }
     }
 }

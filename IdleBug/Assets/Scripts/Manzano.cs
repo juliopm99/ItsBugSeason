@@ -43,7 +43,7 @@ public class Manzano : MonoBehaviour
             actualCd -= Time.deltaTime;
             if (actualCd < 0)
             {
-                actualCd = tiempoEntreManzanas;
+                actualCd = tiempoEntreManzanas+(tiempoEntreManzanas*GameManager.Instance.tGenManzPrimaveraPorcentaje/100)-(tiempoEntreManzanas*GameManager.Instance.tMenosGenManzOtonoPorcentaje/100);
                 for (int i = 0; i < manzanasSpawned; i++)
                 {
                     SpawnManzana();
