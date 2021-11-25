@@ -3,15 +3,15 @@ using System.Collections;
 
 public class Gusano : MonoBehaviour
 {
-  
+
     public GameObject wanderCenter;
     public int radioWander = 3;
     public bool conDireccion = false;
     public Vector3 destino;
     public float speed;
-   
+
     public Vector3 origen;
-    public bool parado = false;
+    private bool parado = false;
     // Use this for initialization
     void Start()
     {
@@ -22,9 +22,19 @@ public class Gusano : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (parado)
+        if (Parado)
         {
+            this.transform.position = Vector3.MoveTowards(this.transform.position, origen, speed * Time.deltaTime);
+            if (Vector3.Distance(this.transform.position, origen) < 0.3f)
+            {
+                print("HUM");
+                foreach (SkinnedMeshRenderer mr in GetComponentsInChildren<SkinnedMeshRenderer>())
+                {
+                    mr.enabled = false;
 
+                }
+
+            }
         }
         else
         {
@@ -46,17 +56,34 @@ public class Gusano : MonoBehaviour
 
     }
     public LayerMask layerMask;
+
+    public bool Parado
+    {
+        get => parado; set
+        {
+
+            parado = value;
+            if (parado == false)
+            {
+                foreach (SkinnedMeshRenderer mr in GetComponentsInChildren<SkinnedMeshRenderer>())
+                {
+                    mr.enabled = true;
+                }
+            }
+        }
+    }
+
     void InitDirecc()
     {
         int randx = Random.Range(0, radioWander);
         int randz = Random.Range(0, radioWander);
         Ray ray = new Ray(new Vector3(wanderCenter.transform.position.x + randx, wanderCenter.transform.position.y + 10, wanderCenter.transform.position.z + randz), Vector3.down);
         RaycastHit infoHit;
-        if (Physics.Raycast(ray, out infoHit,layerMask))
+        if (Physics.Raycast(ray, out infoHit, layerMask))
         {
             destino = infoHit.point;
             destino.y = this.transform.position.y;
-          
+
         }
         if (Random.Range(0, 11) == 2)
         {

@@ -27,6 +27,7 @@ public class CamaraChange : MonoBehaviour {
 	void Update () {
         if (Input.GetKeyUp(KeyCode.D))
         {
+            GameManager.Instance.MenuClose();
             activeCam++;
             if (activeCam > maxCam-1)
             {
@@ -36,6 +37,7 @@ public class CamaraChange : MonoBehaviour {
         }
         if (Input.GetKeyUp(KeyCode.A))
         {
+            GameManager.Instance.MenuClose();
             print(activeCam);
             activeCam--;
             print(activeCam);
@@ -59,7 +61,7 @@ public class CamaraChange : MonoBehaviour {
                 }
                 else if (hitInfo.collider.tag == "Edificio")
                 {
-                    print("hola");
+                  
                     GameManager.Instance.MenuOpen(hitInfo.collider.gameObject);
 
                 }
@@ -83,8 +85,8 @@ public class CamaraChange : MonoBehaviour {
             //cam.transform.rotation =Quaternion.Euler((actualD / distEntreCams) * diferenciaRotaciones * this.transform.rotation.eulerAngles);
             cam.transform.rotation = Quaternion.RotateTowards(cam.transform.rotation, destinoR, speedRot * Time.deltaTime);
             if (Vector3.Distance(cam.transform.position, destino) < 0.3f * distEntreCams)
-            {
-                speed -= Time.deltaTime * 250;
+            {if(speed-Time.deltaTime*250>200)  speed -= Time.deltaTime * 250;
+              
             }
             if (cam.transform.position == destino && cam.transform.rotation == destinoR)
             {
