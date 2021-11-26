@@ -3,7 +3,7 @@ using System.Collections;
 
 public class InsectGenerator : MonoBehaviour
 {
-
+    public GameObject prefabTexto;
     public GameObject prefabH;
     public GameObject prefabG;
     public GameObject prefabA;
@@ -156,7 +156,7 @@ public class InsectGenerator : MonoBehaviour
     }
     public static Vector3 PuntoAleatorioEnCollider(Bounds limites)
     {
-        return new Vector3(Random.Range(limites.min.x, limites.max.x),Random.Range(limites.min.y, limites.max.y), Random.Range(limites.min.z, limites.max.z));
+        return new Vector3(Random.Range(limites.min.x, limites.max.x), Random.Range(limites.min.y, limites.max.y), Random.Range(limites.min.z, limites.max.z));
     }
     void SpawnInsecto(string tipo)
     {
@@ -179,7 +179,7 @@ public class InsectGenerator : MonoBehaviour
             array = null;
         }
         int rand = Random.Range(0, array.Length);
-        GenerarInsecto(PuntoAleatorioEnCollider(array[rand].GetComponent<Collider>().bounds),tipo);
+        GenerarInsecto(PuntoAleatorioEnCollider(array[rand].GetComponent<Collider>().bounds), tipo);
         //int randx = Random.Range(0, radioHijos);
         //int randz = Random.Range(0, radioHijos);
         //Ray ray = new Ray(new Vector3(array[rand].gameObject.transform.position.x + randx, array[rand].gameObject.transform.position.y + 10, array[rand].gameObject.transform.position.z + randz), Vector3.down);
@@ -226,21 +226,24 @@ public class InsectGenerator : MonoBehaviour
     }
     public void CogerInsecto(GameObject objeto)
     {//SUMAR ALGO Y DIFERENCIAR TIPO DE INSECTO
-
+        GameObject texto = Instantiate(prefabTexto, objeto.transform.position, Quaternion.identity);
         if (objeto.GetComponent<InsecGenerado>().tipo == InsecGenerado.Tipos.Hormiga)
         {
             int extraShiny = 0;
+
             if (CalcularShiny())
             {
                 extraShiny = GameManager.Instance.multiplicadorShiny * GameManager.Instance.cantidadHormigasCogidas;
-                GameManager.Instance.SetFeedBack("Shiny! +", extraShiny.ToString()," ants picked","");
+                texto.GetComponent<TextMesh>().text = "Shiny! +" + extraShiny.ToString() + " ants picked";
+               
 
             }
             else
             {
                 extraShiny = 1 * GameManager.Instance.cantidadHormigasCogidas;
-                GameManager.Instance.SetFeedBack("+",extraShiny.ToString(), " ants picked", "");
+                texto.GetComponent<TextMesh>().text = "+" + extraShiny.ToString() + " ants picked";
             }
+
             if (hormiguero.poblacionActual < hormiguero.capacidadActual)
             {
                 for (int i = 0; i < extraShiny; i++)
@@ -263,13 +266,15 @@ public class InsectGenerator : MonoBehaviour
             if (CalcularShiny())
             {
                 extraShiny = GameManager.Instance.multiplicadorShiny * GameManager.Instance.cantidadAbejasCogidas;
-                GameManager.Instance.SetFeedBack("Shiny! +", extraShiny.ToString(), " bees picked", "");
-           
+              
+                texto.GetComponent<TextMesh>().text = "Shiny! +" + extraShiny.ToString() + " bees picked";
+               
             }
             else
             {
                 extraShiny = 1 * GameManager.Instance.cantidadAbejasCogidas;
-                GameManager.Instance.SetFeedBack("+", extraShiny.ToString(), " bees picked", "");
+                texto.GetComponent<TextMesh>().text = "+" + extraShiny.ToString() + " bees picked";
+           
             }
             if (panal.poblacionActual < panal.capacidadActual)
             {
@@ -295,13 +300,15 @@ public class InsectGenerator : MonoBehaviour
             if (CalcularShiny())
             {
                 extraShiny = GameManager.Instance.multiplicadorShiny * GameManager.Instance.cantidadGusanosCogidos;
-                GameManager.Instance.SetFeedBack("Shiny! +", extraShiny.ToString(), " worms picked", "");
                
+                texto.GetComponent<TextMesh>().text = "Shiny! +" + extraShiny.ToString() + " worms picked";
+            
             }
             else
             {
                 extraShiny = 1 * GameManager.Instance.cantidadGusanosCogidos;
-                GameManager.Instance.SetFeedBack("+", extraShiny.ToString(), " worms picked", "");
+             
+                texto.GetComponent<TextMesh>().text = "+" + extraShiny.ToString() + " worms picked";
             }
             if (GameManager.Instance.gusanosTotal < GameManager.Instance.capacidadTotalGusanos)
             {

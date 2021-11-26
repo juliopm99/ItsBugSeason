@@ -53,6 +53,7 @@ public class Hormiga : MonoBehaviour {
                     {
                         destino = VolverManzana();
                         volviendo = true;
+                        transform.GetChild(0).gameObject.SetActive(true);
                         if (ultimaDeLaFila)
                         {
                             Destroy(destinoManzana);

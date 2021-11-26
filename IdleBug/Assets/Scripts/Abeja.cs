@@ -66,6 +66,7 @@ public class Abeja : MonoBehaviour
                             tiempoPolinizando -= Time.deltaTime;
                             if (tiempoPolinizando <= 0)
                             {
+                                transform.GetChild(0).gameObject.SetActive(true);
                                 destino = VolverManzana();
                                 volviendo = true;
                             }
