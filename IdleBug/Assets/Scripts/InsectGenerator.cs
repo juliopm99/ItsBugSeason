@@ -226,7 +226,7 @@ public class InsectGenerator : MonoBehaviour
     }
     public void CogerInsecto(GameObject objeto)
     {//SUMAR ALGO Y DIFERENCIAR TIPO DE INSECTO
-        GameObject texto = Instantiate(prefabTexto, objeto.transform.position, Quaternion.identity);
+        GameObject texto = Instantiate(prefabTexto, objeto.transform.position+Vector3.up*2f, Quaternion.identity);
         if (objeto.GetComponent<InsecGenerado>().tipo == InsecGenerado.Tipos.Hormiga)
         {
             int extraShiny = 0;

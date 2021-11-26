@@ -525,6 +525,7 @@ public class GameManager : MonoBehaviour
                 actualStorageSilk += sedaPorSegundo * Time.deltaTime;
                 if (actualStorageSilk > maxSilk)
                 {
+                    SetFeedBack("Silk storage full","");
                     actualStorageSilk = maxSilk;
                 }
 
@@ -984,6 +985,7 @@ public class GameManager : MonoBehaviour
     public void MenuOpen(GameObject go)
     {
         MenuClose();
+        botonMejora3.SetActive(true);
         if (go.GetComponent<Panal>())
         {
             if (CamaraChange.Instance.activeCam == 4)
@@ -991,6 +993,7 @@ public class GameManager : MonoBehaviour
                 if (GameManager.Instance.desbloqueadosPanales)
                 {
                     OpenCompras("Panal");
+                    botonMejora3.SetActive(false);
                 }
                 else
                 {
@@ -1031,6 +1034,7 @@ public class GameManager : MonoBehaviour
                 if (GameManager.Instance.desbloqueadosHormigueros)
                 {
                     OpenCompras("Hormiguero");
+                    botonMejora3.SetActive(false);
                 }
                 else
                 {
