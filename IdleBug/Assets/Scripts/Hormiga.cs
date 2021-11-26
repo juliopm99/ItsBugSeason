@@ -47,7 +47,7 @@ public class Hormiga : MonoBehaviour {
             else
             {
                 this.transform.position = Vector3.MoveTowards(this.transform.position, destino, speedMission * Time.deltaTime);
-                if (Vector3.Distance(this.transform.position, destino) < 0.3f)
+                if (Vector3.Distance(this.transform.position, destino) < 0.2f)
                 {
                     if (volviendo == false)
                     {
@@ -74,6 +74,15 @@ public class Hormiga : MonoBehaviour {
             }
 
         }
+        MirarDestino();
+    }
+    public void MirarDestino()
+    {
+        if (destino != Vector3.zero)
+        {
+            transform.LookAt(destino);
+        }
+
     }
     void InitDirecc()
     { 

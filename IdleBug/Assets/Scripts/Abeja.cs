@@ -22,10 +22,11 @@ public class Abeja : MonoBehaviour
         wanderCenter = GameObject.Find("WanderCenterAbejas");
         origen = this.transform.position;
     }
-
+ 
     // Update is called once per frame
     void Update()
     {
+      
         if (enMision == false)
         {
             if (conDireccion == false)
@@ -56,7 +57,7 @@ public class Abeja : MonoBehaviour
                 int randz = Random.Range(0, radioWander);
                 Vector3 desviacion = new Vector3(randx, randy, randz);
                 this.transform.position = Vector3.MoveTowards(this.transform.position, destino, speedMission * Time.deltaTime);
-                if (Vector3.Distance(this.transform.position, destino) < 0.6f)
+                if (Vector3.Distance(this.transform.position, destino) < 0.2f)
                 {
                     if (volviendo == false)
                     {
@@ -98,6 +99,16 @@ public class Abeja : MonoBehaviour
             }
 
         }
+        MirarDestino();
+    }
+    public void MirarDestino()
+    {
+        if (destino != Vector3.zero)
+        {
+            Vector3 destinazo = new Vector3(destino.x, this.transform.position.y, destino.z);
+            transform.LookAt(destinazo);
+        }
+
     }
     void InitDirecc()
     {

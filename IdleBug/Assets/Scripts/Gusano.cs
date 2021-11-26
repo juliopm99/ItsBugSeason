@@ -54,6 +54,15 @@ public class Gusano : MonoBehaviour
         }
 
 
+        MirarDestino();
+    }
+    public void MirarDestino()
+    {
+        if (destino != Vector3.zero)
+        {
+            transform.LookAt(destino);
+        }
+
     }
     public LayerMask layerMask;
 
