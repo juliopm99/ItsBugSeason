@@ -305,7 +305,7 @@ public class GameManager : MonoBehaviour
     void CalcularComienzo()
     {
 
-
+        Time.timeScale = 1;
 
         if (currentYear == 0 && FindObjectOfType<DataAscension>() == null)
         {
