@@ -51,7 +51,7 @@ public class CamaraChange : MonoBehaviour
     public void MoverIzquierda()
     {
         GameManager.Instance.MenuClose();
-       
+
         activeCam--;
         if (activeCam == 0)
         {
@@ -108,13 +108,46 @@ public class CamaraChange : MonoBehaviour
             ChangeCam();
         }
     }
+    GameObject lastEffect;
     // Update is called once per frame
     void Update()
     {
+        Ray ray2 = FindObjectOfType<Camera>().ScreenPointToRay(Input.mousePosition);
+        RaycastHit hitInfo2;
+        if (Physics.Raycast(ray2, out hitInfo2))
+        {
+            if (hitInfo2.collider.tag == "Edificio")
+            {
+                if (!EventSystem.current.IsPointerOverGameObject())
+                {
+                    foreach (Transform g in hitInfo2.collider.gameObject.GetComponentsInChildren<Transform>(includeInactive: true))
+                    {
+                        if (g.tag == "Efecto")
+                        {
+                            lastEffect.SetActive(false);
+                            g.gameObject.SetActive(true);
+                            lastEffect = g.gameObject;
+                        }
+                    }
+                }
+
+            }
+            else
+            {
+                if (lastEffect != null)
+                {
+                    lastEffect.SetActive(false);
+                }
+            }
+
+        }
+
+
+    
         if (Input.GetKeyUp(KeyCode.D))
         {
             MoverDerecha();
-        }
+}
         if (Input.GetKeyUp(KeyCode.A))
         {
             MoverIzquierda();
@@ -122,7 +155,7 @@ public class CamaraChange : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             Ray ray = FindObjectOfType<Camera>().ScreenPointToRay(Input.mousePosition);
-            RaycastHit hitInfo;
+RaycastHit hitInfo;
             if (Physics.Raycast(ray, out hitInfo))
             {
                 if (hitInfo.collider.tag == "InsectoSuelo")
@@ -130,7 +163,7 @@ public class CamaraChange : MonoBehaviour
                     if (activeCam != 3)
                     {
                         GameObject.FindObjectOfType<InsectGenerator>().CogerInsecto(hitInfo.collider.gameObject);
-                        GameManager.Instance.MenuClose();
+GameManager.Instance.MenuClose();
                     }
 
                 }
@@ -145,7 +178,7 @@ public class CamaraChange : MonoBehaviour
                 {
                     if (!EventSystem.current.IsPointerOverGameObject())
                     {
-                        if (GameManager.Instance.menuBlock.activeSelf || GameManager.Instance. menuCompras.activeSelf) SonidoManager.Instance.Play("BotonesUI");
+                        if (GameManager.Instance.menuBlock.activeSelf || GameManager.Instance.menuCompras.activeSelf) SonidoManager.Instance.Play("BotonesUI");
                         GameManager.Instance.MenuClose();
                         Debug.Log("Its over UI elements");
                         print(hitInfo.collider.name);
@@ -157,14 +190,14 @@ public class CamaraChange : MonoBehaviour
         if (cambiando == true)
         {
             speed += 100 * Time.deltaTime;
-            float actualD = Vector3.Distance(cam.transform.position, destino);
-            float actualT = actualD / speed;
-            cam.transform.position = Vector3.MoveTowards(cam.transform.position, destino, speed * Time.deltaTime);
+float actualD = Vector3.Distance(cam.transform.position, destino);
+float actualT = actualD / speed;
+cam.transform.position = Vector3.MoveTowards(cam.transform.position, destino, speed* Time.deltaTime);
             //cam.transform.rotation =Quaternion.Euler((actualD / distEntreCams) * diferenciaRotaciones * this.transform.rotation.eulerAngles);
-            cam.transform.rotation = Quaternion.RotateTowards(cam.transform.rotation, destinoR, speedRot * Time.deltaTime);
+            cam.transform.rotation = Quaternion.RotateTowards(cam.transform.rotation, destinoR, speedRot* Time.deltaTime);
             if (Vector3.Distance(cam.transform.position, destino) < 0.3f * distEntreCams)
             {
-                if (speed - Time.deltaTime * 250 > 200) speed -= Time.deltaTime * 250;
+                if (speed - Time.deltaTime* 250 > 200) speed -= Time.deltaTime* 250;
 
             }
             if (cam.transform.position == destino && cam.transform.rotation == destinoR)
@@ -174,20 +207,20 @@ public class CamaraChange : MonoBehaviour
             }
         }
     }
-   public void ChangeCam()
-    {
-        cambiando = true;
-        destino = ubicaciones[activeCam].gameObject.transform.position;
-        destinoR = ubicaciones[activeCam].gameObject.transform.rotation;
-        distEntreCams = Vector3.Distance(cam.transform.position, destino);
-        diferenciaRotaciones = Quaternion.Angle(this.transform.rotation, destinoR);
-        //foreach (GameObject go in Camaras)
-        //{
-        //    go.SetActive(false);
-        //    if (go == Camaras[activeCam].gameObject)
-        //    {
-        //        go.SetActive(true);
-        //    }
-        //}
-    }
+    public void ChangeCam()
+{
+    cambiando = true;
+    destino = ubicaciones[activeCam].gameObject.transform.position;
+    destinoR = ubicaciones[activeCam].gameObject.transform.rotation;
+    distEntreCams = Vector3.Distance(cam.transform.position, destino);
+    diferenciaRotaciones = Quaternion.Angle(this.transform.rotation, destinoR);
+    //foreach (GameObject go in Camaras)
+    //{
+    //    go.SetActive(false);
+    //    if (go == Camaras[activeCam].gameObject)
+    //    {
+    //        go.SetActive(true);
+    //    }
+    //}
+}
 }
