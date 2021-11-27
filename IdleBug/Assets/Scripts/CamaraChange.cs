@@ -124,7 +124,7 @@ public class CamaraChange : MonoBehaviour
                     {
                         if (g.tag == "Efecto")
                         {
-                            lastEffect.SetActive(false);
+                           if(lastEffect!=null) lastEffect.SetActive(false);
                             g.gameObject.SetActive(true);
                             lastEffect = g.gameObject;
                         }
