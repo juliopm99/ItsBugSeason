@@ -191,6 +191,7 @@ public class InsectGenerator : MonoBehaviour
     }
     void GenerarInsecto(Vector3 posicion, string tipo)
     {
+        SonidoManager.Instance.Play("ApareceBicho");
         if (tipo == "Hormiga")
         {
             lastH = (GameObject)Instantiate(prefabH, posicion, Quaternion.identity);
@@ -246,6 +247,7 @@ public class InsectGenerator : MonoBehaviour
 
             if (hormiguero.poblacionActual < hormiguero.capacidadActual)
             {
+                SonidoManager.Instance.Play("CogerBicho");
                 for (int i = 0; i < extraShiny; i++)
                 {
                     GameManager.Instance.CogerHormiga();
@@ -254,7 +256,7 @@ public class InsectGenerator : MonoBehaviour
             }
             else
             {
-                //MENSAJE NO CABEN MAS HORMIGAS
+                GameManager.Instance.SetFeedBack("No more room for","ants");
             }
             actualCdH = cooldownEntreHormigas;
             hayHormiga = false;
@@ -278,6 +280,7 @@ public class InsectGenerator : MonoBehaviour
             }
             if (panal.poblacionActual < panal.capacidadActual)
             {
+                SonidoManager.Instance.Play("CogerBicho");
                 for (int i = 0; i < extraShiny; i++)
                 {
                     GameManager.Instance.CogerAbeja();
@@ -286,7 +289,7 @@ public class InsectGenerator : MonoBehaviour
             }
             else
             {
-
+                GameManager.Instance.SetFeedBack("No more room for", "bees");
             }
             actualCdA = cooldownEntreAbejas;
             hayAbeja = false;
@@ -312,6 +315,7 @@ public class InsectGenerator : MonoBehaviour
             }
             if (GameManager.Instance.gusanosTotal < GameManager.Instance.capacidadTotalGusanos)
             {
+                SonidoManager.Instance.Play("CogerBicho");
                 for (int i = 0; i < extraShiny; i++)
                 {
                     GameManager.Instance.CogerGusano();
@@ -320,7 +324,7 @@ public class InsectGenerator : MonoBehaviour
             }
             else
             {
-
+                GameManager.Instance.SetFeedBack("No more room for" ,"worms");
             }
             actualCdG = cooldownEntreGusanos;
             hayGusano = false;

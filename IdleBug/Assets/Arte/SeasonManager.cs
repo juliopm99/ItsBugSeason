@@ -24,7 +24,7 @@ public class SeasonManager : MonoBehaviour
     public float tiempoEventoDuracion;
     public bool eventoActivo;
 
-
+    public float tiempo = 0;
 
     // Start is called before the first frame update
     void Awake()
@@ -32,15 +32,54 @@ public class SeasonManager : MonoBehaviour
         //firstYear = true;
         DecidirCondiciones();
         tmp = tiempoAseguradoSinEventosAlPrincipio;
+        actualTiempoEntreSonidos = tiempoAseguradoSinEventosAlPrincipio;
         probActualEvento = probBaseEvento;
     }
-
+    private void Start()
+    {
+        tiempo = 0;
+    }
+    public float tiempoEntreSonidosFondoBase = 3;
+    public float actualTiempoEntreSonidos;
+    public void DecidirSonido()
+    {
+        int rand = Random.Range(0, 2);
+        if (rand == 0)
+        {
+            SonidoManager.Instance.Play("PajarosFondo");
+        }
+        if (rand == 1)
+        {
+            SonidoManager.Instance.Play("BrisaFondo");
+        }
+    }
     // Update is called once per frame
     void Update()
     {
+        //if (SonidoManager.Instance.IsPlaying("PajarosFondo") || SonidoManager.Instance.IsPlaying("BrisaFondo"))
+        //{
+
+        //}
+        //else
+        //{
+        //    if (actualTiempoEntreSonidos == 0)
+        //    {
+        //        actualTiempoEntreSonidos = tiempoEntreSonidosFondoBase;
+        //    }
+        //    if (actualTiempoEntreSonidos > 0)
+        //    {
+        //        actualTiempoEntreSonidos -= Time.deltaTime;
+        //        if (actualTiempoEntreSonidos <= 0)
+        //        {
+        //            DecidirSonido();
+        //            actualTiempoEntreSonidos = 0;
+        //        }
+        //    }
+        //}
+        tiempo += Time.deltaTime;
         bool sequiainicio = sequia;
         bool lluviainicio = lluvia;
-        GetComponent<SeasonVisuales>().seasonValue = Mathf.Lerp(0, 1, Time.realtimeSinceStartup / tiempoPartida);
+        GetComponent<SeasonVisuales>().seasonValue = Mathf.Lerp(0, 1, tiempo / tiempoPartida);
         if (Time.realtimeSinceStartup < tiempoPartida / 3)
         {
             if (spring == false)
@@ -53,7 +92,7 @@ public class SeasonManager : MonoBehaviour
             }
 
         }
-        if (Time.realtimeSinceStartup >= tiempoPartida / 3 && Time.realtimeSinceStartup < (tiempoPartida * 2) / 3)
+        if (tiempo >= tiempoPartida / 3 && tiempo < (tiempoPartida * 2) / 3)
         {
             if (summer == false)
             {
@@ -65,7 +104,7 @@ public class SeasonManager : MonoBehaviour
                 GameManager.Instance.SetFeedBack("Summer started", "");
             }
         }
-        if (Time.realtimeSinceStartup >= (tiempoPartida * 2) / 3 && Time.realtimeSinceStartup < tiempoPartida)
+        if (tiempo >= (tiempoPartida * 2) / 3 && tiempo < tiempoPartida)
         {
             if (autumn == false)
             {
@@ -76,11 +115,11 @@ public class SeasonManager : MonoBehaviour
             }
 
         }
-        if (Time.realtimeSinceStartup >= (tiempoPartida * 2.75f) / 3 && Time.realtimeSinceStartup < tiempoPartida)
+        if (tiempo >= (tiempoPartida * 2.75f) / 3 && tiempo < tiempoPartida)
         {
             GameManager.Instance.SetFeedBack("Winter is coming soon", "");
         }
-        if (Time.timeScale == 1) if (Time.realtimeSinceStartup >= tiempoPartida) { Time.timeScale = 0; GameManager.Instance.OpenCloseInviernoMenu(); }
+        if (Time.timeScale == 1) if (tiempo >= tiempoPartida) { Time.timeScale = 0; GameManager.Instance.OpenCloseInviernoMenu(); }
         if (spring)
         {
             //manzanos + 20%
@@ -209,24 +248,28 @@ public class SeasonManager : MonoBehaviour
         {
             GameManager.Instance.SetEvento("lluvia");
             GameManager.Instance.SetFeedBack("It started to rain...", "");
+            SonidoManager.Instance.Play("LLuvia");
             //Datos
         }
         else if (lluvia == false && lluviainicio == true)
         {
             GameManager.Instance.UnSetEvento();
             GameManager.Instance.SetFeedBack("The rain is ending...", "");
+            SonidoManager.Instance.Stop("LLuvia");
         }
 
         if (sequia == true && sequiainicio == false)
         {
             GameManager.Instance.SetEvento("sequia");
             GameManager.Instance.SetFeedBack("A drought has started", "");
+            SonidoManager.Instance.Play("Sequia");
             //Datos
         }
         else if (sequia == false && sequiainicio == true)
         {
             GameManager.Instance.UnSetEvento();
             GameManager.Instance.SetFeedBack("The drought is ending", "");
+            SonidoManager.Instance.Stop("LLuvia");
         }
 
     }
@@ -237,19 +280,25 @@ public class SeasonManager : MonoBehaviour
         {
             calor = false;
             frio = false;
-            
+
             GameManager.Instance.SetFeedBack("This year will have normal climate", "");
         }
         else
         {
             int decision = Random.Range(0, 2);
-            if (decision == 0) { calor = false; frio = false;
+            if (decision == 0)
+            {
+                calor = false; frio = false;
                 GameManager.Instance.SetFeedBack("This year will have normal climate", "");
             }
-            if (decision == 1) { calor = true; frio = false;
+            if (decision == 1)
+            {
+                calor = true; frio = false;
                 GameManager.Instance.SetFeedBack("This year will be hotter than usual", "");
             }
-            if (decision == 2) { calor = false; frio = true;
+            if (decision == 2)
+            {
+                calor = false; frio = true;
                 GameManager.Instance.SetFeedBack("This year it will be rainier than usual", "");
             }
         }

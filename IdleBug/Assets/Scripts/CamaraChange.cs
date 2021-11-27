@@ -53,6 +53,45 @@ public class CamaraChange : MonoBehaviour
         GameManager.Instance.MenuClose();
        
         activeCam--;
+        if (activeCam == 0)
+        {
+            SonidoManager.Instance.Play("HormigasFondo");
+            SonidoManager.Instance.Stop("GusanosFondo");
+            SonidoManager.Instance.Stop("MariposasFondo");
+            SonidoManager.Instance.Stop("AbejaFondo");
+        }
+        else if (activeCam == 1)
+        {
+            SonidoManager.Instance.Play("GusanosFondo");
+            SonidoManager.Instance.Stop("HormigasFondo");
+            SonidoManager.Instance.Stop("MariposasFondo");
+            SonidoManager.Instance.Stop("AbejaFondo");
+
+        }
+        else if (activeCam == 2)
+        {
+            SonidoManager.Instance.Play("MariposasFondo");
+            SonidoManager.Instance.Stop("HormigasFondo");
+            SonidoManager.Instance.Stop("GusanosFondo");
+            SonidoManager.Instance.Stop("AbejaFondo");
+
+
+        }
+        else if (activeCam == 3)
+        {
+            SonidoManager.Instance.Stop("HormigasFondo");
+            SonidoManager.Instance.Stop("GusanosFondo");
+            SonidoManager.Instance.Stop("MariposasFondo");
+            SonidoManager.Instance.Stop("AbejaFondo");
+
+        }
+        else if (activeCam == 4)
+        {
+            SonidoManager.Instance.Play("AbejaFondo");
+            SonidoManager.Instance.Stop("HormigasFondo");
+            SonidoManager.Instance.Stop("GusanosFondo");
+            SonidoManager.Instance.Stop("MariposasFondo");
+        }
         print(activeCam);
         if (activeCam < 0)
         {
@@ -106,6 +145,7 @@ public class CamaraChange : MonoBehaviour
                 {
                     if (!EventSystem.current.IsPointerOverGameObject())
                     {
+                        if (GameManager.Instance.menuBlock.activeSelf || GameManager.Instance. menuCompras.activeSelf) SonidoManager.Instance.Play("BotonesUI");
                         GameManager.Instance.MenuClose();
                         Debug.Log("Its over UI elements");
                         print(hitInfo.collider.name);

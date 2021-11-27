@@ -66,6 +66,7 @@ public class Abeja : MonoBehaviour
                             tiempoPolinizando -= Time.deltaTime;
                             if (tiempoPolinizando <= 0)
                             {
+                                if (CamaraChange.Instance.activeCam == 4) SonidoManager.Instance.Play("AbejaAccion");
                                 transform.GetChild(0).gameObject.SetActive(true);
                                 destino = VolverManzana();
                                 volviendo = true;

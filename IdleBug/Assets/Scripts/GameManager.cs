@@ -259,7 +259,7 @@ public class GameManager : MonoBehaviour
         {
             if (value < totalManzanas)
             {
-               
+
                 SetFeedBack("-", (totalManzanas - value).ToString("0.0"), " apples", "");
             }
             totalManzanas = value;
@@ -304,7 +304,8 @@ public class GameManager : MonoBehaviour
 
     void CalcularComienzo()
     {
-
+        SonidoManager.Instance.Play("FondoJuego");
+        SonidoManager.Instance.Play("EmpezarPartida");
         Time.timeScale = 1;
 
         if (currentYear == 0 && FindObjectOfType<DataAscension>() == null)
@@ -434,7 +435,7 @@ public class GameManager : MonoBehaviour
     }
     void ReiniciarEscena()
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene("MainPruebasJulio");
     }
 
 
@@ -497,6 +498,7 @@ public class GameManager : MonoBehaviour
         }
         else if (season == "summer")
         {
+            SonidoManager.Instance.Play("CambiarSeason");
             tGenManzPrimaveraPorcentaje = 0;
             tPolinVeranoPorcentaje = tPolinVeranoPorcentajeB;
             tMenosGenManzOtonoPorcentaje = 0;
@@ -505,6 +507,7 @@ public class GameManager : MonoBehaviour
         }
         else if (season == "autumn")
         {
+            SonidoManager.Instance.Play("CambiarSeason");
             tGenManzPrimaveraPorcentaje = 0;
             tPolinVeranoPorcentaje = 0;
             tMenosGenManzOtonoPorcentaje = tMenosGenManzOtonoPorcentajeB;
@@ -525,8 +528,9 @@ public class GameManager : MonoBehaviour
                 actualStorageSilk += sedaPorSegundo * Time.deltaTime;
                 if (actualStorageSilk > maxSilk)
                 {
-                    SetFeedBack("Silk storage full","");
+                    SetFeedBack("Silk storage full", "");
                     actualStorageSilk = maxSilk;
+                    if (CamaraChange.Instance.activeCam == 1) SonidoManager.Instance.Play("AlmacenLLeno");
                 }
 
             }
@@ -673,6 +677,7 @@ public class GameManager : MonoBehaviour
     }
     public void VaciarAlmacenSeda()
     {
+        if (CamaraChange.Instance.activeCam == 1) SonidoManager.Instance.Play("AlmacenVaciar");
         TotalSeda += actualStorageSilk;
         actualStorageSilk = 0;
         if (gusanosParados == true) GusanosParados = false;
@@ -719,31 +724,38 @@ public class GameManager : MonoBehaviour
 
     public void CrearMariposa()
     {
-        if (gusanosTotal - gusanosNecesarios >= 0)
+        if (gusanosTotal - gusanosNecesarios >= 0 && mariposasTotal + 1 <= capacidadTotalMariposas)
         {
             for (int i = 0; i < gusanosNecesarios; i++)
             {
                 PerderGusano();
 
             }
+            if (CamaraChange.Instance.activeCam == 0) SonidoManager.Instance.Play("ManzanasCaer");
 
-            if (mariposasTotal + 1 <= capacidadTotalMariposas)
+            mariposasTotal++;
+
+            print("Tengo" + mariposasTotal + " gusanos");
+            if (mariposasFuera < maxMariposasFuera)
             {
-                mariposasTotal++;
+                mariposasFuera++;
 
-                print("Tengo" + mariposasTotal + " gusanos");
-                if (mariposasFuera < maxMariposasFuera)
-                {
-                    mariposasFuera++;
-
-                    GameObject mariposaFuera = Instantiate(prefabMariposa, GameObject.Find("TextoCreador").transform.parent.transform.position, Quaternion.identity);
+                GameObject mariposaFuera = Instantiate(prefabMariposa, GameObject.Find("TextoCreador").transform.parent.transform.position, Quaternion.identity);
 
 
-                }
-
-                ActualizarTextoMariposas();
-                ActualizarTextoGusanos();
             }
+            SonidoManager.Instance.Play("CrearMariposa");
+            ActualizarTextoMariposas();
+            ActualizarTextoGusanos();
+
+
+        }
+        else if (gusanosTotal - gusanosNecesarios < 0)
+        {
+            GameManager.Instance.SetFeedBack("Not enough worms","");
+        }else if(mariposasTotal + 1 > capacidadTotalMariposas)
+        {
+            GameManager.Instance.SetFeedBack("No room for","butterflies");
         }
 
     }
@@ -984,6 +996,7 @@ public class GameManager : MonoBehaviour
 
     public void MenuOpen(GameObject go)
     {
+
         MenuClose();
         botonMejora3.SetActive(true);
         if (go.GetComponent<Panal>())
@@ -1138,6 +1151,8 @@ public class GameManager : MonoBehaviour
     }
     public void OpenBlock(string tipo)
     {
+
+        if (!menuBlock.activeSelf) SonidoManager.Instance.Play("PopUI");
         menuBlock.SetActive(true);
         tipoOpen = tipo;
         if (tipo == "Hormiguero")
@@ -1172,6 +1187,7 @@ public class GameManager : MonoBehaviour
     }
     public void OpenCompras(string tipo)
     {
+        if (!menuCompras.activeSelf) SonidoManager.Instance.Play("PopUI");
         menuCompras.SetActive(true);
         tipoOpen = tipo;
         if (tipo == "Hormiguero")
@@ -1252,7 +1268,7 @@ public class GameManager : MonoBehaviour
     }
     public void SetDescripcionMejora1()
     {
-
+        SonidoManager.Instance.Play("BotonesUI");
         if (tipoOpen == "Hormiguero")
         {
 
@@ -1307,6 +1323,7 @@ public class GameManager : MonoBehaviour
     }
     public void SetDescripcionMejora2()
     {
+        SonidoManager.Instance.Play("BotonesUI");
         if (tipoOpen == "Hormiguero")
         {
 
@@ -1360,6 +1377,7 @@ public class GameManager : MonoBehaviour
     }
     public void SetDescripcionMejora3()
     {
+        SonidoManager.Instance.Play("BotonesUI");
         if (tipoOpen == "Hormiguero")
         {
 
@@ -1494,7 +1512,7 @@ public class GameManager : MonoBehaviour
                 TotalManzanas -= costeDesbloqueoManzano;
                 desbloqueadosManzanos = true;
                 MenuClose();
-                OpenCompras("Manzano");
+                OpenCompras("Manzano"); SonidoManager.Instance.Play("DesbloqueoUI");
             }
 
 
@@ -1507,7 +1525,7 @@ public class GameManager : MonoBehaviour
 
                 desbloqueadosPanales = true;
                 MenuClose();
-                OpenCompras("Panal");
+                OpenCompras("Panal"); SonidoManager.Instance.Play("DesbloqueoUI");
             }
         }
         else if (tipo == "Flor")
@@ -1518,7 +1536,7 @@ public class GameManager : MonoBehaviour
                 desbloqueadasFlores = true;
 
                 MenuClose();
-                OpenCompras("Flor");
+                OpenCompras("Flor"); SonidoManager.Instance.Play("DesbloqueoUI");
             }
         }
         else if (tipo == "Gusanero")
@@ -1529,7 +1547,7 @@ public class GameManager : MonoBehaviour
                 desbloqueadosGusanos = true;
 
                 MenuClose();
-                OpenCompras("Gusanero");
+                OpenCompras("Gusanero"); SonidoManager.Instance.Play("DesbloqueoUI");
             }
         }
         else if (tipo == "Mariposero")
@@ -1540,7 +1558,7 @@ public class GameManager : MonoBehaviour
                 desbloqueadasMariposas = true;
 
                 MenuClose();
-                OpenCompras("Mariposero");
+                OpenCompras("Mariposero"); SonidoManager.Instance.Play("DesbloqueoUI");
             }
         }
     }
@@ -1558,6 +1576,7 @@ public class GameManager : MonoBehaviour
                 hormiguerosTotal++;
                 SetDescripcionMejora1();
                 ActualizarTextoHormigas();
+                SonidoManager.Instance.Play("MejoraUI");
             }
 
 
@@ -1573,7 +1592,7 @@ public class GameManager : MonoBehaviour
 
                 SetDescripcionMejora1();
 
-                manzano.manzanasSpawned++;
+                manzano.manzanasSpawned++; SonidoManager.Instance.Play("MejoraUI");
             }
         }
         else if (tipo == "Panal")
@@ -1586,7 +1605,7 @@ public class GameManager : MonoBehaviour
                 mejora1PCosteActual = (int)(mejora1PCosteBase * Mathf.Pow(mejora1PRatio, mejora1PnivelActual));
                 panalesTotal++;
                 SetDescripcionMejora1();
-                ActualizarTextoAbejas();
+                ActualizarTextoAbejas(); SonidoManager.Instance.Play("MejoraUI");
             }
         }
         else if (tipo == "Flor")
@@ -1598,7 +1617,7 @@ public class GameManager : MonoBehaviour
                 TotalMiel -= mejora1FCosteActual;
                 mejora1FCosteActual = (int)mejora1FCosteBase * Mathf.Pow(mejora1FRatio, mejora1FnivelActual);
                 panal.speedMission += panal.speedMission * cantidadSumadaMejora1FPorcentaje / 100;
-                SetDescripcionMejora1();
+                SetDescripcionMejora1(); SonidoManager.Instance.Play("MejoraUI");
             }
         }
         else if (tipo == "Gusanero")
@@ -1611,7 +1630,7 @@ public class GameManager : MonoBehaviour
                 mejora1GCosteActual = (int)mejora1GCosteBase * Mathf.Pow(mejora1GRatio, mejora1GnivelActual);
                 gusanerosTotal++;
                 ActualizarTextoGusanos();
-                SetDescripcionMejora1();
+                SetDescripcionMejora1(); SonidoManager.Instance.Play("MejoraUI");
             }
         }
         else if (tipo == "Mariposero")
@@ -1623,7 +1642,7 @@ public class GameManager : MonoBehaviour
                 TotalPetalos -= mejora1MACosteActual;
                 mejora1MACosteActual = (int)mejora1MACosteBase * Mathf.Pow(mejora1MARatio, mejora1MAnivelActual);
                 mariposerosTotal++;
-                SetDescripcionMejora1(); ActualizarTextoMariposas();
+                SetDescripcionMejora1(); ActualizarTextoMariposas(); SonidoManager.Instance.Play("MejoraUI");
             }
         }
     }
@@ -1640,7 +1659,7 @@ public class GameManager : MonoBehaviour
                 mejora2HCosteActual = (int)mejora2HCosteBase * Mathf.Pow(mejora2HRatio, mejora2HnivelActual);
                 hormiguero.speedMission += hormiguero.speedMission * cantidadSumadaMejora2HPorcentaje / 100;
                 SetDescripcionMejora2();
-                ActualizarTextoHormigas();
+                ActualizarTextoHormigas(); SonidoManager.Instance.Play("MejoraUI");
             }
 
 
@@ -1656,7 +1675,7 @@ public class GameManager : MonoBehaviour
                 manzanasSumadasExpedicion++;
                 SetDescripcionMejora2();
 
-                manzano.manzanasSpawned++;
+                manzano.manzanasSpawned++; SonidoManager.Instance.Play("MejoraUI");
             }
         }
         else if (tipo == "Panal")
@@ -1669,7 +1688,7 @@ public class GameManager : MonoBehaviour
                 mejora2PCosteActual = (int)mejora2PCosteBase * Mathf.Pow(mejora2PRatio, mejora2PnivelActual);
                 if (panal.tiempoDescanso > 0.5f) panal.tiempoDescanso -= panal.tiempoDescanso * cantidadSumadaMejora2PPorcentaje / 100;
                 SetDescripcionMejora2();
-                ActualizarTextoAbejas();
+                ActualizarTextoAbejas(); SonidoManager.Instance.Play("MejoraUI");
             }
         }
         else if (tipo == "Flor")
@@ -1681,7 +1700,7 @@ public class GameManager : MonoBehaviour
                 TotalMiel -= mejora2FCosteActual;
                 mejora2FCosteActual = (int)mejora2FCosteBase * Mathf.Pow(mejora2FRatio, mejora2FnivelActual);
                 if (panal.tiempoPolinizando > 0.5f) panal.tiempoPolinizando -= panal.tiempoPolinizando * cantidadSumadaMejora2FPorcentaje / 100;
-                SetDescripcionMejora2();
+                SetDescripcionMejora2(); SonidoManager.Instance.Play("MejoraUI");
             }
         }
         else if (tipo == "Gusanero")
@@ -1693,7 +1712,7 @@ public class GameManager : MonoBehaviour
                 TotalSeda -= mejora2GCosteActual;
                 mejora2GCosteActual = (int)mejora2GCosteBase * Mathf.Pow(mejora2GRatio, mejora2GnivelActual);
                 multiplicadorSedaSegundo = (int)(cantidadSumadaMejora2GPorcentaje * mejora2GnivelActual);
-                SetDescripcionMejora2(); ActualizarTextoGusanos();
+                SetDescripcionMejora2(); ActualizarTextoGusanos(); SonidoManager.Instance.Play("MejoraUI");
 
             }
         }
@@ -1706,7 +1725,7 @@ public class GameManager : MonoBehaviour
                 TotalPetalos -= mejora2MACosteActual;
                 mejora2MACosteActual = (int)mejora2MACosteBase * Mathf.Pow(mejora2MARatio, mejora2MAnivelActual);
                 multiplicadorPetalosSegundo += (int)(cantidadSumadaMejora2MAPorcentaje * mejora2MAnivelActual);
-                SetDescripcionMejora2(); ActualizarTextoMariposas();
+                SetDescripcionMejora2(); ActualizarTextoMariposas(); SonidoManager.Instance.Play("MejoraUI");
             }
         }
     }
@@ -1740,7 +1759,7 @@ public class GameManager : MonoBehaviour
 
                 SetDescripcionMejora3();
 
-               
+                SonidoManager.Instance.Play("MejoraUI");
             }
         }
         else if (tipo == "Panal")
@@ -1765,7 +1784,7 @@ public class GameManager : MonoBehaviour
                 TotalMiel -= mejora3FCosteActual;
                 mejora3FCosteActual = (int)mejora3FCosteBase * Mathf.Pow(mejora3FRatio, mejora3FnivelActual);
                 mielSumadaExpedicion++;
-                SetDescripcionMejora3();
+                SetDescripcionMejora3(); SonidoManager.Instance.Play("MejoraUI");
             }
         }
         else if (tipo == "Gusanero")
@@ -1777,7 +1796,7 @@ public class GameManager : MonoBehaviour
                 TotalSeda -= mejora3GCosteActual;
                 mejora3GCosteActual = (int)mejora3GCosteBase * Mathf.Pow(mejora3GRatio, mejora3GnivelActual);
                 maxSilk += (int)(cantidadSumadaMejora3G);
-                SetDescripcionMejora3();
+                SetDescripcionMejora3(); SonidoManager.Instance.Play("MejoraUI");
             }
         }
         else if (tipo == "Mariposero")
@@ -1789,12 +1808,13 @@ public class GameManager : MonoBehaviour
                 TotalPetalos -= mejora3MACosteActual;
                 mejora3MACosteActual = (int)mejora3MACosteBase * Mathf.Pow(mejora3MARatio, mejora3MAnivelActual);
                 cantidadGusanosCogidos = (int)(cantidadSumadaMejora3MA * mejora3MAnivelActual);
-                SetDescripcionMejora3(); ActualizarTextoMariposas();
+                SetDescripcionMejora3(); ActualizarTextoMariposas(); SonidoManager.Instance.Play("MejoraUI");
             }
         }
     }
     public void MenuClose()
     {
+
         menuBlock.SetActive(false);
         menuCompras.SetActive(false);
     }
@@ -1803,11 +1823,27 @@ public class GameManager : MonoBehaviour
 
     public void MenuCheckClose()
     {
+        if (!menuCheck.activeSelf)
+        {
+            SonidoManager.Instance.Play("PopUI");
+        }
+        else
+        {
+            SonidoManager.Instance.Play("BotonesUI");
+        }
         menuCheck.SetActive(!menuCheck.activeSelf);
     }
 
     public void MenuStatsClose()
     {
+        if (!menuStats.activeSelf)
+        {
+            SonidoManager.Instance.Play("PopUI");
+        }
+        else
+        {
+            SonidoManager.Instance.Play("BotonesUI");
+        }
         menuStats.SetActive(!menuStats.activeSelf);
     }
 
@@ -1869,6 +1905,7 @@ public class GameManager : MonoBehaviour
 
     public void TerminarAño()
     {
+        SonidoManager.Instance.Restart();
         currentYear++;
         ResetearTodo();
     }
@@ -1931,6 +1968,7 @@ public class GameManager : MonoBehaviour
         GameObject.Find("TotalMejora").GetComponent<Text>().text = ((int)(nivelMejora1 * cantidadMejora1)).ToString("0");
         GameObject.Find("CosteMejora").GetComponent<Text>().text = costeMejora1Actual.ToString();
         GameObject.Find("DescripcionMejora").GetComponent<Text>().text = descripcionMejora1 + " " + cantidadMejora1;
+        SonidoManager.Instance.Play("BotonesUI");
     }
     public void SetDescripcionMejora2Token()
     {
@@ -1939,6 +1977,7 @@ public class GameManager : MonoBehaviour
         GameObject.Find("TotalMejora").GetComponent<Text>().text = ((int)(nivelMejora2 * cantidadMejora2)).ToString("0");
         GameObject.Find("CosteMejora").GetComponent<Text>().text = costeMejora2Actual.ToString();
         GameObject.Find("DescripcionMejora").GetComponent<Text>().text = descripcionMejora2 + " " + cantidadMejora2;
+        SonidoManager.Instance.Play("BotonesUI");
     }
     public void SetDescripcionMejora3Token()
     {
@@ -1947,6 +1986,7 @@ public class GameManager : MonoBehaviour
         GameObject.Find("TotalMejora").GetComponent<Text>().text = ((int)(nivelMejora3 * cantidadMejora3Porcentaje)).ToString("0") + "%";
         GameObject.Find("CosteMejora").GetComponent<Text>().text = costeMejora3Actual.ToString();
         GameObject.Find("DescripcionMejora").GetComponent<Text>().text = descripcionMejora3 + " " + cantidadMejora3Porcentaje + "%";
+        SonidoManager.Instance.Play("BotonesUI");
     }
     public void SetDescripcionMejora4Token()
     {
@@ -1955,6 +1995,7 @@ public class GameManager : MonoBehaviour
         GameObject.Find("TotalMejora").GetComponent<Text>().text = ((int)(nivelMejora4 * cantidadMejora4)).ToString("0");
         GameObject.Find("CosteMejora").GetComponent<Text>().text = costeMejora4Actual.ToString();
         GameObject.Find("DescripcionMejora").GetComponent<Text>().text = descripcionMejora4 + " " + cantidadMejora4;
+        SonidoManager.Instance.Play("BotonesUI");
     }
     public void SetDescripcionMejora5Token()
     {
@@ -1963,6 +2004,7 @@ public class GameManager : MonoBehaviour
         GameObject.Find("TotalMejora").GetComponent<Text>().text = ((int)(nivelMejora5 * cantidadMejora5)).ToString("0");
         GameObject.Find("CosteMejora").GetComponent<Text>().text = costeMejora5Actual.ToString();
         GameObject.Find("DescripcionMejora").GetComponent<Text>().text = descripcionMejora5 + " " + cantidadMejora5;
+        SonidoManager.Instance.Play("BotonesUI");
     }
 
     public float totalMejora1Tokens;
@@ -1977,7 +2019,7 @@ public class GameManager : MonoBehaviour
             cantidadAbejasCogidas += 1;
             cantidadGusanosCogidos += 1;
             cantidadHormigasCogidas += 1;
-            SetTokensArriba();
+            SetTokensArriba(); SonidoManager.Instance.Play("MejoraUI");
         }
     }
     public float totalMejora2Tokens;
@@ -1992,7 +2034,7 @@ public class GameManager : MonoBehaviour
             capacidadAbejasActual += (int)cantidadMejora2;
             capacidadPorGusaneroActual += (int)cantidadMejora2;
             capacidadPorHormigueroActual += (int)cantidadMejora2;
-            capacidadPorMariposeroActual += (int)cantidadMejora2;
+            capacidadPorMariposeroActual += (int)cantidadMejora2; SonidoManager.Instance.Play("MejoraUI");
 
             SetTokensArriba();
         }
@@ -2010,7 +2052,7 @@ public class GameManager : MonoBehaviour
             costeDesbloqueoGusanos -= costeDesbloqueoGusanos * totalMejora3Tokens / 100;
             costeDesbloqueoManzano -= costeDesbloqueoManzano * totalMejora3Tokens / 100;
             costeDesbloqueoMariposas -= costeDesbloqueoMariposas * totalMejora3Tokens / 100;
-            costeDesbloqueoPanal -= costeDesbloqueoPanal * totalMejora3Tokens / 100;
+            costeDesbloqueoPanal -= costeDesbloqueoPanal * totalMejora3Tokens / 100; SonidoManager.Instance.Play("MejoraUI");
             SetTokensArriba();
         }
     }
@@ -2024,7 +2066,7 @@ public class GameManager : MonoBehaviour
             costeMejora4Actual = (int)(costeMejora4Base * Mathf.Pow(ratioMejora4, nivelMejora4));
             totalMejora4Tokens = nivelMejora4 * cantidadMejora4;
             chanceShiny = (int)totalMejora4Tokens;
-            SetTokensArriba();
+            SetTokensArriba(); SonidoManager.Instance.Play("MejoraUI");
         }
     }
     public float totalMejora5Tokens;
@@ -2035,7 +2077,7 @@ public class GameManager : MonoBehaviour
             actualTokens -= costeMejora5Actual;
             nivelMejora5++;
             costeMejora5Actual = (int)(costeMejora5Base * Mathf.Pow(ratioMejora5, nivelMejora5));
-            totalMejora5Tokens = nivelMejora5 * cantidadMejora5;
+            totalMejora5Tokens = nivelMejora5 * cantidadMejora5; SonidoManager.Instance.Play("MejoraUI");
             //SIN EFECTOOOOOOOOOOOOOOOOOO
             SetTokensArriba();
         }
@@ -2050,9 +2092,12 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+
             menuInvierno.SetActive(true);
             if (CalcularSiPasa())
             {
+                SonidoManager.Instance.Play("Invierno");
+                SonidoManager.Instance.Play("PopUI");
                 infoInvierno.SetActive(true);
                 GameObject.Find("TextoCompletar").GetComponent<Text>().text = "YOU HAVE COMPLETED YEAR " + currentYear;
                 GameObject.Find("TextoCompletar").GetComponent<Text>().text = "YOU HAVE COMPLETED YEAR " + currentYear;
@@ -2072,6 +2117,8 @@ public class GameManager : MonoBehaviour
             }
             else
             {
+                SonidoManager.Instance.Play("GameOver");
+                SonidoManager.Instance.Play("PopUI");
                 infoInvierno.SetActive(true);
                 GameObject.Find("TextoCompletar").GetComponent<Text>().text = "YOU HAVE COMPLETED YEAR " + currentYear;
                 GameObject.Find("ManzanasNecesarias").GetComponent<Text>().text = "Apples need: " + TotalManzanas + " / " + propiedadesAñosCheck[currentYear].manzanas;
@@ -2194,16 +2241,16 @@ public class GameManager : MonoBehaviour
     {
         feedBackPanel.text = mensajeDelante + " " + cantidad;
     }
-    public void SetFeedBack(string mensajeDelante, float tiempo )
+    public void SetFeedBack(string mensajeDelante, float tiempo)
     {
         StartCoroutine(corrutinaDelay(tiempo, mensajeDelante));
     }
     public void SetFeedBack(string mensajeDelante)
     {
-        feedBackPanel.text = mensajeDelante ;
+        feedBackPanel.text = mensajeDelante;
     }
 
-    public IEnumerator corrutinaDelay(float time,string mensaje)
+    public IEnumerator corrutinaDelay(float time, string mensaje)
     {
         yield return new WaitForSeconds(time);
         SetFeedBack(mensaje);
