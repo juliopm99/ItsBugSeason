@@ -17,7 +17,7 @@ public class MainMenu : MonoBehaviour
     }
     public void Play()
     {
-        SceneManager.LoadScene("MainPruebasJulio");
+        SceneManager.LoadScene("MainScene");
         SonidoManager.Instance.Stop("FondoInicio");
     }
     public void Exit()
