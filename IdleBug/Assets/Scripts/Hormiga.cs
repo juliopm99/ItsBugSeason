@@ -94,10 +94,12 @@ public class Hormiga : MonoBehaviour {
         if (Physics.Raycast(ray, out infoHit))
         {
             destino = infoHit.point;
+            destino.y = this.transform.position.y;
         }
         if (Random.Range(0, 11) == 2)
         {
             destino = GameObject.Find("TextoHormigas").transform.parent.transform.position;
+            destino.y = this.transform.position.y;
         }
     }
     Vector3 BuscarManzana()

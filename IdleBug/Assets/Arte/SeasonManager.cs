@@ -43,39 +43,47 @@ public class SeasonManager : MonoBehaviour
     public float actualTiempoEntreSonidos;
     public void DecidirSonido()
     {
-        int rand = Random.Range(0, 2);
+        int rand = Random.Range(0, 4);
         if (rand == 0)
         {
-            SonidoManager.Instance.Play("PajarosFondo");
+            SonidoManager.Instance.Play("SonidoAleatorio1");
         }
         if (rand == 1)
         {
-            SonidoManager.Instance.Play("BrisaFondo");
+            SonidoManager.Instance.Play("SonidoAleatorio1");
+        }
+        if (rand == 2)
+        {
+            SonidoManager.Instance.Play("SonidoAleatorio3");
+        }
+        if (rand == 3)
+        {
+            SonidoManager.Instance.Play("SonidoAleatorio4");
         }
     }
     // Update is called once per frame
     void Update()
     {
-        //if (SonidoManager.Instance.IsPlaying("PajarosFondo") || SonidoManager.Instance.IsPlaying("BrisaFondo"))
-        //{
+        if (SonidoManager.Instance.IsPlaying("SonidoAleatorio1") || SonidoManager.Instance.IsPlaying("SonidoAleatorio2") || SonidoManager.Instance.IsPlaying("SonidoAleatorio3") || SonidoManager.Instance.IsPlaying("SonidoAleatorio4"))
+        {
 
-        //}
-        //else
-        //{
-        //    if (actualTiempoEntreSonidos == 0)
-        //    {
-        //        actualTiempoEntreSonidos = tiempoEntreSonidosFondoBase;
-        //    }
-        //    if (actualTiempoEntreSonidos > 0)
-        //    {
-        //        actualTiempoEntreSonidos -= Time.deltaTime;
-        //        if (actualTiempoEntreSonidos <= 0)
-        //        {
-        //            DecidirSonido();
-        //            actualTiempoEntreSonidos = 0;
-        //        }
-        //    }
-        //}
+        }
+        else
+        {
+            if (actualTiempoEntreSonidos == 0)
+            {
+                actualTiempoEntreSonidos = tiempoEntreSonidosFondoBase;
+            }
+            if (actualTiempoEntreSonidos > 0)
+            {
+                actualTiempoEntreSonidos -= Time.deltaTime;
+                if (actualTiempoEntreSonidos <= 0)
+                {
+                    DecidirSonido();
+                    actualTiempoEntreSonidos = 0;
+                }
+            }
+        }
         tiempo += Time.deltaTime;
         bool sequiainicio = sequia;
         bool lluviainicio = lluvia;
