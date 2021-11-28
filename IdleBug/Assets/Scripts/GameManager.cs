@@ -324,6 +324,7 @@ public class GameManager : MonoBehaviour
     {
         SonidoManager.Instance.Play("FondoJuego");
         SonidoManager.Instance.Play("EmpezarPartida");
+        SonidoManager.Instance.Stop("Invierno");
         Time.timeScale = 1;
 
         if (currentYear == 0 && FindObjectOfType<DataAscension>() == null)
