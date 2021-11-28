@@ -99,7 +99,10 @@ public class GameManager : MonoBehaviour
 
         }
     }
-
+    public void SonidoMejoraVisual()
+    {
+        SonidoManager.Instance.Play("MejoraVisual");
+    }
     public float MejorasTotalesH
     {
         get => mejorasTotalesH;
@@ -113,6 +116,7 @@ public class GameManager : MonoBehaviour
                 {
                     if (!go.activeSelf)
                     {
+                        SonidoMejoraVisual();
                         go.SetActive(true);
                         break;
                     }
@@ -133,6 +137,8 @@ public class GameManager : MonoBehaviour
                 {
                     if (!go.activeSelf)
                     {
+                        SonidoMejoraVisual();
+
                         go.SetActive(true);
                         break;
                     }
@@ -153,6 +159,8 @@ public class GameManager : MonoBehaviour
                 {
                     if (!go.activeSelf)
                     {
+                        SonidoMejoraVisual();
+
                         go.SetActive(true);
                         break;
                     }
@@ -173,6 +181,8 @@ public class GameManager : MonoBehaviour
                 {
                     if (!go.activeSelf)
                     {
+                        SonidoMejoraVisual();
+
                         go.SetActive(true);
                         break;
                     }
@@ -193,6 +203,8 @@ public class GameManager : MonoBehaviour
                 {
                     if (!go.activeSelf)
                     {
+                        SonidoMejoraVisual();
+
                         go.SetActive(true);
                         break;
                     }
@@ -213,6 +225,8 @@ public class GameManager : MonoBehaviour
                 {
                     if (!go.activeSelf)
                     {
+                        SonidoMejoraVisual();
+
                         go.SetActive(true);
                         break;
                     }
@@ -224,6 +238,8 @@ public class GameManager : MonoBehaviour
                 {
                     if (!go.activeSelf)
                     {
+                        SonidoMejoraVisual();
+
                         go.SetActive(true);
                         break;
                     }
@@ -244,6 +260,8 @@ public class GameManager : MonoBehaviour
                 {
                     if (!go.activeSelf)
                     {
+                        SonidoMejoraVisual();
+
                         go.SetActive(true);
                         break;
                     }
