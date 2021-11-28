@@ -22,7 +22,7 @@ public class CamaraChange : MonoBehaviour
     void Start()
     {
         maxCam = ubicaciones.Length;
-        cam = FindObjectOfType<Camera>().gameObject;
+        cam = GameObject.FindGameObjectWithTag("MainCamera");
         speed = speedBase;
     }
     private static CamaraChange _instance;
