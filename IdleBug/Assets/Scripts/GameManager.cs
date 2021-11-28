@@ -453,7 +453,7 @@ public class GameManager : MonoBehaviour
     }
     void ReiniciarEscena()
     {
-        SceneManager.LoadScene("MainPruebasJulio");
+        SceneManager.LoadScene("MainScene");
     }
 
 
@@ -2273,7 +2273,15 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(time);
         SetFeedBack(mensaje);
     }
-
+    public GameObject volumenGeneral;
+    public void DesactVolumen()
+    {
+        volumenGeneral?.SetActive(false);
+    }
+    public void ActVolumen()
+    {
+        volumenGeneral?.SetActive(true);
+    }
 
 }
 

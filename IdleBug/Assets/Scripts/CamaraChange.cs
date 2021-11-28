@@ -17,6 +17,7 @@ public class CamaraChange : MonoBehaviour
     public Quaternion destinoR;
     float distEntreCams;
     float diferenciaRotaciones;
+    public LayerMask mask;
     // Use this for initialization
     void Start()
     {
@@ -114,7 +115,7 @@ public class CamaraChange : MonoBehaviour
     {
         Ray ray2 = FindObjectOfType<Camera>().ScreenPointToRay(Input.mousePosition);
         RaycastHit hitInfo2;
-        if (Physics.Raycast(ray2, out hitInfo2))
+        if (Physics.Raycast(ray2, out hitInfo2, Mathf.Infinity, mask))
         {
             if (hitInfo2.collider.tag == "Edificio")
             {
@@ -156,7 +157,7 @@ public class CamaraChange : MonoBehaviour
         {
             Ray ray = FindObjectOfType<Camera>().ScreenPointToRay(Input.mousePosition);
 RaycastHit hitInfo;
-            if (Physics.Raycast(ray, out hitInfo))
+            if (Physics.Raycast(ray, out hitInfo, Mathf.Infinity, mask))
             {
                 if (hitInfo.collider.tag == "InsectoSuelo")
                 {
@@ -189,6 +190,7 @@ GameManager.Instance.MenuClose();
         }
         if (cambiando == true)
         {
+            GameManager.Instance.ActVolumen();
             speed += 100 * Time.deltaTime;
 float actualD = Vector3.Distance(cam.transform.position, destino);
 float actualT = actualD / speed;
@@ -203,6 +205,10 @@ cam.transform.position = Vector3.MoveTowards(cam.transform.position, destino, sp
             if (cam.transform.position == destino && cam.transform.rotation == destinoR)
             {
                 cambiando = false;
+                if (activeCam != 3)
+                {
+                    GameManager.Instance.DesactVolumen();
+                }
                 speed = speedBase;
             }
         }
