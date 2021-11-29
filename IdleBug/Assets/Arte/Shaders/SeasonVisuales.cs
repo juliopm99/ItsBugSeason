@@ -89,7 +89,7 @@ public class SeasonVisuales : MonoBehaviour
             //RenderSettings.ambientLight = Color.Lerp(RenderSettings.ambientLight, colorBaseSequia, tmp / tiempoAparicionEvento);
             //RenderSettings.ambientEquatorColor = Color.Lerp(RenderSettings.ambientEquatorColor, colorTopSequia, tmp / tiempoAparicionEvento);
             //RenderSettings.ambientGroundColor = Color.Lerp(RenderSettings.ambientGroundColor, colorBottomSequia, tmp / tiempoAparicionEvento);
-            arenaObjeto.GetComponent<MeshRenderer>().material.SetFloat("_FuerzaArena", Mathf.Lerp(0, 50, tmp*1.5f/tiempoAparicionEvento));
+            arenaObjeto.GetComponent<MeshRenderer>().material.SetFloat("_FuerzaArena", Mathf.Lerp(0, 45, tmp*1.5f/tiempoAparicionEvento));
             //RenderSettings.ambientLight = Color.Lerp(Color.Lerp(colorbase1, colorbase2, seasonValue), colorBaseSequia, tmp / tiempoAparicionEvento);
             //RenderSettings.ambientEquatorColor = Color.Lerp(Color.Lerp(topColor1, topColor2, seasonValue), colorTopSequia, tmp / tiempoAparicionEvento);
             RenderSettings.ambientGroundColor = Color.Lerp(Color.Lerp(bottomColor1, bottomColor2, seasonValue), colorBottomSequia, tmp / tiempoAparicionEvento);
@@ -101,7 +101,7 @@ public class SeasonVisuales : MonoBehaviour
             if (tmp > tiempoAparicionEvento)
             {
                 particleEmission.rateOverTime = 0;
-                arenaObjeto.GetComponent<MeshRenderer>().material.SetFloat("_FuerzaArena", Mathf.Lerp(50, 0, tmp / tiempoAparicionEvento));
+                arenaObjeto.GetComponent<MeshRenderer>().material.SetFloat("_FuerzaArena", Mathf.Lerp(45, 0, tmp / tiempoAparicionEvento));
                 RenderSettings.skybox.SetColor("_TopSpring", Color.Lerp(colorBaseLluvia, topSpringSkybox, tmp / tiempoAparicionEvento));
                 RenderSettings.skybox.SetColor("_BottomSpring", Color.Lerp(colorBottomLluvia, bottomSpringSkybox, tmp / tiempoAparicionEvento));
                 RenderSettings.skybox.SetColor("_TopSummer", Color.Lerp(colorBaseLluvia, topSummerSkybox, tmp / tiempoAparicionEvento));
@@ -132,7 +132,7 @@ public class SeasonVisuales : MonoBehaviour
                 }
                 if (deSequia)
                 {
-                    arenaObjeto.GetComponent<MeshRenderer>().material.SetFloat("_FuerzaArena", Mathf.Lerp(50, 0, tmp / tiempoAparicionEvento));
+                    arenaObjeto.GetComponent<MeshRenderer>().material.SetFloat("_FuerzaArena", Mathf.Lerp(45, 0, tmp / tiempoAparicionEvento));
                     //RenderSettings.ambientLight = Color.Lerp(colorBaseSequia, Color.Lerp(colorbase1, colorbase2, seasonValue), tmp / tiempoAparicionEvento);
                     //RenderSettings.ambientEquatorColor = Color.Lerp(colorTopSequia, Color.Lerp(topColor1, topColor2, seasonValue), tmp / tiempoAparicionEvento);
                     RenderSettings.ambientGroundColor = Color.Lerp(colorBottomSequia, Color.Lerp(bottomColor1, bottomColor2, seasonValue), tmp / tiempoAparicionEvento);
