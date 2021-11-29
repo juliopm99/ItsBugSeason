@@ -68,7 +68,7 @@ public class Hormiguero : MonoBehaviour
             }
         }
         print(rand + "randomg");
-        StartCoroutine(SpawnHormigasMision(manz,GameManager.Instance.hormiguerosDesactivados[rand].transform.position));//CAMBIAR
+        StartCoroutine(SpawnHormigasMision(manz,this.transform.position));//CAMBIAR
         spawneando = false;
     }
     public void TerminarMision()

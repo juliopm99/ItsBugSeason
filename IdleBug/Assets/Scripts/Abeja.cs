@@ -122,7 +122,7 @@ public class Abeja : MonoBehaviour
         if (Random.Range(0, 11) == 2)
         {
             SpawnAbe[] posSpawn = FindObjectsOfType<SpawnAbe>();
-            int random = Random.Range(0, posSpawn.Length);
+            int random = Random.Range(0, posSpawn.Length-1);
 
 
             destino = posSpawn[random].gameObject.transform.position;

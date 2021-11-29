@@ -36,10 +36,11 @@ public class SeasonManager : MonoBehaviour
     public float rotacionFinal = -165;
     public float rotacionActual;
     public bool started = false;
-
+    public GameObject fade;
     // Start is called before the first frame update
     void Awake()
-    {  mensajeYear = GameObject.Find("MensajeYear").GetComponent<Text>();
+    {
+        mensajeYear = GameObject.Find("MensajeYear").GetComponent<Text>();
         mensajeSeason = GameObject.Find("MensajeSeason").GetComponent<Text>();
         mensajeSeason2 = GameObject.Find("MensajeSeason2").GetComponent<Text>();
         mensajeEventos = GameObject.Find("MensajeEvento").GetComponent<Text>();
@@ -58,7 +59,7 @@ public class SeasonManager : MonoBehaviour
     }
     private void Start()
     {
-      
+
 
         flecha = GameObject.Find("FlechaRotar").gameObject;
         rotacionActual = rotInicial;
@@ -88,6 +89,7 @@ public class SeasonManager : MonoBehaviour
             SonidoManager.Instance.Play("SonidoAleatorio4");
         }
     }
+    bool open = false;
     // Update is called once per frame
     void Update()
     {
@@ -120,17 +122,17 @@ public class SeasonManager : MonoBehaviour
             bool lluviainicio = lluvia;
             GetComponent<SeasonVisuales>().seasonValue = Mathf.Lerp(0, 1, tiempo / tiempoPartida);
             if (tiempo < tiempoPartida / 3)
-            {
+            { mensajeSeason2.text = "";  mensajeSeason.text = "Spring: +" + GameManager.Instance.tGenManzPrimaveraPorcentaje + "% apple generation";
                 if (spring == false)
                 {
-                    mensajeSeason2.text = "";
+                   
                     spring = true;
                     GameManager.Instance.SetSeason("spring");
                     summer = false;
                     autumn = false;
                     GameManager.Instance.SetFeedBack("Spring started", 2f);
 
-                    mensajeSeason.text = "Spring: +" + GameManager.Instance.tGenManzPrimaveraPorcentaje + "% apple generation";
+                  
 
 
 
@@ -139,6 +141,16 @@ public class SeasonManager : MonoBehaviour
             }
             if (tiempo >= tiempoPartida / 3 && tiempo < (tiempoPartida * 2) / 3)
             {
+                if (GameManager.Instance.desbloqueadosPanales)
+                {
+                    mensajeSeason.text = "Summer: -" + GameManager.Instance.tPolinVeranoPorcentaje + "% pollination time";
+                }
+                else
+                {
+                    mensajeSeason.text = "Summer: ???";
+                }
+
+                mensajeSeason2.text = "";
                 if (summer == false)
                 {
                     spring = false;
@@ -147,29 +159,12 @@ public class SeasonManager : MonoBehaviour
 
                     autumn = false;
                     GameManager.Instance.SetFeedBack("Summer started", "");
-                    if (GameManager.Instance.desbloqueadosPanales)
-                    {
-                        mensajeSeason.text = "Summer: -" + GameManager.Instance.tPolinVeranoPorcentaje + "% pollination time";
-                    }
-                    else
-                    {
-                        mensajeSeason.text = "";
-                    }
 
-                    mensajeSeason2.text = "";
 
                 }
             }
             if (tiempo >= (tiempoPartida * 2) / 3 && tiempo < tiempoPartida)
-            {
-                if (autumn == false)
-                {
-                    spring = false; summer = false;
-                    GameManager.Instance.SetSeason("autumn");
-                    autumn = true;
-                    GameManager.Instance.SetFeedBack("Autumn started", "");
-
-                    mensajeSeason.text = "Autumn: -" + GameManager.Instance.tMenosGenManzOtonoPorcentaje + "% apple generation";
+            {  mensajeSeason.text = "Autumn: -" + GameManager.Instance.tMenosGenManzOtonoPorcentaje + "% apple generation";
 
                     if (GameManager.Instance.desbloqueadosPanales)
                     {
@@ -179,6 +174,14 @@ public class SeasonManager : MonoBehaviour
                     {
                         mensajeSeason2.text = "";
                     }
+                if (autumn == false)
+                {
+                    spring = false; summer = false;
+                    GameManager.Instance.SetSeason("autumn");
+                    autumn = true;
+                    GameManager.Instance.SetFeedBack("Autumn started", "");
+
+                  
 
                 }
 
@@ -187,7 +190,9 @@ public class SeasonManager : MonoBehaviour
             {
                 GameManager.Instance.SetFeedBack("Winter is coming soon", "");
             }
-            if (Time.timeScale == 1) if (tiempo >= tiempoPartida) { Time.timeScale = 0; GameManager.Instance.OpenCloseInviernoMenu(); }
+            if (tiempo >= tiempoPartida) fade.SetActive(true);
+            if (open == false) if (tiempo >= tiempoPartida + 4) { GameManager.Instance.OpenCloseInviernoMenu(); open = true; }
+            if (Time.timeScale == 1) if (tiempo >= tiempoPartida + 6) { Time.timeScale = 0; }
             if (spring)
             {
                 //manzanos + 20%
@@ -311,12 +316,8 @@ public class SeasonManager : MonoBehaviour
                 }
             }
 
-
-            if (lluvia == true && lluviainicio == false)
+            if (lluvia)
             {
-                GameManager.Instance.SetEvento("lluvia");
-                GameManager.Instance.SetFeedBack("It started to rain...", "");
-                SonidoManager.Instance.Play("LLuvia");
                 mensajeEventos.text = "Rain: -" + GameManager.Instance.reduccionVelocidadHormLLuvia + "% ant speed";
                 if (GameManager.Instance.desbloqueadosGusanos)
                 {
@@ -326,6 +327,32 @@ public class SeasonManager : MonoBehaviour
                 {
                     mensajeEventos2.text = "";
                 }
+            }
+            if (sequia)
+            {
+                if (GameManager.Instance.desbloqueadosPanales)
+                {
+                    mensajeEventos.text = "Drought: -" + GameManager.Instance.aumentoDescansoAbejasSequia + "% bee rest time";
+                }
+                else
+                {
+                    mensajeEventos.text = "Drought: ???";
+                }
+                if (GameManager.Instance.desbloqueadasMariposas)
+                {
+                    mensajeEventos2.text = "Drought: -" + GameManager.Instance.reduccionProdMaripSequia + "% butterfly production";
+                }
+                else
+                {
+                    mensajeEventos2.text = "";
+                }
+            }
+            if (lluvia == true && lluviainicio == false)
+            {
+                GameManager.Instance.SetEvento("lluvia");
+                GameManager.Instance.SetFeedBack("It started to rain...", "");
+                SonidoManager.Instance.Play("LLuvia");
+             
 
                 //Datos
             }
@@ -345,22 +372,7 @@ public class SeasonManager : MonoBehaviour
                 GameManager.Instance.SetFeedBack("A drought has started", "");
                 SonidoManager.Instance.Play("Sequia");
 
-                if (GameManager.Instance.desbloqueadosPanales)
-                {
-                    mensajeEventos.text = "Drought: -" + GameManager.Instance.aumentoDescansoAbejasSequia + "% bee rest time";
-                }
-                else
-                {
-                    mensajeEventos.text = "";
-                }
-                if (GameManager.Instance.desbloqueadasMariposas)
-                {
-                    mensajeEventos2.text = "Drought: -" + GameManager.Instance.reduccionProdMaripSequia + "% butterfly production";
-                }
-                else
-                {
-                    mensajeEventos2.text = "";
-                }
+             
                 //Datos
             }
             else if (sequia == false && sequiainicio == true)
@@ -372,7 +384,7 @@ public class SeasonManager : MonoBehaviour
                 mensajeEventos2.text = "";
             }
         }
-       
+
 
     }
 

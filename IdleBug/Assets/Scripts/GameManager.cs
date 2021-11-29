@@ -403,8 +403,9 @@ public class GameManager : MonoBehaviour
         ActualizarTextoHormigas();
         //TextoHormigas = GameObject.Find("TextoHormigasM").GetComponent<Text>();
         TextoManzanas = GameObject.Find("TextoManzanasM").GetComponent<Text>();
-        textoMiel = GameObject.Find("TextoManzanasSegundoM").GetComponent<Text>();
-        textoSeda = GameObject.Find("TextoManzanasGeneradasM").GetComponent<Text>();
+        
+        textoSeda = GameObject.Find("TextoManzanasSegundoM").GetComponent<Text>();
+        textoMiel = GameObject.Find("TextoManzanasGeneradasM").GetComponent<Text>();
         textoPetalos = GameObject.Find("TextoCapacidadHormigasM").GetComponent<Text>();
         ActualizarTextoHormigas();
         ActualizarTextoAbejas();
@@ -466,6 +467,11 @@ public class GameManager : MonoBehaviour
 
         CalcularComienzo();
     }
+    [Header("CHEATS")]
+    public float cheatXSegundoM = 5;
+    public float cheatXSegundoP = 5;
+    public float cheatXSegundoH = 5;
+    public float cheatXSegundoS = 5;
     void Cheats()
     {
         if (Input.GetKey(KeyCode.J))
@@ -475,22 +481,22 @@ public class GameManager : MonoBehaviour
                 OpenCloseInviernoMenu();
 
             }
-            if (Input.GetKeyDown(KeyCode.M))
+            if (Input.GetKey(KeyCode.M))
             {
-                TotalManzanas += 2000;
+                TotalManzanas +=cheatXSegundoM*Time.deltaTime ;
 
             }
-            if (Input.GetKeyDown(KeyCode.H))
+            if (Input.GetKey(KeyCode.H))
             {
-                TotalMiel += 2000;
+                TotalMiel += cheatXSegundoH * Time.deltaTime;
             }
-            if (Input.GetKeyDown(KeyCode.S))
+            if (Input.GetKey(KeyCode.S))
             {
-                TotalSeda += 2000;
+                TotalSeda += cheatXSegundoS * Time.deltaTime;
             }
-            if (Input.GetKeyDown(KeyCode.P))
+            if (Input.GetKey(KeyCode.P))
             {
-                TotalPetalos += 2000;
+                TotalPetalos += cheatXSegundoP * Time.deltaTime;
             }
             if (Input.GetKeyDown(KeyCode.R))
             {
@@ -612,6 +618,10 @@ public class GameManager : MonoBehaviour
         }
         CalculosCheck();
         ActualizarTextoMenu();
+        ActualizarTextoAbejas();
+        ActualizarTextoGusanos();
+        ActualizarTextoMariposas();
+        ActualizarTextoHormigas();
     }
 
     public Text TextoHormigas;
@@ -810,7 +820,7 @@ public class GameManager : MonoBehaviour
             {
                 mariposasFuera++;
 
-                GameObject mariposaFuera = Instantiate(prefabMariposa, GameObject.Find("TextoCreador").transform.parent.transform.position, Quaternion.identity);
+                GameObject mariposaFuera = Instantiate(prefabMariposa, FindObjectOfType<CreadorMariposas>().transform.position, Quaternion.identity);
 
 
             }
@@ -2038,36 +2048,69 @@ public class GameManager : MonoBehaviour
     public void SetDescripcionMejora1Token()
     {
         GameObject.Find("NombreMejora").GetComponent<Text>().text = nombreMejora1;
-        GameObject.Find("NivelMejora").GetComponent<Text>().text = nivelMejora1.ToString();
-        GameObject.Find("TotalMejora").GetComponent<Text>().text = ((int)(nivelMejora1 * cantidadMejora1)).ToString("0");
-        GameObject.Find("CosteMejora").GetComponent<Text>().text = costeMejora1Actual.ToString();
+        GameObject.Find("NivelMejora").GetComponent<Text>().text = "Level : " + nivelMejora1.ToString();
+        GameObject.Find("TotalMejora").GetComponent<Text>().text = "Total : +" + ((int)(nivelMejora1-1 * cantidadMejora1)).ToString("0");
+        GameObject.Find("CosteMejora").GetComponent<Text>().text ="Cost :"+ costeMejora1Actual.ToString();
         GameObject.Find("DescripcionMejora").GetComponent<Text>().text = descripcionMejora1 + " " + cantidadMejora1;
         SonidoManager.Instance.Play("BotonesUI");
     }
     public void SetDescripcionMejora2Token()
     {
         GameObject.Find("NombreMejora").GetComponent<Text>().text = nombreMejora2;
-        GameObject.Find("NivelMejora").GetComponent<Text>().text = nivelMejora2.ToString();
-        GameObject.Find("TotalMejora").GetComponent<Text>().text = ((int)(nivelMejora2 * cantidadMejora2)).ToString("0");
-        GameObject.Find("CosteMejora").GetComponent<Text>().text = costeMejora2Actual.ToString();
+        GameObject.Find("NivelMejora").GetComponent<Text>().text = "Level : "+nivelMejora2.ToString();
+        GameObject.Find("TotalMejora").GetComponent<Text>().text = "Total : +" + ((int)(nivelMejora2-1 * cantidadMejora2)).ToString("0");
+        GameObject.Find("CosteMejora").GetComponent<Text>().text = "Cost :" + costeMejora2Actual.ToString();
         GameObject.Find("DescripcionMejora").GetComponent<Text>().text = descripcionMejora2 + " " + cantidadMejora2;
         SonidoManager.Instance.Play("BotonesUI");
     }
     public void SetDescripcionMejora3Token()
-    {
-        GameObject.Find("NombreMejora").GetComponent<Text>().text = nombreMejora3;
-        GameObject.Find("NivelMejora").GetComponent<Text>().text = nivelMejora3.ToString();
-        GameObject.Find("TotalMejora").GetComponent<Text>().text = ((int)(nivelMejora3 * cantidadMejora3Porcentaje)).ToString("0") + "%";
-        GameObject.Find("CosteMejora").GetComponent<Text>().text = costeMejora3Actual.ToString();
+    {  GameObject.Find("NombreMejora").GetComponent<Text>().text = nombreMejora3;
+        if (totalMejora3Tokens >= 100)
+        {
+            totalMejora3Tokens = 100;
+            GameObject.Find("Mejora(3)").GetComponent<Button>().interactable = false;
+
+
+        }
+      
+        if (totalMejora3Tokens >= 100)
+        {
+            GameObject.Find("NivelMejora").GetComponent<Text>().text = "Level max : " + nivelMejora3.ToString();
+            GameObject.Find("CosteMejora").GetComponent<Text>().text = "Level max";
+        }
+        else
+        {
+            GameObject.Find("NivelMejora").GetComponent<Text>().text = "Level : " + nivelMejora3.ToString();
+            GameObject.Find("CosteMejora").GetComponent<Text>().text = "Cost :" + costeMejora3Actual.ToString();
+        }
+        GameObject.Find("TotalMejora").GetComponent<Text>().text = "Total : -"+((int)(nivelMejora3-1 * cantidadMejora3Porcentaje)).ToString("0") + "%";
         GameObject.Find("DescripcionMejora").GetComponent<Text>().text = descripcionMejora3 + " " + cantidadMejora3Porcentaje + "%";
         SonidoManager.Instance.Play("BotonesUI");
     }
     public void SetDescripcionMejora4Token()
     {
         GameObject.Find("NombreMejora").GetComponent<Text>().text = nombreMejora4;
-        GameObject.Find("NivelMejora").GetComponent<Text>().text = nivelMejora4.ToString();
-        GameObject.Find("TotalMejora").GetComponent<Text>().text = ((int)(nivelMejora4 * cantidadMejora4)).ToString("0");
-        GameObject.Find("CosteMejora").GetComponent<Text>().text = costeMejora4Actual.ToString();
+        if (totalMejora4Tokens >= 100)
+        {
+            totalMejora4Tokens = 100;
+            GameObject.Find("Mejora(4)").GetComponent<Button>().interactable = false;
+
+
+        }
+
+        if (totalMejora4Tokens >= 100)
+        {
+            GameObject.Find("NivelMejora").GetComponent<Text>().text = "Level max : " + nivelMejora4.ToString();
+            GameObject.Find("CosteMejora").GetComponent<Text>().text = "Level max";
+        }
+        else
+        {
+            GameObject.Find("NivelMejora").GetComponent<Text>().text = "Level : " + nivelMejora4.ToString();
+            GameObject.Find("CosteMejora").GetComponent<Text>().text = "Cost :" + costeMejora4Actual.ToString();
+        }
+        //GameObject.Find("NivelMejora").GetComponent<Text>().text = "Level : "+ nivelMejora4.ToString();
+        GameObject.Find("TotalMejora").GetComponent<Text>().text = "Total : +" + ((int)(nivelMejora4-1 * cantidadMejora4)).ToString("0");
+        //GameObject.Find("CosteMejora").GetComponent<Text>().text = "Cost :"+costeMejora4Actual.ToString();
         GameObject.Find("DescripcionMejora").GetComponent<Text>().text = descripcionMejora4 + " " + cantidadMejora4;
         SonidoManager.Instance.Play("BotonesUI");
     }
@@ -2093,7 +2136,7 @@ public class GameManager : MonoBehaviour
             cantidadAbejasCogidas += 1;
             cantidadGusanosCogidos += 1;
             cantidadHormigasCogidas += 1;
-            SetTokensArriba(); SonidoManager.Instance.Play("MejoraUI");
+            SetTokensArriba(); SonidoManager.Instance.Play("MejoraUI");SetDescripcionMejora1Token();
         }
     }
     public float totalMejora2Tokens;
@@ -2108,7 +2151,7 @@ public class GameManager : MonoBehaviour
             capacidadAbejasActual += (int)cantidadMejora2;
             capacidadPorGusaneroActual += (int)cantidadMejora2;
             capacidadPorHormigueroActual += (int)cantidadMejora2;
-            capacidadPorMariposeroActual += (int)cantidadMejora2; SonidoManager.Instance.Play("MejoraUI");
+            capacidadPorMariposeroActual += (int)cantidadMejora2; SonidoManager.Instance.Play("MejoraUI"); SetDescripcionMejora2Token();
 
             SetTokensArriba();
         }
@@ -2116,31 +2159,45 @@ public class GameManager : MonoBehaviour
     public float totalMejora3Tokens;
     public void CompraMejora3()
     {
-        if (costeMejora3Actual <= actualTokens)
+        if (costeMejora3Actual <= actualTokens&&totalMejora3Tokens<100)
         {
             actualTokens -= costeMejora3Actual;
             nivelMejora3++;
             costeMejora3Actual = (int)(costeMejora3Base * Mathf.Pow(ratioMejora3, nivelMejora3));
             totalMejora3Tokens = nivelMejora3 * cantidadMejora3Porcentaje;
+            if (totalMejora3Tokens >= 100)
+            {
+                totalMejora3Tokens = 100;
+                GameObject.Find("Mejora(3)").GetComponent<Button>().interactable = false;
+
+
+            }
             costeDesbloqueoFlores -= costeDesbloqueoFlores * totalMejora3Tokens / 100;
             costeDesbloqueoGusanos -= costeDesbloqueoGusanos * totalMejora3Tokens / 100;
             costeDesbloqueoManzano -= costeDesbloqueoManzano * totalMejora3Tokens / 100;
             costeDesbloqueoMariposas -= costeDesbloqueoMariposas * totalMejora3Tokens / 100;
-            costeDesbloqueoPanal -= costeDesbloqueoPanal * totalMejora3Tokens / 100; SonidoManager.Instance.Play("MejoraUI");
+            costeDesbloqueoPanal -= costeDesbloqueoPanal * totalMejora3Tokens / 100; SonidoManager.Instance.Play("MejoraUI"); SetDescripcionMejora2Token();
             SetTokensArriba();
         }
     }
     public float totalMejora4Tokens;
     public void CompraMejora4()
     {
-        if (costeMejora4Actual <= actualTokens)
+        if (costeMejora4Actual <= actualTokens&&totalMejora4Tokens<100)
         {
             actualTokens -= costeMejora4Actual;
             nivelMejora4++;
             costeMejora4Actual = (int)(costeMejora4Base * Mathf.Pow(ratioMejora4, nivelMejora4));
             totalMejora4Tokens = nivelMejora4 * cantidadMejora4;
+            if (totalMejora4Tokens >= 100)
+            {
+                totalMejora4Tokens = 100;
+                GameObject.Find("Mejora(4)").GetComponent<Button>().interactable = false;
+
+
+            }
             chanceShiny = (int)totalMejora4Tokens;
-            SetTokensArriba(); SonidoManager.Instance.Play("MejoraUI");
+            SetTokensArriba(); SonidoManager.Instance.Play("MejoraUI"); SetDescripcionMejora4Token();
         }
     }
     public float totalMejora5Tokens;
@@ -2194,18 +2251,18 @@ public class GameManager : MonoBehaviour
                 SonidoManager.Instance.Play("GameOver");
                 SonidoManager.Instance.Play("PopUI");
                 infoInvierno.SetActive(true);
-                GameObject.Find("TextoCompletar").GetComponent<Text>().text = "YOU HAVE COMPLETED YEAR " + currentYear;
+                GameObject.Find("TextoCompletar").GetComponent<Text>().text = "YOU FAILED YEAR " + currentYear;
                 GameObject.Find("ManzanasNecesarias").GetComponent<Text>().text = "Apples need: " + TotalManzanas + " / " + propiedadesAñosCheck[currentYear].manzanas;
                 GameObject.Find("SedaNecesarias").GetComponent<Text>().text = "Silk need: " + TotalSeda + " / " + propiedadesAñosCheck[currentYear].seda;
                 GameObject.Find("MielNecesarias").GetComponent<Text>().text = "Honey need: " + TotalMiel + " / " + propiedadesAñosCheck[currentYear].miel;
                 GameObject.Find("PetalosNecesarias").GetComponent<Text>().text = "Petals need: " + TotalPetalos + " / " + propiedadesAñosCheck[currentYear].petalos;
                 descripcionFail.SetActive(true);
-                descripcionFail.GetComponent<Text>().text = "You didn´t gather all the needed resources. You have failed to survive this year.";
+                descripcionFail.GetComponent<Text>().text = "You didn´t gather all the needed resources."+"\n"+"You have failed to survive this year.";
                 GameObject.Find("ManzanasTokens").GetComponent<Text>().text = " ";
                 GameObject.Find("SedaTokens").GetComponent<Text>().text = "  ";
                 GameObject.Find("MielTokens").GetComponent<Text>().text = "   ";
                 GameObject.Find("PetalosTokens").GetComponent<Text>().text = "   ";
-                GameObject.Find("TextoBotonCompletar").GetComponent<Text>().text = "Restart the year from the start";
+                GameObject.Find("TextoBotonCompletar").GetComponent<Text>().text = "Restart the game from the start";
 
             }
         }
