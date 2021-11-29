@@ -97,8 +97,17 @@ public class Gusano : MonoBehaviour
         if (Random.Range(0, 11) == 2)
         {
             destino = GameObject.FindObjectOfType<AlmacenSeda>().gameObject.transform.position;
-
+            destino.y = this.transform.position.y;
         }
+        if (Random.Range(0, 11) ==1)
+        {
+            SpawnGus[] posSpawn = FindObjectsOfType<SpawnGus>();
+            int random = Random.Range(0, posSpawn.Length);
+
+
+            destino = posSpawn[random].gameObject.transform.position;
+        }
+       
     }
 
 }

@@ -19,12 +19,24 @@ public class CamaraChange : MonoBehaviour
     float distEntreCams;
     float diferenciaRotaciones;
     public LayerMask mask;
+    public GameObject textoHormigas;
+    public GameObject textoAbejas;
+    public GameObject textoCreador;
+    public GameObject textoMariposas;
+    public GameObject textoAlmacen;
+    public GameObject textoGusanos;
     // Use this for initialization
     void Start()
     {
         maxCam = ubicaciones.Length;
         cam = GameObject.FindGameObjectWithTag("MainCamera");
         speed = speedBase;
+        if (GameObject.Find("TextoHormigas") != null) textoHormigas = GameObject.Find("TextoHormigas").gameObject;
+        if (GameObject.Find("TextoAbejas") != null) textoAbejas = GameObject.Find("TextoAbejas");
+        if (GameObject.Find("TextoCreador") != null) textoCreador = GameObject.Find("TextoCreador");
+        if (GameObject.Find("TextoMariposas") != null) textoMariposas = GameObject.Find("TextoMariposas");
+        if (GameObject.Find("TextoAlmacen") != null) textoAlmacen = GameObject.Find("TextoAlmacen");
+        if (GameObject.Find("TextoGusanos") != null) textoGusanos = GameObject.Find("TextoGusanos");
     }
     private static CamaraChange _instance;
 
@@ -49,18 +61,46 @@ public class CamaraChange : MonoBehaviour
             activeCam = 0;
         }
         ChangeCam();
+        CheckAll();
     }
     public void MoverIzquierda()
     {
         GameManager.Instance.MenuClose();
 
         activeCam--;
+
+        print(activeCam);
+        if (activeCam < 0)
+        {
+            activeCam = maxCam - 1;
+            print(activeCam);
+        }
+        ChangeCam(); CheckAll();
+
+    }
+    public void VisionGeneral()
+    {
+        if (activeCam != 3)
+        {
+            activeCam = 3;
+            ChangeCam(); CheckAll();
+
+        }
+    }
+    public void CheckAll()
+    {
         if (activeCam == 0)
         {
             SonidoManager.Instance.Play("HormigasFondo");
             SonidoManager.Instance.Stop("GusanosFondo");
             SonidoManager.Instance.Stop("MariposasFondo");
             SonidoManager.Instance.Stop("AbejaFondo");
+            textoHormigas.gameObject.SetActive(true);
+            textoAbejas.gameObject.SetActive(false);
+            textoCreador.gameObject.SetActive(false);
+            textoMariposas.gameObject.SetActive(false);
+            textoAlmacen.gameObject.SetActive(false);
+            textoGusanos.gameObject.SetActive(false);
         }
         else if (activeCam == 1)
         {
@@ -68,6 +108,12 @@ public class CamaraChange : MonoBehaviour
             SonidoManager.Instance.Stop("HormigasFondo");
             SonidoManager.Instance.Stop("MariposasFondo");
             SonidoManager.Instance.Stop("AbejaFondo");
+            textoHormigas.gameObject.SetActive(false);
+            textoAbejas.gameObject.SetActive(false);
+            textoCreador.gameObject.SetActive(false);
+            textoMariposas.gameObject.SetActive(false);
+            textoAlmacen.gameObject.SetActive(true);
+            textoGusanos.gameObject.SetActive(true);
 
         }
         else if (activeCam == 2)
@@ -76,6 +122,12 @@ public class CamaraChange : MonoBehaviour
             SonidoManager.Instance.Stop("HormigasFondo");
             SonidoManager.Instance.Stop("GusanosFondo");
             SonidoManager.Instance.Stop("AbejaFondo");
+            textoHormigas.gameObject.SetActive(false);
+            textoAbejas.gameObject.SetActive(false);
+            textoCreador.gameObject.SetActive(true);
+            textoMariposas.gameObject.SetActive(true);
+            textoAlmacen.gameObject.SetActive(false);
+            textoGusanos.gameObject.SetActive(false);
 
 
         }
@@ -85,6 +137,12 @@ public class CamaraChange : MonoBehaviour
             SonidoManager.Instance.Stop("GusanosFondo");
             SonidoManager.Instance.Stop("MariposasFondo");
             SonidoManager.Instance.Stop("AbejaFondo");
+            textoHormigas.gameObject.SetActive(true);
+            textoAbejas.gameObject.SetActive(true);
+            textoCreador.gameObject.SetActive(true);
+            textoMariposas.gameObject.SetActive(true);
+            textoAlmacen.gameObject.SetActive(true);
+            textoGusanos.gameObject.SetActive(true);
 
         }
         else if (activeCam == 4)
@@ -93,21 +151,12 @@ public class CamaraChange : MonoBehaviour
             SonidoManager.Instance.Stop("HormigasFondo");
             SonidoManager.Instance.Stop("GusanosFondo");
             SonidoManager.Instance.Stop("MariposasFondo");
-        }
-        print(activeCam);
-        if (activeCam < 0)
-        {
-            activeCam = maxCam - 1;
-            print(activeCam);
-        }
-        ChangeCam();
-    }
-    public void VisionGeneral()
-    {
-        if (activeCam != 3)
-        {
-            activeCam = 3;
-            ChangeCam();
+            textoHormigas.gameObject.SetActive(false);
+            textoAbejas.gameObject.SetActive(true);
+            textoCreador.gameObject.SetActive(false);
+            textoMariposas.gameObject.SetActive(false);
+            textoAlmacen.gameObject.SetActive(false);
+            textoGusanos.gameObject.SetActive(false);
         }
     }
     GameObject lastEffect;
@@ -120,7 +169,7 @@ public class CamaraChange : MonoBehaviour
     {
         obj.localScale = Vector3.one;
     }
-    public GameObject prefabTexto;
+    public GameObject prefabTexto;bool pasadoFlecha = false;
     // Update is called once per frame
     void Update()
     {
@@ -169,14 +218,19 @@ public class CamaraChange : MonoBehaviour
 
         if (Input.GetKeyUp(KeyCode.D))
         {
+            GameManager.Instance.MenuClose();
             MoverDerecha();
         }
         if (Input.GetKeyUp(KeyCode.A))
         {
+            GameManager.Instance.MenuClose();
+
             MoverIzquierda();
         }
         if (Input.GetKeyUp(KeyCode.S))
         {
+            GameManager.Instance.MenuClose();
+
             VisionGeneral();
         }
 
@@ -190,10 +244,17 @@ public class CamaraChange : MonoBehaviour
                 {
                     if (activeCam != 3)
                     {
-                        if (hitInfo.collider.GetComponent<Tuto>())
+                        print("AC");
+                        if ((hitInfo.collider.tag == "InsectoSuelo"&&hitInfo.collider.GetComponent<Tuto>()))
                         {
-                            Destroy(hitInfo.collider.GetComponent<Tuto>());
-                            GameObject.FindObjectOfType<Tuto>().gameObject.GetComponent<SpriteRenderer>().enabled = true;
+                            print("A");
+                            Destroy(hitInfo.collider.GetComponentInChildren<Tuto>());
+                            foreach (Tuto go in GameObject.FindObjectsOfType<Tuto>())
+                            {
+                               if(go.GetComponent<SpriteRenderer>()!=null)go.gameObject.GetComponent<SpriteRenderer>().enabled = true;
+                            }
+                            print(GameObject.FindObjectOfType<Tuto>().name);
+                            pasadoFlecha = true;
 
                         }
                         GameObject.FindObjectOfType<InsectGenerator>().CogerInsecto(hitInfo.collider.gameObject);
@@ -220,8 +281,9 @@ public class CamaraChange : MonoBehaviour
                 {
                     if (!EventSystem.current.IsPointerOverGameObject())
                     {
-                        if (hitInfo.collider.GetComponent<Hormiguero>() && GameObject.FindObjectOfType<Tuto>().gameObject.GetComponent<SpriteRenderer>().enabled == true)
+                        if (pasadoFlecha==true&&hitInfo.collider.GetComponent<Hormiguero>() && GameObject.FindObjectOfType<Tuto>().gameObject.GetComponent<SpriteRenderer>().enabled == true)
                         {
+                            print("AB");
                             GameObject.FindObjectOfType<Tuto>().gameObject.GetComponent<SpriteRenderer>().enabled = false;
                             FindObjectOfType<SeasonManager>().started = true;
                         }
@@ -231,11 +293,6 @@ public class CamaraChange : MonoBehaviour
                 else
                 {
                     if (!EventSystem.current.IsPointerOverGameObject())
-                    {
-                        if (GameManager.Instance.menuBlock.activeSelf || GameManager.Instance.menuCompras.activeSelf) SonidoManager.Instance.Play("BotonesUI");
-                        GameManager.Instance.MenuClose();
-                    }
-                    if (EventSystem.current.IsPointerOverGameObject())
                     {
                         if (GameManager.Instance.menuBlock.activeSelf || GameManager.Instance.menuCompras.activeSelf) SonidoManager.Instance.Play("BotonesUI");
                         GameManager.Instance.MenuClose();

@@ -98,7 +98,11 @@ public class Hormiga : MonoBehaviour {
         }
         if (Random.Range(0, 11) == 2)
         {
-            destino = GameObject.Find("TextoHormigas").transform.parent.transform.position;
+            SpawnHor[] posSpawn = FindObjectsOfType<SpawnHor>();
+            int random = Random.Range(0, posSpawn.Length);
+
+            
+            destino = posSpawn[random].gameObject.transform.position;
             destino.y = this.transform.position.y;
         }
     }

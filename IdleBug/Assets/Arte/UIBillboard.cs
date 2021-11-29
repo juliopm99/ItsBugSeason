@@ -5,16 +5,19 @@ using UnityEngine;
 public class UIBillboard : MonoBehaviour {
 
     Camera mainCamera;
+    private Quaternion originalRotation;
 
     // Use this for initialization
     void Start()
     {
-        mainCamera = Camera.main;
+        mainCamera = Camera.main;  originalRotation = transform.rotation;
     }
 
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
-        this.transform.rotation = mainCamera.transform.rotation;
+
+        transform.rotation = mainCamera.transform.rotation; ;
+       
     }
 }
