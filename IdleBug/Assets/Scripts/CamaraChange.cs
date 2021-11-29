@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class CamaraChange : MonoBehaviour
 {
@@ -117,8 +118,9 @@ public class CamaraChange : MonoBehaviour
     }
     public void UnSetScale(Transform obj)
     {
-        obj.localScale =  Vector3.one;
+        obj.localScale = Vector3.one;
     }
+    public GameObject prefabTexto;
     // Update is called once per frame
     void Update()
     {
@@ -131,7 +133,7 @@ public class CamaraChange : MonoBehaviour
             {
                 if (!EventSystem.current.IsPointerOverGameObject())
                 {
-                  
+
                     foreach (Transform g in hitInfo2.collider.gameObject.GetComponentsInChildren<Transform>(includeInactive: true))
                     {
                         if (g.tag == "Efecto")
@@ -162,7 +164,7 @@ public class CamaraChange : MonoBehaviour
 
 
         }
-      
+
 
 
         if (Input.GetKeyUp(KeyCode.D))
@@ -173,6 +175,11 @@ public class CamaraChange : MonoBehaviour
         {
             MoverIzquierda();
         }
+        if (Input.GetKeyUp(KeyCode.S))
+        {
+            VisionGeneral();
+        }
+
         if (Input.GetMouseButtonDown(0))
         {
             Ray ray = FindObjectOfType<Camera>().ScreenPointToRay(Input.mousePosition);
@@ -183,29 +190,55 @@ public class CamaraChange : MonoBehaviour
                 {
                     if (activeCam != 3)
                     {
+                        if (hitInfo.collider.GetComponent<Tuto>())
+                        {
+                            Destroy(hitInfo.collider.GetComponent<Tuto>());
+                            GameObject.FindObjectOfType<Tuto>().gameObject.GetComponent<SpriteRenderer>().enabled = true;
+
+                        }
                         GameObject.FindObjectOfType<InsectGenerator>().CogerInsecto(hitInfo.collider.gameObject);
                         GameManager.Instance.MenuClose();
                     }
                     else
                     {
-                        GameManager.Instance.SetFeedBack("Can´t pick up bugs from here");
+                        if (hitInfo.collider.GetComponent<Tuto>())
+                        {
+                            GameObject texto = Instantiate(prefabTexto, hitInfo.point + Vector3.up * 2f, Quaternion.identity);
+                            texto.GetComponent<TextMesh>().text = "Press A/S/D or screen borders to move";
+                            texto.GetComponent<TextMesh>().characterSize = 4;
+                            texto.GetComponent<TextMesh>().fontStyle = FontStyle.Bold;
+
+                        }
                     }
+
+                    GameManager.Instance.SetFeedBack("Can´t pick up bugs from here");
+
+
 
                 }
                 else if (hitInfo.collider.tag == "Edificio")
                 {
                     if (!EventSystem.current.IsPointerOverGameObject())
                     {
+                        if (hitInfo.collider.GetComponent<Hormiguero>() && GameObject.FindObjectOfType<Tuto>().gameObject.GetComponent<SpriteRenderer>().enabled == true)
+                        {
+                            GameObject.FindObjectOfType<Tuto>().gameObject.GetComponent<SpriteRenderer>().enabled = false;
+                            FindObjectOfType<SeasonManager>().started = true;
+                        }
                         GameManager.Instance.MenuOpen(hitInfo.collider.gameObject);
                     }
                 }
                 else
                 {
+                    if (!EventSystem.current.IsPointerOverGameObject())
+                    {
+                        if (GameManager.Instance.menuBlock.activeSelf || GameManager.Instance.menuCompras.activeSelf) SonidoManager.Instance.Play("BotonesUI");
+                        GameManager.Instance.MenuClose();
+                    }
                     if (EventSystem.current.IsPointerOverGameObject())
                     {
                         if (GameManager.Instance.menuBlock.activeSelf || GameManager.Instance.menuCompras.activeSelf) SonidoManager.Instance.Play("BotonesUI");
                         GameManager.Instance.MenuClose();
-                        print("Its over UI elements" + EventSystem.current.currentSelectedGameObject.name);
                     }
                 }
 

@@ -116,8 +116,10 @@ public class GameManager : MonoBehaviour
                 {
                     if (!go.activeSelf)
                     {
-                        SonidoMejoraVisual();
                         go.SetActive(true);
+                        GameManager.Instance.SpawnParticlesMejora(go.transform.position);
+                        SonidoMejoraVisual();
+
                         break;
                     }
                 }
@@ -139,7 +141,7 @@ public class GameManager : MonoBehaviour
                     {
                         SonidoMejoraVisual();
 
-                        go.SetActive(true);
+                        go.SetActive(true); GameManager.Instance.SpawnParticlesMejora(go.transform.position);
                         break;
                     }
                 }
@@ -161,7 +163,7 @@ public class GameManager : MonoBehaviour
                     {
                         SonidoMejoraVisual();
 
-                        go.SetActive(true);
+                        go.SetActive(true); GameManager.Instance.SpawnParticlesMejora(go.transform.position);
                         break;
                     }
                 }
@@ -183,7 +185,7 @@ public class GameManager : MonoBehaviour
                     {
                         SonidoMejoraVisual();
 
-                        go.SetActive(true);
+                        go.SetActive(true); GameManager.Instance.SpawnParticlesMejora(go.transform.position);
                         break;
                     }
                 }
@@ -205,7 +207,7 @@ public class GameManager : MonoBehaviour
                     {
                         SonidoMejoraVisual();
 
-                        go.SetActive(true);
+                        go.SetActive(true); GameManager.Instance.SpawnParticlesMejora(go.transform.position);
                         break;
                     }
                 }
@@ -227,7 +229,7 @@ public class GameManager : MonoBehaviour
                     {
                         SonidoMejoraVisual();
 
-                        go.SetActive(true);
+                        go.SetActive(true); GameManager.Instance.SpawnParticlesMejora(go.transform.position);
                         break;
                     }
                 }
@@ -240,7 +242,7 @@ public class GameManager : MonoBehaviour
                     {
                         SonidoMejoraVisual();
 
-                        go.SetActive(true);
+                        go.SetActive(true); GameManager.Instance.SpawnParticlesMejora(go.transform.position);
                         break;
                     }
                 }
@@ -262,7 +264,7 @@ public class GameManager : MonoBehaviour
                     {
                         SonidoMejoraVisual();
 
-                        go.SetActive(true);
+                        go.SetActive(true); GameManager.Instance.SpawnParticlesMejora(go.transform.position);
                         break;
                     }
                 }
@@ -320,13 +322,35 @@ public class GameManager : MonoBehaviour
         }
     }
     public float ratioCrecimientoCheckManzanas = 1.1f;
-    public float ratioCrecimientoCheckSeda= 1.2f;
+    public float ratioCrecimientoCheckSeda = 1.2f;
 
     public float ratioCrecimientoCheckMiel = 1.3f;
 
     public float ratioCrecimientoCheckPetalos = 1.4f;
     public float ratioCrecimientoCheckTokens = 1.8f;
+    public GameObject particulasMejoraL;
+    public GameObject particulasMejoraM;
+    public GameObject particulasMejoraS;
+    public void SpawnParticlesMejora(Vector3 p)
+    {
+        Instantiate(particulasMejoraM, p, Quaternion.identity);
+    }
+    public void SpawnParticlesMejora(Vector3 p, string tipo)
+    {
+        if (tipo == "Grande")
+        {
+            Instantiate(particulasMejoraL, p, Quaternion.identity);
+        }
+        else if (tipo == "Mediano")
+        {
+            Instantiate(particulasMejoraM, p, Quaternion.identity);
+        }
+        else if (tipo == "Pequeno")
+        {
+            Instantiate(particulasMejoraS, p, Quaternion.identity);
+        }
 
+    }
     void CalcularComienzo()
     {
         SonidoManager.Instance.Play("FondoJuego");
@@ -345,11 +369,13 @@ public class GameManager : MonoBehaviour
             capacidadPorMariposeroActual = capacidadPorMariposeroBase;
             capacidadPorGusaneroActual = capacidadPorGusaneroBase;
             capacidadAbejasActual = capacidadAbejasBase;
+            FindObjectOfType<SeasonManager>().started = false;
         }
-      
+
         else
         {
-          
+            FindObjectOfType<SeasonManager>().started = true;
+
             if (FindObjectOfType<DataAscension>() != null)
             {
                 DataAscension.Instance.DevolverDatos();
@@ -424,21 +450,21 @@ public class GameManager : MonoBehaviour
     public Text mielNeed;
     public Text petalosNeed;
 
-    
+
     public void CalculosCheck()
     {
-       
- añoCheck.text = "Year: " + propiedadesAñosCheck[currentYear].año + " ";
+
+        añoCheck.text = "Year: " + propiedadesAñosCheck[currentYear].año + " ";
         manzNeed.text = TotalManzanas.ToString("0") + " /" + propiedadesAñosCheck[currentYear].manzanas.ToString("0") + " ";
         sedaNeed.text = TotalSeda.ToString("0") + " /" + propiedadesAñosCheck[currentYear].seda.ToString("0") + " ";
         mielNeed.text = TotalMiel.ToString("0") + " /" + propiedadesAñosCheck[currentYear].miel.ToString("0") + " ";
         petalosNeed.text = TotalPetalos.ToString("0") + " /" + propiedadesAñosCheck[currentYear].petalos.ToString("0") + " ";
-      
-       
+
+
     }
     void Start()
     {
-       
+
         CalcularComienzo();
     }
     void Cheats()
