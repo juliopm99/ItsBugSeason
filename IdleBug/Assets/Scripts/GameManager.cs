@@ -347,15 +347,26 @@ public class GameManager : MonoBehaviour
         }
         else if (tipo == "Pequeno")
         {
-            Instantiate(particulasMejoraS, p, Quaternion.identity);
+            GameObject part=Instantiate(particulasMejoraS, p, Quaternion.identity);
+            part.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
         }
 
     }
+    public GameObject menuFondo;
+    public void CloseInitMsg(GameObject go)
+    {
+        go.SetActive(false);
+    }
+    public GameObject capullo;
+    public float escalaBase = 7;
+    public float escalaFinal = 42;
     void CalcularComienzo()
     {
+        SonidoManager.Instance.Restart();
+        menuFondo = GameObject.Find("Fondamen").gameObject;
         SonidoManager.Instance.Play("FondoJuego");
         SonidoManager.Instance.Play("EmpezarPartida");
-        SonidoManager.Instance.Stop("Invierno");
+        SonidoManager.Instance.Stop("Invierno"); 
         Time.timeScale = 1;
 
         if (currentYear == 0 && FindObjectOfType<DataAscension>() == null)
@@ -373,6 +384,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            menuFondo.SetActive(false);
             FindObjectOfType<SeasonManager>().started = true;
 
             if (FindObjectOfType<DataAscension>() != null)
@@ -466,6 +478,10 @@ public class GameManager : MonoBehaviour
     {
 
         CalcularComienzo();
+    }
+    public void ActivarTuto(GameObject objeto)
+    {
+        objeto.SetActive(true);
     }
     [Header("CHEATS")]
     public float cheatXSegundoM = 5;
@@ -593,7 +609,9 @@ public class GameManager : MonoBehaviour
 
       if(textoAlmacen!=null)  textoAlmacen.text = actualStorageSilk.ToString("0.0") + " / " + maxSilk;
         if (desbloqueadosGusanos)
-        {
+        { float x = Mathf.Lerp(escalaBase, escalaFinal, actualStorageSilk / maxSilk);
+           
+            capullo.transform.localScale =new Vector3(x,x,x);
             sedaPorSegundo = (gusanosTotal * sedaPorGusanoSegundo + (gusanosTotal * sedaPorGusanoSegundo * multiplicadorSedaSegundo / 100)) - ((gusanosTotal * sedaPorGusanoSegundo + (gusanosTotal * sedaPorGusanoSegundo * multiplicadorSedaSegundo / 100)) * reduccionProdGusanLLuvia / 100);
             if (actualStorageSilk < maxSilk)
             {
@@ -754,8 +772,8 @@ public class GameManager : MonoBehaviour
     public void VaciarAlmacenSeda()
     {
         //if (actualStorageSilk == maxSilk)
-        //{
-            if (CamaraChange.Instance.activeCam == 1) SonidoManager.Instance.Play("AlmacenVaciar");
+       if(actualStorageSilk>1) SpawnParticlesMejora(capullo.transform.position,"Pequeno");
+        if (CamaraChange.Instance.activeCam == 1) SonidoManager.Instance.Play("AlmacenVaciar");
             TotalSeda += actualStorageSilk;
             actualStorageSilk = 0;
             if (gusanosParados == true) GusanosParados = false;
@@ -2083,22 +2101,30 @@ public class GameManager : MonoBehaviour
             GameObject.Find("NivelMejora").GetComponent<Text>().text = "Level : " + nivelMejora3.ToString();
             GameObject.Find("CosteMejora").GetComponent<Text>().text = "Cost :" + costeMejora3Actual.ToString();
         }
-        GameObject.Find("TotalMejora").GetComponent<Text>().text = "Total : -"+((int)(nivelMejora3-1 * cantidadMejora3Porcentaje)).ToString("0") + "%";
+        if (nivelMejora3 == 1)
+        {
+            GameObject.Find("TotalMejora").GetComponent<Text>().text = "Total : -" + ((int)(0 * cantidadMejora3Porcentaje)).ToString("0") + "%";
+        }
+        else
+        {
+            GameObject.Find("TotalMejora").GetComponent<Text>().text = "Total : -" + ((int)(nivelMejora3 - 1 * cantidadMejora3Porcentaje)).ToString("0") + "%";
+        }
+      
         GameObject.Find("DescripcionMejora").GetComponent<Text>().text = descripcionMejora3 + " " + cantidadMejora3Porcentaje + "%";
         SonidoManager.Instance.Play("BotonesUI");
     }
     public void SetDescripcionMejora4Token()
     {
         GameObject.Find("NombreMejora").GetComponent<Text>().text = nombreMejora4;
-        if (totalMejora4Tokens >= 100)
+        if (totalMejora4Tokens >= 75)
         {
-            totalMejora4Tokens = 100;
+            totalMejora4Tokens =75;
             GameObject.Find("Mejora(4)").GetComponent<Button>().interactable = false;
 
 
         }
 
-        if (totalMejora4Tokens >= 100)
+        if (totalMejora4Tokens >= 75)
         {
             GameObject.Find("NivelMejora").GetComponent<Text>().text = "Level max : " + nivelMejora4.ToString();
             GameObject.Find("CosteMejora").GetComponent<Text>().text = "Level max";
@@ -2108,8 +2134,16 @@ public class GameManager : MonoBehaviour
             GameObject.Find("NivelMejora").GetComponent<Text>().text = "Level : " + nivelMejora4.ToString();
             GameObject.Find("CosteMejora").GetComponent<Text>().text = "Cost :" + costeMejora4Actual.ToString();
         }
+        if (nivelMejora3 == 1)
+        {
+            GameObject.Find("TotalMejora").GetComponent<Text>().text = "Total : +" + ((int)(0 * cantidadMejora4)).ToString("0");
+        }
+        else
+        {
+            GameObject.Find("TotalMejora").GetComponent<Text>().text = "Total : +" + ((int)(nivelMejora4 - 1 * cantidadMejora4)).ToString("0");
+        }
         //GameObject.Find("NivelMejora").GetComponent<Text>().text = "Level : "+ nivelMejora4.ToString();
-        GameObject.Find("TotalMejora").GetComponent<Text>().text = "Total : +" + ((int)(nivelMejora4-1 * cantidadMejora4)).ToString("0");
+      
         //GameObject.Find("CosteMejora").GetComponent<Text>().text = "Cost :"+costeMejora4Actual.ToString();
         GameObject.Find("DescripcionMejora").GetComponent<Text>().text = descripcionMejora4 + " " + cantidadMejora4;
         SonidoManager.Instance.Play("BotonesUI");
@@ -2183,15 +2217,15 @@ public class GameManager : MonoBehaviour
     public float totalMejora4Tokens;
     public void CompraMejora4()
     {
-        if (costeMejora4Actual <= actualTokens&&totalMejora4Tokens<100)
+        if (costeMejora4Actual <= actualTokens&&totalMejora4Tokens<75)
         {
             actualTokens -= costeMejora4Actual;
             nivelMejora4++;
             costeMejora4Actual = (int)(costeMejora4Base * Mathf.Pow(ratioMejora4, nivelMejora4));
             totalMejora4Tokens = nivelMejora4 * cantidadMejora4;
-            if (totalMejora4Tokens >= 100)
+            if (totalMejora4Tokens >= 75)
             {
-                totalMejora4Tokens = 100;
+                totalMejora4Tokens = 75;
                 GameObject.Find("Mejora(4)").GetComponent<Button>().interactable = false;
 
 

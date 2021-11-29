@@ -192,7 +192,7 @@ public class SeasonManager : MonoBehaviour
             }
             if (tiempo >= tiempoPartida) fade.SetActive(true);
             if (open == false) if (tiempo >= tiempoPartida + 4) { GameManager.Instance.OpenCloseInviernoMenu(); open = true; }
-            if (Time.timeScale == 1) if (tiempo >= tiempoPartida + 6) { Time.timeScale = 0; }
+            if (Time.timeScale == 1) if (tiempo >= tiempoPartida + 6) { Time.timeScale = 0; SonidoManager.Instance.Stop("FondoJuego"); }
             if (spring)
             {
                 //manzanos + 20%
