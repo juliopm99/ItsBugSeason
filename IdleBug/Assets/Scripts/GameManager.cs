@@ -1248,6 +1248,8 @@ public class GameManager : MonoBehaviour
         }
         CamaraChange.Instance.CheckAll();
     }
+    public GameObject icono;
+    public Sprite[] iconosImagenes;
     public void OpenBlock(string tipo)
     {
 
@@ -1261,27 +1263,32 @@ public class GameManager : MonoBehaviour
         else if (tipo == "Manzano")
         {
             nombreBlocked.text = nombreBlock;
-            botonBlock.GetComponentInChildren<Text>().text = blockManzano + " " + costeDesbloqueoManzano + " Apples";
+            botonBlock.GetComponentInChildren<Text>().text = blockManzano + " " + costeDesbloqueoManzano + " "; 
+
+            icono.GetComponent<Image>().sprite = iconosImagenes[0];
         }
         else if (tipo == "Panal")
         {
             nombreBlocked.text = nombreBlock;
-            botonBlock.GetComponentInChildren<Text>().text = blockPanal + " " + costeDesbloqueoPanal + " Silk";
+            botonBlock.GetComponentInChildren<Text>().text = blockPanal + " " + costeDesbloqueoPanal + " "; icono.GetComponent<Image>().sprite = iconosImagenes[1];
+
         }
         else if (tipo == "Flor")
         {
             nombreBlocked.text = nombreBlock;
-            botonBlock.GetComponentInChildren<Text>().text = blockFlores + " " + costeDesbloqueoFlores + " Honey";
+            botonBlock.GetComponentInChildren<Text>().text = blockFlores + " " + costeDesbloqueoFlores + " "; icono.GetComponent<Image>().sprite = iconosImagenes[2];
+
         }
         else if (tipo == "Gusanero")
         {
             nombreBlocked.text = nombreBlock;
-            botonBlock.GetComponentInChildren<Text>().text = blockGusanos + " " + costeDesbloqueoGusanos + " Apples";
+            botonBlock.GetComponentInChildren<Text>().text = blockGusanos + " " + costeDesbloqueoGusanos + " "; icono.GetComponent<Image>().sprite = iconosImagenes[0];
+
         }
         else if (tipo == "Mariposero")
         {
             nombreBlocked.text = nombreBlock;
-            botonBlock.GetComponentInChildren<Text>().text = blockMariposas + " " + costeDesbloqueoMariposas + " Honey";
+            botonBlock.GetComponentInChildren<Text>().text = blockMariposas + " " + costeDesbloqueoMariposas + " "; icono.GetComponent<Image>().sprite = iconosImagenes[2];
         }
     }
     public void OpenCompras(string tipo)
