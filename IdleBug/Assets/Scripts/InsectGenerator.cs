@@ -84,75 +84,76 @@ public class InsectGenerator : MonoBehaviour
 
         Hormiguero = GameObject.FindObjectOfType<Hormiguero>();
         Panal = GameObject.FindObjectOfType<Panal>();
-        arrayHijosG = arrayHijosH;
-        arrayHijosA = arrayHijosH;
+       
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (hayHormiga == false)
+        if (FindObjectOfType<SeasonManager>() != null && FindObjectOfType<SeasonManager>().started == true)
         {
-            actualCdH -= Time.deltaTime;
-            if (actualCdH <= 0)
+            if (hayHormiga == false)
             {
-                SpawnInsecto("Hormiga");
-                hayHormiga = true;
-                actualTiempoH = tiempoMaxHormiga;
+                actualCdH -= Time.deltaTime;
+                if (actualCdH <= 0)
+                {
+                    SpawnInsecto("Hormiga");
+                    hayHormiga = true;
+                    actualTiempoH = tiempoMaxHormiga;
+                }
             }
-        }
-        else if (hayHormiga)
-        {
-            actualTiempoH -= Time.deltaTime;
-            if (actualTiempoH < 0)
+            else if (hayHormiga)
             {
-                actualCdH = cooldownEntreHormigas;
-                hayHormiga = false;
-                Destroy(lastH);
+                actualTiempoH -= Time.deltaTime;
+                if (actualTiempoH < 0)
+                {
+                    actualCdH = cooldownEntreHormigas;
+                    hayHormiga = false;
+                    Destroy(lastH);
+                }
             }
-        }
 
-        if (hayGusano == false && GameManager.Instance.desbloqueadosGusanos)
-        {
-            actualCdG -= Time.deltaTime;
-            if (actualCdG <= 0)
+            if (hayGusano == false && GameManager.Instance.desbloqueadosGusanos)
             {
-                SpawnInsecto("Gusano");
-                hayGusano = true;
-                actualTiempoG = tiempoMaxGusano;
+                actualCdG -= Time.deltaTime;
+                if (actualCdG <= 0)
+                {
+                    SpawnInsecto("Gusano");
+                    hayGusano = true;
+                    actualTiempoG = tiempoMaxGusano;
+                }
+            }
+            else if (hayGusano)
+            {
+                actualTiempoG -= Time.deltaTime;
+                if (actualTiempoG < 0)
+                {
+                    actualCdG = cooldownEntreGusanos;
+                    hayGusano = false;
+                    Destroy(lastG);
+                }
+            }
+            if (hayAbeja == false && GameManager.Instance.desbloqueadosPanales)
+            {
+                actualCdA -= Time.deltaTime;
+                if (actualCdA <= 0)
+                {
+                    SpawnInsecto("Abeja");
+                    hayAbeja = true;
+                    actualTiempoA = tiempoMaxAbeja;
+                }
+            }
+            else if (hayAbeja)
+            {
+                actualTiempoA -= Time.deltaTime;
+                if (actualTiempoA < 0)
+                {
+                    actualCdA = cooldownEntreAbejas;
+                    hayAbeja = false;
+                    Destroy(lastA);
+                }
             }
         }
-        else if (hayGusano)
-        {
-            actualTiempoG -= Time.deltaTime;
-            if (actualTiempoG < 0)
-            {
-                actualCdG = cooldownEntreGusanos;
-                hayGusano = false;
-                Destroy(lastG);
-            }
-        }
-        if (hayAbeja == false && GameManager.Instance.desbloqueadosPanales)
-        {
-            actualCdA -= Time.deltaTime;
-            if (actualCdA <= 0)
-            {
-                SpawnInsecto("Abeja");
-                hayAbeja = true;
-                actualTiempoA = tiempoMaxAbeja;
-            }
-        }
-        else if (hayAbeja)
-        {
-            actualTiempoA -= Time.deltaTime;
-            if (actualTiempoA < 0)
-            {
-                actualCdA = cooldownEntreAbejas;
-                hayAbeja = false;
-                Destroy(lastA);
-            }
-        }
-
     }
     public static Vector3 PuntoAleatorioEnCollider(Bounds limites)
     {
@@ -227,7 +228,7 @@ public class InsectGenerator : MonoBehaviour
     }
     public void CogerInsecto(GameObject objeto)
     {//SUMAR ALGO Y DIFERENCIAR TIPO DE INSECTO
-        GameObject texto = Instantiate(prefabTexto, objeto.transform.position+Vector3.up*2f, Quaternion.identity);
+        GameObject texto = Instantiate(prefabTexto, objeto.transform.position + Vector3.up * 2f, Quaternion.identity);
         if (objeto.GetComponent<InsecGenerado>().tipo == InsecGenerado.Tipos.Hormiga)
         {
             int extraShiny = 0;
@@ -236,7 +237,7 @@ public class InsectGenerator : MonoBehaviour
             {
                 extraShiny = GameManager.Instance.multiplicadorShiny * GameManager.Instance.cantidadHormigasCogidas;
                 texto.GetComponent<TextMesh>().text = "Shiny! +" + extraShiny.ToString() + " ants picked";
-               
+
 
             }
             else
@@ -244,10 +245,10 @@ public class InsectGenerator : MonoBehaviour
                 extraShiny = 1 * GameManager.Instance.cantidadHormigasCogidas;
                 texto.GetComponent<TextMesh>().text = "+" + extraShiny.ToString() + " ants picked";
             }
-
+            SonidoManager.Instance.Play("CogerBicho");
             if (hormiguero.poblacionActual < hormiguero.capacidadActual)
             {
-                SonidoManager.Instance.Play("CogerBicho");
+              
                 for (int i = 0; i < extraShiny; i++)
                 {
                     GameManager.Instance.CogerHormiga();
@@ -256,7 +257,7 @@ public class InsectGenerator : MonoBehaviour
             }
             else
             {
-                GameManager.Instance.SetFeedBack("No more room for","ants");
+                GameManager.Instance.SetFeedBack("No more room for", "ants");
             }
             actualCdH = cooldownEntreHormigas;
             hayHormiga = false;
@@ -268,19 +269,19 @@ public class InsectGenerator : MonoBehaviour
             if (CalcularShiny())
             {
                 extraShiny = GameManager.Instance.multiplicadorShiny * GameManager.Instance.cantidadAbejasCogidas;
-              
+
                 texto.GetComponent<TextMesh>().text = "Shiny! +" + extraShiny.ToString() + " bees picked";
-               
+
             }
             else
             {
                 extraShiny = 1 * GameManager.Instance.cantidadAbejasCogidas;
                 texto.GetComponent<TextMesh>().text = "+" + extraShiny.ToString() + " bees picked";
-           
-            }
+
+            }  SonidoManager.Instance.Play("CogerBicho");
             if (panal.poblacionActual < panal.capacidadActual)
             {
-                SonidoManager.Instance.Play("CogerBicho");
+              
                 for (int i = 0; i < extraShiny; i++)
                 {
                     GameManager.Instance.CogerAbeja();
@@ -303,19 +304,19 @@ public class InsectGenerator : MonoBehaviour
             if (CalcularShiny())
             {
                 extraShiny = GameManager.Instance.multiplicadorShiny * GameManager.Instance.cantidadGusanosCogidos;
-               
+
                 texto.GetComponent<TextMesh>().text = "Shiny! +" + extraShiny.ToString() + " worms picked";
-            
+
             }
             else
             {
                 extraShiny = 1 * GameManager.Instance.cantidadGusanosCogidos;
-             
+
                 texto.GetComponent<TextMesh>().text = "+" + extraShiny.ToString() + " worms picked";
-            }
+            }  SonidoManager.Instance.Play("CogerBicho");
             if (GameManager.Instance.gusanosTotal < GameManager.Instance.capacidadTotalGusanos)
             {
-                SonidoManager.Instance.Play("CogerBicho");
+              
                 for (int i = 0; i < extraShiny; i++)
                 {
                     GameManager.Instance.CogerGusano();
@@ -324,7 +325,7 @@ public class InsectGenerator : MonoBehaviour
             }
             else
             {
-                GameManager.Instance.SetFeedBack("No more room for" ,"worms");
+                GameManager.Instance.SetFeedBack("No more room for", "worms");
             }
             actualCdG = cooldownEntreGusanos;
             hayGusano = false;

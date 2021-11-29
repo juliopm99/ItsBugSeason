@@ -18,7 +18,7 @@ public class Hormiguero : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        textoHormigas = GetComponentInChildren<TextMesh>().gameObject;
+        textoHormigas = GameObject.Find("TextoHormigas").GetComponent<TextMesh>().gameObject;
         poblacionActual = 0;
         poblacionOcupada = 0;
         capacidadActual = GameManager.Instance.capacidadPorHormigueroBase ;
@@ -68,7 +68,7 @@ public class Hormiguero : MonoBehaviour
             }
         }
         print(rand + "randomg");
-        StartCoroutine(SpawnHormigasMision(manz, this.transform.position));//CAMBIAR
+        StartCoroutine(SpawnHormigasMision(manz,GameManager.Instance.hormiguerosDesactivados[rand].transform.position));//CAMBIAR
         spawneando = false;
     }
     public void TerminarMision()

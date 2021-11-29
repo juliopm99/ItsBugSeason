@@ -20,7 +20,7 @@ public class Panal : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        textoabejas = GetComponentInChildren<TextMesh>().gameObject;
+        textoabejas = GameObject.Find("TextoAbejas").GetComponent<TextMesh>().gameObject;
         poblacionActual = 0;
         poblacionOcupada = 0;
         capacidadActual = GameManager.Instance.capacidadAbejasBase;
