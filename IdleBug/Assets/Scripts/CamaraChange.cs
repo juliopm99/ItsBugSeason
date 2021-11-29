@@ -181,8 +181,7 @@ GameManager.Instance.MenuClose();
                     {
                         if (GameManager.Instance.menuBlock.activeSelf || GameManager.Instance.menuCompras.activeSelf) SonidoManager.Instance.Play("BotonesUI");
                         GameManager.Instance.MenuClose();
-                        Debug.Log("Its over UI elements");
-                        print(hitInfo.collider.gameObject.name);
+                        Debug.Log("Its over UI elements"+hitInfo.collider.gameObject.name);
                     }
                 }
 

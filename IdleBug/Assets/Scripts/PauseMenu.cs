@@ -84,6 +84,7 @@ public class PauseMenu : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
+            GameManager.Instance.MenuClose();
             if (!pausePanel.activeSelf) { OpenPauseMenu(); } else { Play(); }
         }
     }

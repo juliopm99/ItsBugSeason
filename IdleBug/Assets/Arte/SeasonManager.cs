@@ -25,6 +25,7 @@ public class SeasonManager : MonoBehaviour
     public bool eventoActivo;
 
     public float tiempo = 0;
+    public GameObject flecha;
 
     // Start is called before the first frame update
     void Awake()

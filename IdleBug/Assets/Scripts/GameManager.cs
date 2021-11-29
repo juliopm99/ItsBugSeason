@@ -358,7 +358,7 @@ public class GameManager : MonoBehaviour
         hormiguero = GameObject.FindObjectOfType<Hormiguero>();
         panal = GameObject.FindObjectOfType<Panal>();
         ActualizarTextoHormigas();
-        TextoHormigas = GameObject.Find("TextoHormigasM").GetComponent<Text>();
+        //TextoHormigas = GameObject.Find("TextoHormigasM").GetComponent<Text>();
         TextoManzanas = GameObject.Find("TextoManzanasM").GetComponent<Text>();
         textoMiel = GameObject.Find("TextoManzanasSegundoM").GetComponent<Text>();
         textoSeda = GameObject.Find("TextoManzanasGeneradasM").GetComponent<Text>();
@@ -409,10 +409,10 @@ public class GameManager : MonoBehaviour
     {
 
         añoCheck.text = "Year: " + propiedadesAñosCheck[currentYear].año + " ";
-        manzNeed.text = "Apples: " + TotalManzanas + " /" + propiedadesAñosCheck[currentYear].manzanas + " ";
-        sedaNeed.text = "Silk: " + TotalSeda + " /" + propiedadesAñosCheck[currentYear].seda + " ";
-        mielNeed.text = "Honey: " + TotalMiel + " /" + propiedadesAñosCheck[currentYear].miel + " ";
-        petalosNeed.text = "Petals: " + TotalPetalos + " /" + propiedadesAñosCheck[currentYear].petalos + " ";
+        manzNeed.text =  TotalManzanas + " /" + propiedadesAñosCheck[currentYear].manzanas + " ";
+        sedaNeed.text = TotalSeda + " /" + propiedadesAñosCheck[currentYear].seda + " ";
+        mielNeed.text =  TotalMiel + " /" + propiedadesAñosCheck[currentYear].miel + " ";
+        petalosNeed.text =  TotalPetalos + " /" + propiedadesAñosCheck[currentYear].petalos + " ";
     }
     void Start()
     {
@@ -581,7 +581,7 @@ public class GameManager : MonoBehaviour
         textoMiel.text = (string)("Honey:" + TotalMiel.ToString("0"));
         textoSeda.text = (string)("Silk :" + TotalSeda.ToString("0"));
         textoPetalos.text = (string)("Petals:" + TotalPetalos.ToString("0"));
-        TextoHormigas.text = "";
+        //TextoHormigas.text = "";
 
     }
     public void CogerHormiga()
@@ -2119,7 +2119,7 @@ public class GameManager : MonoBehaviour
                 SonidoManager.Instance.Play("PopUI");
                 infoInvierno.SetActive(true);
                 GameObject.Find("TextoCompletar").GetComponent<Text>().text = "YOU HAVE COMPLETED YEAR " + currentYear;
-                GameObject.Find("TextoCompletar").GetComponent<Text>().text = "YOU HAVE COMPLETED YEAR " + currentYear;
+               
                 GameObject.Find("ManzanasNecesarias").GetComponent<Text>().text = "Apples need: " + TotalManzanas + " / " + propiedadesAñosCheck[currentYear].manzanas;
                 GameObject.Find("SedaNecesarias").GetComponent<Text>().text = "Silk need: " + TotalSeda + " / " + propiedadesAñosCheck[currentYear].seda;
                 GameObject.Find("MielNecesarias").GetComponent<Text>().text = "Honey need: " + TotalMiel + " / " + propiedadesAñosCheck[currentYear].miel;
@@ -2131,7 +2131,7 @@ public class GameManager : MonoBehaviour
                 GameObject.Find("SedaTokens").GetComponent<Text>().text = "Bonus tokens : + " + valores[1];
                 GameObject.Find("MielTokens").GetComponent<Text>().text = "Bonus tokens : + " + valores[2];
                 GameObject.Find("PetalosTokens").GetComponent<Text>().text = "Bonus tokens : + " + valores[3];
-                GameObject.Find("TextoBotonCompletar").GetComponent<Text>().text = "Continue to winter upgrades. Get " + propiedadesAñosCheck[currentYear].tokensbase + " extra tokens for surviving year" + currentYear;
+                GameObject.Find("TextoBotonCompletar").GetComponent<Text>().text = "Continue to winter upgrades. Get " + propiedadesAñosCheck[currentYear].tokensbase + " extra tokens for surviving year " + currentYear;
 
             }
             else
