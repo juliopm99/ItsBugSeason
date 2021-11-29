@@ -319,6 +319,13 @@ public class GameManager : MonoBehaviour
 
         }
     }
+    public float ratioCrecimientoCheckManzanas = 1.1f;
+    public float ratioCrecimientoCheckSeda= 1.2f;
+
+    public float ratioCrecimientoCheckMiel = 1.3f;
+
+    public float ratioCrecimientoCheckPetalos = 1.4f;
+    public float ratioCrecimientoCheckTokens = 1.8f;
 
     void CalcularComienzo()
     {
@@ -339,8 +346,18 @@ public class GameManager : MonoBehaviour
             capacidadPorGusaneroActual = capacidadPorGusaneroBase;
             capacidadAbejasActual = capacidadAbejasBase;
         }
+      
         else
         {
+            if (propiedadesAñosCheck[currentYear] == null)
+            {
+                propiedadesAñosCheck[currentYear] = new CheckProperties(currentYear,(int)( propiedadesAñosCheck[currentYear - 1].manzanas * Mathf.Pow(ratioCrecimientoCheckManzanas, currentYear)), (int)(propiedadesAñosCheck[currentYear - 1].seda * Mathf.Pow(ratioCrecimientoCheckSeda, currentYear)), (int)(propiedadesAñosCheck[currentYear - 1].miel * Mathf.Pow(ratioCrecimientoCheckMiel, currentYear)), (int)(propiedadesAñosCheck[currentYear - 1].petalos * Mathf.Pow(ratioCrecimientoCheckPetalos, currentYear)), (int)(propiedadesAñosCheck[currentYear - 1].tokensbase * Mathf.Pow(ratioCrecimientoCheckTokens, currentYear)));
+             
+                manzNeed.text = TotalManzanas.ToString("0") + " /" + propiedadesAñosCheck[currentYear].manzanas.ToString("0") + " ";
+                sedaNeed.text = TotalSeda.ToString("0") + " /" + propiedadesAñosCheck[currentYear].seda.ToString("0") + " ";
+                mielNeed.text = TotalMiel.ToString("0") + " /" + propiedadesAñosCheck[currentYear].miel.ToString("0") + " ";
+                petalosNeed.text = TotalPetalos.ToString("0") + " /" + propiedadesAñosCheck[currentYear].petalos.ToString("0") + " ";
+            }
             if (FindObjectOfType<DataAscension>() != null)
             {
                 DataAscension.Instance.DevolverDatos();
@@ -405,14 +422,18 @@ public class GameManager : MonoBehaviour
     public Text sedaNeed;
     public Text mielNeed;
     public Text petalosNeed;
+
+    
     public void CalculosCheck()
     {
-
-        añoCheck.text = "Year: " + propiedadesAñosCheck[currentYear].año + " ";
-        manzNeed.text =  TotalManzanas + " /" + propiedadesAñosCheck[currentYear].manzanas + " ";
-        sedaNeed.text = TotalSeda + " /" + propiedadesAñosCheck[currentYear].seda + " ";
-        mielNeed.text =  TotalMiel + " /" + propiedadesAñosCheck[currentYear].miel + " ";
-        petalosNeed.text =  TotalPetalos + " /" + propiedadesAñosCheck[currentYear].petalos + " ";
+       
+ añoCheck.text = "Year: " + propiedadesAñosCheck[currentYear].año + " ";
+        manzNeed.text = TotalManzanas.ToString("0") + " /" + propiedadesAñosCheck[currentYear].manzanas.ToString("0") + " ";
+        sedaNeed.text = TotalSeda.ToString("0") + " /" + propiedadesAñosCheck[currentYear].seda.ToString("0") + " ";
+        mielNeed.text = TotalMiel.ToString("0") + " /" + propiedadesAñosCheck[currentYear].miel.ToString("0") + " ";
+        petalosNeed.text = TotalPetalos.ToString("0") + " /" + propiedadesAñosCheck[currentYear].petalos.ToString("0") + " ";
+      
+       
     }
     void Start()
     {
@@ -577,10 +598,10 @@ public class GameManager : MonoBehaviour
     {
 
 
-        TextoManzanas.text = (string)("Apples:" + TotalManzanas.ToString("0"));
-        textoMiel.text = (string)("Honey:" + TotalMiel.ToString("0"));
-        textoSeda.text = (string)("Silk :" + TotalSeda.ToString("0"));
-        textoPetalos.text = (string)("Petals:" + TotalPetalos.ToString("0"));
+        TextoManzanas.text = (string)(TotalManzanas.ToString("0"));
+        textoMiel.text = (string)(TotalMiel.ToString("0"));
+        textoSeda.text = (string)(Mathf.Floor(TotalSeda).ToString("0"));
+        textoPetalos.text = (string)(TotalPetalos.ToString("0"));
         //TextoHormigas.text = "";
 
     }
@@ -771,10 +792,11 @@ public class GameManager : MonoBehaviour
         }
         else if (gusanosTotal - gusanosNecesarios < 0)
         {
-            GameManager.Instance.SetFeedBack("Not enough worms","");
-        }else if(mariposasTotal + 1 > capacidadTotalMariposas)
+            GameManager.Instance.SetFeedBack("Not enough worms", "");
+        }
+        else if (mariposasTotal + 1 > capacidadTotalMariposas)
         {
-            GameManager.Instance.SetFeedBack("No room for","butterflies");
+            GameManager.Instance.SetFeedBack("No room for", "butterflies");
         }
 
     }
@@ -2119,11 +2141,11 @@ public class GameManager : MonoBehaviour
                 SonidoManager.Instance.Play("PopUI");
                 infoInvierno.SetActive(true);
                 GameObject.Find("TextoCompletar").GetComponent<Text>().text = "YOU HAVE COMPLETED YEAR " + currentYear;
-               
-                GameObject.Find("ManzanasNecesarias").GetComponent<Text>().text = "Apples need: " + TotalManzanas + " / " + propiedadesAñosCheck[currentYear].manzanas;
-                GameObject.Find("SedaNecesarias").GetComponent<Text>().text = "Silk need: " + TotalSeda + " / " + propiedadesAñosCheck[currentYear].seda;
-                GameObject.Find("MielNecesarias").GetComponent<Text>().text = "Honey need: " + TotalMiel + " / " + propiedadesAñosCheck[currentYear].miel;
-                GameObject.Find("PetalosNecesarias").GetComponent<Text>().text = "Petals need: " + TotalPetalos + " / " + propiedadesAñosCheck[currentYear].petalos;
+
+                GameObject.Find("ManzanasNecesarias").GetComponent<Text>().text = "Apples need: " + TotalManzanas + " / " + propiedadesAñosCheck[currentYear].manzanas.ToString("0");
+                GameObject.Find("SedaNecesarias").GetComponent<Text>().text = "Silk need: " + TotalSeda + " / " + propiedadesAñosCheck[currentYear].seda.ToString("0");
+                GameObject.Find("MielNecesarias").GetComponent<Text>().text = "Honey need: " + TotalMiel + " / " + propiedadesAñosCheck[currentYear].miel.ToString("0");
+                GameObject.Find("PetalosNecesarias").GetComponent<Text>().text = "Petals need: " + TotalPetalos + " / " + propiedadesAñosCheck[currentYear].petalos.ToString("0");
                 int[] valores = CalcularTokens();
 
                 actualTokens = valores[4];

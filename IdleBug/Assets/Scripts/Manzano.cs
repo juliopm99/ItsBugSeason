@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Manzano : MonoBehaviour
 {
-    private float tiempoEntreManzanas = 10f;
+    public float tiempoEntreManzanas = 10f;
 
     float actualCd = 0;
     public GameObject prefabManzana;

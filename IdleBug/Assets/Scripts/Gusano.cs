@@ -97,6 +97,7 @@ public class Gusano : MonoBehaviour
         if (Random.Range(0, 11) == 2)
         {
             destino = GameObject.FindObjectOfType<AlmacenSeda>().gameObject.transform.position;
+
         }
     }
 

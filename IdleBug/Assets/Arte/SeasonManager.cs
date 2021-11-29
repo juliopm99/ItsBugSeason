@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SeasonManager : MonoBehaviour
 {
@@ -10,6 +11,11 @@ public class SeasonManager : MonoBehaviour
     public bool autumn = false;
     public bool calor = false;
     public bool frio = false;
+    public Text mensajeYear;
+    public Text mensajeSeason;
+    public Text mensajeSeason2;
+    public Text mensajeEventos;
+    public Text mensajeEventos2;
 
     public float tiempoPartida = 360;
     public float probBaseEvento = 10f;
@@ -26,10 +32,23 @@ public class SeasonManager : MonoBehaviour
 
     public float tiempo = 0;
     public GameObject flecha;
+    public float rotInicial = -10;
+    public float rotacionFinal = -165;
+    public float rotacionActual;
 
     // Start is called before the first frame update
     void Awake()
-    {
+    {  mensajeYear = GameObject.Find("MensajeYear").GetComponent<Text>();
+        mensajeSeason = GameObject.Find("MensajeSeason").GetComponent<Text>();
+        mensajeSeason2 = GameObject.Find("MensajeSeason2").GetComponent<Text>();
+        mensajeEventos = GameObject.Find("MensajeEvento").GetComponent<Text>();
+        mensajeEventos2 = GameObject.Find("MensajeEvento2").GetComponent<Text>();
+        mensajeEventos.text = " ";
+
+        mensajeEventos2.text = "";
+        mensajeSeason.text = " ";
+        mensajeYear.text = "";
+        mensajeSeason.text = "";
         //firstYear = true;
         DecidirCondiciones();
         tmp = tiempoAseguradoSinEventosAlPrincipio;
@@ -38,6 +57,12 @@ public class SeasonManager : MonoBehaviour
     }
     private void Start()
     {
+      
+
+        flecha = GameObject.Find("FlechaRotar").gameObject;
+        rotacionActual = rotInicial;
+        flecha.transform.rotation = Quaternion.Euler(new Vector3(flecha.transform.rotation.x, flecha.transform.rotation.y, rotInicial));
+
         tiempo = 0;
     }
     public float tiempoEntreSonidosFondoBase = 3;
@@ -65,6 +90,8 @@ public class SeasonManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        rotacionActual = Mathf.Lerp(rotInicial, rotacionFinal, tiempo / tiempoPartida);
+        flecha.transform.rotation = Quaternion.Euler(new Vector3(flecha.transform.rotation.x, flecha.transform.rotation.y, rotacionActual));
         if (SonidoManager.Instance.IsPlaying("SonidoAleatorio1") || SonidoManager.Instance.IsPlaying("SonidoAleatorio2") || SonidoManager.Instance.IsPlaying("SonidoAleatorio3") || SonidoManager.Instance.IsPlaying("SonidoAleatorio4"))
         {
 
@@ -89,38 +116,65 @@ public class SeasonManager : MonoBehaviour
         bool sequiainicio = sequia;
         bool lluviainicio = lluvia;
         GetComponent<SeasonVisuales>().seasonValue = Mathf.Lerp(0, 1, tiempo / tiempoPartida);
-        if (Time.realtimeSinceStartup < tiempoPartida / 3)
+        if (tiempo < tiempoPartida / 3)
         {
             if (spring == false)
-            {
+            {  mensajeSeason2.text = "";
                 spring = true;
                 GameManager.Instance.SetSeason("spring");
                 summer = false;
                 autumn = false;
                 GameManager.Instance.SetFeedBack("Spring started", 2f);
+               
+                    mensajeSeason.text = "Spring: +" + GameManager.Instance.tGenManzPrimaveraPorcentaje + "% apple generation";
+               
+
+              
             }
 
         }
         if (tiempo >= tiempoPartida / 3 && tiempo < (tiempoPartida * 2) / 3)
         {
             if (summer == false)
-            {
+            { 
                 spring = false;
                 summer = true;
                 GameManager.Instance.SetSeason("summer");
 
                 autumn = false;
                 GameManager.Instance.SetFeedBack("Summer started", "");
+                if (GameManager.Instance.desbloqueadosPanales)
+                {
+                    mensajeSeason.text = "Summer: -" + GameManager.Instance.tPolinVeranoPorcentaje + "% pollination time";
+                }
+                else
+                {
+                    mensajeSeason.text = "";
+                }
+               
+                    mensajeSeason2.text = "";
+               
             }
         }
         if (tiempo >= (tiempoPartida * 2) / 3 && tiempo < tiempoPartida)
         {
             if (autumn == false)
-            {
-                spring = false; summer = false;
+            {   spring = false; summer = false;
                 GameManager.Instance.SetSeason("autumn");
                 autumn = true;
                 GameManager.Instance.SetFeedBack("Autumn started", "");
+               
+                    mensajeSeason.text = "Autumn: -" + GameManager.Instance.tMenosGenManzOtonoPorcentaje + "% apple generation";
+            
+                if (GameManager.Instance.desbloqueadosPanales)
+                {
+                    mensajeSeason2.text = "Autumn: +" + GameManager.Instance.tMenosPolinOtonoPorcentaje + "% pollination time";
+                }
+                else
+                {
+                    mensajeSeason2.text = "";
+                }
+             
             }
 
         }
@@ -258,6 +312,16 @@ public class SeasonManager : MonoBehaviour
             GameManager.Instance.SetEvento("lluvia");
             GameManager.Instance.SetFeedBack("It started to rain...", "");
             SonidoManager.Instance.Play("LLuvia");
+            mensajeEventos.text = "Rain: -" + GameManager.Instance.reduccionVelocidadHormLLuvia + "% ant speed";
+            if (GameManager.Instance.desbloqueadosGusanos)
+            {
+                mensajeEventos2.text = "Rain: -" + GameManager.Instance.reduccionProdGusanLLuvia + "% worm production";
+            }
+            else
+            {
+                mensajeEventos2.text = "";
+            }
+
             //Datos
         }
         else if (lluvia == false && lluviainicio == true)
@@ -265,6 +329,9 @@ public class SeasonManager : MonoBehaviour
             GameManager.Instance.UnSetEvento();
             GameManager.Instance.SetFeedBack("The rain is ending...", "");
             SonidoManager.Instance.Stop("LLuvia");
+            mensajeEventos.text = " ";
+
+            mensajeEventos2.text = "";
         }
 
         if (sequia == true && sequiainicio == false)
@@ -272,13 +339,32 @@ public class SeasonManager : MonoBehaviour
             GameManager.Instance.SetEvento("sequia");
             GameManager.Instance.SetFeedBack("A drought has started", "");
             SonidoManager.Instance.Play("Sequia");
+
+            if (GameManager.Instance.desbloqueadosPanales)
+            {
+                mensajeEventos.text = "Drought: -" + GameManager.Instance.aumentoDescansoAbejasSequia + "% bee rest time";
+            }
+            else
+            {
+                mensajeEventos.text = "";
+            }
+            if (GameManager.Instance.desbloqueadasMariposas)
+            {
+                mensajeEventos2.text = "Drought: -" + GameManager.Instance.reduccionProdMaripSequia + "% butterfly production";
+            }
+            else
+            {
+                mensajeEventos2.text = "";
+            }
             //Datos
         }
         else if (sequia == false && sequiainicio == true)
         {
             GameManager.Instance.UnSetEvento();
             GameManager.Instance.SetFeedBack("The drought is ending", "");
-            SonidoManager.Instance.Stop("LLuvia");
+            SonidoManager.Instance.Stop("Sequia");
+            mensajeEventos.text = "";
+            mensajeEventos2.text = "";
         }
 
     }
@@ -291,6 +377,7 @@ public class SeasonManager : MonoBehaviour
             frio = false;
 
             GameManager.Instance.SetFeedBack("This year will have normal climate", "");
+            mensajeYear.text = "Standard year";
         }
         else
         {
@@ -298,17 +385,20 @@ public class SeasonManager : MonoBehaviour
             if (decision == 0)
             {
                 calor = false; frio = false;
-                GameManager.Instance.SetFeedBack("This year will have normal climate", "");
+                GameManager.Instance.SetFeedBack("This year will have normal climate", ""); mensajeYear.text = "Standard year";
+
             }
             if (decision == 1)
             {
                 calor = true; frio = false;
-                GameManager.Instance.SetFeedBack("This year will be hotter than usual", "");
+                GameManager.Instance.SetFeedBack("This year will be hotter than usual", ""); mensajeYear.text = "Hot year";
+
             }
             if (decision == 2)
             {
                 calor = false; frio = true;
-                GameManager.Instance.SetFeedBack("This year it will be rainier than usual", "");
+                GameManager.Instance.SetFeedBack("This year it will be rainier than usual", ""); mensajeYear.text = "Cold year";
+
             }
         }
     }
