@@ -91,13 +91,13 @@ public class Gusano : MonoBehaviour
         if (Physics.Raycast(ray, out infoHit, layerMask))
         {
             destino = infoHit.point;
-            destino.y = this.transform.position.y;
+            destino.y = wanderCenter.transform.position.y;
 
         }
         if (Random.Range(0, 11) == 2)
         {
             destino = GameObject.FindObjectOfType<AlmacenSeda>().gameObject.transform.position;
-            destino.y = this.transform.position.y;
+            destino.y = wanderCenter.transform.position.y;
         }
         if (Random.Range(0, 11) ==1)
         {
@@ -106,6 +106,7 @@ public class Gusano : MonoBehaviour
 
 
             destino = posSpawn[random].gameObject.transform.position;
+            destino.y = wanderCenter.transform.position.y;
         }
        
     }

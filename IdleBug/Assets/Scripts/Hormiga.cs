@@ -94,16 +94,16 @@ public class Hormiga : MonoBehaviour {
         if (Physics.Raycast(ray, out infoHit))
         {
             destino = infoHit.point;
-            destino.y = this.transform.position.y;
+            destino.y = wanderCenter.transform.position.y;
         }
         if (Random.Range(0, 11) == 2)
         {
             SpawnHor[] posSpawn = FindObjectsOfType<SpawnHor>();
-            int random = Random.Range(0, posSpawn.Length);
+            int random = Random.Range(0, posSpawn.Length-1);
 
             
             destino = posSpawn[random].gameObject.transform.position;
-            destino.y = this.transform.position.y;
+            destino.y = wanderCenter.transform.position.y;
         }
     }
     Vector3 BuscarManzana()
