@@ -1,5 +1,5 @@
 sceneSetups:
-- path: D:/GitHubRepo/CyberplugProyectos7/CyberplugProyectos7/ProyectoUni/Assets/Scenes/Definitivas/Nivel_1.unity
+- path: Assets/Arte/EscenarioPruebasBugs.unity
   isLoaded: 1
   isActive: 1
   isSubScene: 0

@@ -14,11 +14,15 @@ public class SeasonVisuales : MonoBehaviour
     public Color colorBaseLluvia;
     public Color colorTopLluvia;
     public Color colorBottomLluvia;
-
-    public Color colorBaseSequia;
-    public Color colorTopSequia;
+    
     public Color colorBottomSequia;
+    public Color colorLightLluvia;
 
+    Color topSpringSkybox;
+    Color bottomSpringSkybox;
+    Color topSummerSkybox;
+    Color bottomSummerSkybox;
+    Color lightColorNormal;
     [Range (0,1)]
     public float seasonValue;
     public GameObject[] leaves;
@@ -34,6 +38,10 @@ public class SeasonVisuales : MonoBehaviour
     public float tmp = 0;
     bool deLluvia;
     bool deSequia;
+    public GameObject arenaObjeto;
+    public GameObject directionalLight;
+    public float fuerzaSombras;
+    float fuerzaCalor;
 
 
     // Start is called before the first frame update
@@ -43,6 +51,12 @@ public class SeasonVisuales : MonoBehaviour
         var particleEmission = lluviaPS.GetComponent<ParticleSystem>().emission;
         particleEmission.rateOverTime = 0;
         tmp = tiempoAparicionEvento;
+        topSpringSkybox = new Color(0.9616f, 1, 0.4858f, 0);
+        bottomSpringSkybox = new Color(0, 0.476f, 0.688f, 0);
+        topSummerSkybox = new Color(1, 0.94f, 0.627f, 0);
+        bottomSummerSkybox = new Color(0.783f, 0.466f, 0, 0);
+        lightColorNormal = directionalLight.GetComponent<Light>().color;
+        
     }
 
     // Update is called once per frame
@@ -56,6 +70,13 @@ public class SeasonVisuales : MonoBehaviour
             //RenderSettings.ambientLight = Color.Lerp(RenderSettings.ambientLight, colorBaseLluvia, tmp/tiempoAparicionEvento);
             //RenderSettings.ambientEquatorColor = Color.Lerp(RenderSettings.ambientEquatorColor, colorTopLluvia, tmp / tiempoAparicionEvento);
             //RenderSettings.ambientGroundColor = Color.Lerp(RenderSettings.ambientGroundColor, colorBottomLluvia, tmp / tiempoAparicionEvento);
+            heatMaterial.SetFloat("_Strength", Mathf.Lerp(fuerzaCalor, 0, tmp / tiempoAparicionEvento));
+            directionalLight.GetComponent<Light>().shadowStrength = Mathf.Lerp(0.7f, 0.05f, tmp / tiempoAparicionEvento);
+            directionalLight.GetComponent<Light>().color = Color.Lerp(lightColorNormal, colorLightLluvia, tmp/tiempoAparicionEvento);
+            RenderSettings.skybox.SetColor("_TopSpring", Color.Lerp(topSpringSkybox, colorBaseLluvia, tmp / tiempoAparicionEvento));
+            RenderSettings.skybox.SetColor("_BottomSpring", Color.Lerp(bottomSpringSkybox, colorBottomLluvia, tmp / tiempoAparicionEvento));
+            RenderSettings.skybox.SetColor("_TopSummer", Color.Lerp(topSummerSkybox, colorBaseLluvia, tmp / tiempoAparicionEvento));
+            RenderSettings.skybox.SetColor("_BottomSummer", Color.Lerp(bottomSummerSkybox, colorBottomLluvia, tmp / tiempoAparicionEvento));
             RenderSettings.ambientLight = Color.Lerp(Color.Lerp(colorbase1, colorbase2, seasonValue), colorBaseLluvia, tmp / tiempoAparicionEvento);
             RenderSettings.ambientEquatorColor = Color.Lerp(Color.Lerp(topColor1, topColor2, seasonValue), colorTopLluvia, tmp / tiempoAparicionEvento);
             RenderSettings.ambientGroundColor = Color.Lerp(Color.Lerp(bottomColor1, bottomColor2, seasonValue), colorBottomLluvia, tmp / tiempoAparicionEvento);
@@ -68,8 +89,9 @@ public class SeasonVisuales : MonoBehaviour
             //RenderSettings.ambientLight = Color.Lerp(RenderSettings.ambientLight, colorBaseSequia, tmp / tiempoAparicionEvento);
             //RenderSettings.ambientEquatorColor = Color.Lerp(RenderSettings.ambientEquatorColor, colorTopSequia, tmp / tiempoAparicionEvento);
             //RenderSettings.ambientGroundColor = Color.Lerp(RenderSettings.ambientGroundColor, colorBottomSequia, tmp / tiempoAparicionEvento);
-            RenderSettings.ambientLight = Color.Lerp(Color.Lerp(colorbase1, colorbase2, seasonValue), colorBaseSequia, tmp / tiempoAparicionEvento);
-            RenderSettings.ambientEquatorColor = Color.Lerp(Color.Lerp(topColor1, topColor2, seasonValue), colorTopSequia, tmp / tiempoAparicionEvento);
+            arenaObjeto.GetComponent<MeshRenderer>().material.SetFloat("_FuerzaArena", Mathf.Lerp(0, 50, tmp*1.5f/tiempoAparicionEvento));
+            //RenderSettings.ambientLight = Color.Lerp(Color.Lerp(colorbase1, colorbase2, seasonValue), colorBaseSequia, tmp / tiempoAparicionEvento);
+            //RenderSettings.ambientEquatorColor = Color.Lerp(Color.Lerp(topColor1, topColor2, seasonValue), colorTopSequia, tmp / tiempoAparicionEvento);
             RenderSettings.ambientGroundColor = Color.Lerp(Color.Lerp(bottomColor1, bottomColor2, seasonValue), colorBottomSequia, tmp / tiempoAparicionEvento);
             deSequia = true;
         }
@@ -79,6 +101,11 @@ public class SeasonVisuales : MonoBehaviour
             if (tmp > tiempoAparicionEvento)
             {
                 particleEmission.rateOverTime = 0;
+                arenaObjeto.GetComponent<MeshRenderer>().material.SetFloat("_FuerzaArena", Mathf.Lerp(50, 0, tmp / tiempoAparicionEvento));
+                RenderSettings.skybox.SetColor("_TopSpring", Color.Lerp(colorBaseLluvia, topSpringSkybox, tmp / tiempoAparicionEvento));
+                RenderSettings.skybox.SetColor("_BottomSpring", Color.Lerp(colorBottomLluvia, bottomSpringSkybox, tmp / tiempoAparicionEvento));
+                RenderSettings.skybox.SetColor("_TopSummer", Color.Lerp(colorBaseLluvia, topSummerSkybox, tmp / tiempoAparicionEvento));
+                RenderSettings.skybox.SetColor("_BottomSummer", Color.Lerp(colorBottomLluvia, bottomSummerSkybox, tmp / tiempoAparicionEvento));
                 RenderSettings.ambientLight = Color.Lerp(colorbase1, colorbase2, seasonValue);
                 RenderSettings.ambientEquatorColor = Color.Lerp(topColor1, topColor2, seasonValue);
                 RenderSettings.ambientGroundColor = Color.Lerp(bottomColor1, bottomColor2, seasonValue);
@@ -92,16 +119,22 @@ public class SeasonVisuales : MonoBehaviour
                 particleEmission.rateOverTime = Mathf.Lerp(particleEmission.rateOverTime.constant, 0, tmp / tiempoAparicionEvento);
                 if (deLluvia)
                 {
-
+                    heatMaterial.SetFloat("_Strength", Mathf.Lerp(0, fuerzaCalor, tmp / tiempoAparicionEvento));
+                    directionalLight.GetComponent<Light>().shadowStrength = Mathf.Lerp(0.05f, 0.7f, tmp/tiempoAparicionEvento);
+                    directionalLight.GetComponent<Light>().color = Color.Lerp(colorLightLluvia, lightColorNormal, tmp / tiempoAparicionEvento);
+                    RenderSettings.skybox.SetColor("_TopSpring", Color.Lerp(colorBaseLluvia, topSpringSkybox, tmp / tiempoAparicionEvento));
+                    RenderSettings.skybox.SetColor("_BottomSpring", Color.Lerp(colorBottomLluvia, bottomSpringSkybox, tmp / tiempoAparicionEvento));
+                    RenderSettings.skybox.SetColor("_TopSummer", Color.Lerp(colorBaseLluvia, topSummerSkybox, tmp / tiempoAparicionEvento));
+                    RenderSettings.skybox.SetColor("_BottomSummer", Color.Lerp(colorBottomLluvia, bottomSummerSkybox,  tmp / tiempoAparicionEvento));
                     RenderSettings.ambientLight = Color.Lerp(colorBaseLluvia, Color.Lerp(colorbase1, colorbase2, seasonValue), tmp / tiempoAparicionEvento);
                     RenderSettings.ambientEquatorColor = Color.Lerp(colorTopLluvia, Color.Lerp(topColor1, topColor2, seasonValue), tmp / tiempoAparicionEvento);
                     RenderSettings.ambientGroundColor = Color.Lerp(colorBottomLluvia, Color.Lerp(bottomColor1, bottomColor2, seasonValue), tmp / tiempoAparicionEvento);
                 }
                 if (deSequia)
                 {
-
-                    RenderSettings.ambientLight = Color.Lerp(colorBaseSequia, Color.Lerp(colorbase1, colorbase2, seasonValue), tmp / tiempoAparicionEvento);
-                    RenderSettings.ambientEquatorColor = Color.Lerp(colorTopSequia, Color.Lerp(topColor1, topColor2, seasonValue), tmp / tiempoAparicionEvento);
+                    arenaObjeto.GetComponent<MeshRenderer>().material.SetFloat("_FuerzaArena", Mathf.Lerp(50, 0, tmp / tiempoAparicionEvento));
+                    //RenderSettings.ambientLight = Color.Lerp(colorBaseSequia, Color.Lerp(colorbase1, colorbase2, seasonValue), tmp / tiempoAparicionEvento);
+                    //RenderSettings.ambientEquatorColor = Color.Lerp(colorTopSequia, Color.Lerp(topColor1, topColor2, seasonValue), tmp / tiempoAparicionEvento);
                     RenderSettings.ambientGroundColor = Color.Lerp(colorBottomSequia, Color.Lerp(bottomColor1, bottomColor2, seasonValue), tmp / tiempoAparicionEvento);
                 }
             }
@@ -124,11 +157,23 @@ public class SeasonVisuales : MonoBehaviour
         }
         if(seasonValue >= 0.33f && seasonValue <= 0.66f)
         {
-            heatMaterial.SetFloat("_Strength", desviacionCalor);
+            //heatMaterial.SetFloat("_Strength", desviacionCalor);
+            heatMaterial.SetFloat("_Strength", Mathf.Clamp(Mathf.Lerp(0, desviacionCalor, seasonValue/0.35f), 0, desviacionCalor));
+            
+            fuerzaCalor = heatMaterial.GetFloat("_Strength");
         }
         else
         {
-            heatMaterial.SetFloat("_Strength", 0);
+            if(seasonValue > 0.66f)
+            {
+                heatMaterial.SetFloat("_Strength", Mathf.Lerp(desviacionCalor, 0, seasonValue / 0.67f));
+            }
+            else
+            {
+                heatMaterial.SetFloat("_Strength", 0);
+            }
+            fuerzaCalor = heatMaterial.GetFloat("_Strength");
+
         }
         
 
