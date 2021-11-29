@@ -110,6 +110,15 @@ public class CamaraChange : MonoBehaviour
         }
     }
     GameObject lastEffect;
+    GameObject lastMenuBordes;
+    public void SetScale(Transform obj)
+    {
+        obj.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+    }
+    public void UnSetScale(Transform obj)
+    {
+        obj.localScale =  Vector3.one;
+    }
     // Update is called once per frame
     void Update()
     {
@@ -117,15 +126,17 @@ public class CamaraChange : MonoBehaviour
         RaycastHit hitInfo2;
         if (Physics.Raycast(ray2, out hitInfo2, Mathf.Infinity, mask))
         {
-            if (hitInfo2.collider.tag == "Edificio")
+
+            if (hitInfo2.transform.tag == "Edificio")
             {
                 if (!EventSystem.current.IsPointerOverGameObject())
                 {
+                  
                     foreach (Transform g in hitInfo2.collider.gameObject.GetComponentsInChildren<Transform>(includeInactive: true))
                     {
                         if (g.tag == "Efecto")
                         {
-                           if(lastEffect!=null) lastEffect.SetActive(false);
+                            if (lastEffect != null) lastEffect.SetActive(false);
                             g.gameObject.SetActive(true);
                             lastEffect = g.gameObject;
                         }
@@ -135,20 +146,29 @@ public class CamaraChange : MonoBehaviour
             }
             else
             {
+
+
+
+
+
+                if (lastMenuBordes != null) lastMenuBordes.transform.localScale = Vector3.one;
+
                 if (lastEffect != null)
                 {
                     lastEffect.SetActive(false);
                 }
             }
 
+
+
         }
+      
 
 
-    
         if (Input.GetKeyUp(KeyCode.D))
         {
             MoverDerecha();
-}
+        }
         if (Input.GetKeyUp(KeyCode.A))
         {
             MoverIzquierda();
@@ -156,7 +176,7 @@ public class CamaraChange : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             Ray ray = FindObjectOfType<Camera>().ScreenPointToRay(Input.mousePosition);
-RaycastHit hitInfo;
+            RaycastHit hitInfo;
             if (Physics.Raycast(ray, out hitInfo, Mathf.Infinity, mask))
             {
                 if (hitInfo.collider.tag == "InsectoSuelo")
@@ -164,7 +184,11 @@ RaycastHit hitInfo;
                     if (activeCam != 3)
                     {
                         GameObject.FindObjectOfType<InsectGenerator>().CogerInsecto(hitInfo.collider.gameObject);
-GameManager.Instance.MenuClose();
+                        GameManager.Instance.MenuClose();
+                    }
+                    else
+                    {
+                        GameManager.Instance.SetFeedBack("Can´t pick up bugs from here");
                     }
 
                 }
@@ -177,11 +201,11 @@ GameManager.Instance.MenuClose();
                 }
                 else
                 {
-                    if (!EventSystem.current.IsPointerOverGameObject())
+                    if (EventSystem.current.IsPointerOverGameObject())
                     {
                         if (GameManager.Instance.menuBlock.activeSelf || GameManager.Instance.menuCompras.activeSelf) SonidoManager.Instance.Play("BotonesUI");
                         GameManager.Instance.MenuClose();
-                        Debug.Log("Its over UI elements"+hitInfo.collider.gameObject.name);
+                        print("Its over UI elements" + EventSystem.current.currentSelectedGameObject.name);
                     }
                 }
 
@@ -191,14 +215,14 @@ GameManager.Instance.MenuClose();
         {
             GameManager.Instance.ActVolumen();
             speed += 100 * Time.deltaTime;
-float actualD = Vector3.Distance(cam.transform.position, destino);
-float actualT = actualD / speed;
-cam.transform.position = Vector3.MoveTowards(cam.transform.position, destino, speed* Time.deltaTime);
+            float actualD = Vector3.Distance(cam.transform.position, destino);
+            float actualT = actualD / speed;
+            cam.transform.position = Vector3.MoveTowards(cam.transform.position, destino, speed * Time.deltaTime);
             //cam.transform.rotation =Quaternion.Euler((actualD / distEntreCams) * diferenciaRotaciones * this.transform.rotation.eulerAngles);
-            cam.transform.rotation = Quaternion.RotateTowards(cam.transform.rotation, destinoR, speedRot* Time.deltaTime);
+            cam.transform.rotation = Quaternion.RotateTowards(cam.transform.rotation, destinoR, speedRot * Time.deltaTime);
             if (Vector3.Distance(cam.transform.position, destino) < 0.3f * distEntreCams)
             {
-                if (speed - Time.deltaTime* 250 > 200) speed -= Time.deltaTime* 250;
+                if (speed - Time.deltaTime * 250 > 200) speed -= Time.deltaTime * 250;
 
             }
             if (cam.transform.position == destino && cam.transform.rotation == destinoR)
@@ -213,19 +237,19 @@ cam.transform.position = Vector3.MoveTowards(cam.transform.position, destino, sp
         }
     }
     public void ChangeCam()
-{
-    cambiando = true;
-    destino = ubicaciones[activeCam].gameObject.transform.position;
-    destinoR = ubicaciones[activeCam].gameObject.transform.rotation;
-    distEntreCams = Vector3.Distance(cam.transform.position, destino);
-    diferenciaRotaciones = Quaternion.Angle(this.transform.rotation, destinoR);
-    //foreach (GameObject go in Camaras)
-    //{
-    //    go.SetActive(false);
-    //    if (go == Camaras[activeCam].gameObject)
-    //    {
-    //        go.SetActive(true);
-    //    }
-    //}
-}
+    {
+        cambiando = true;
+        destino = ubicaciones[activeCam].gameObject.transform.position;
+        destinoR = ubicaciones[activeCam].gameObject.transform.rotation;
+        distEntreCams = Vector3.Distance(cam.transform.position, destino);
+        diferenciaRotaciones = Quaternion.Angle(this.transform.rotation, destinoR);
+        //foreach (GameObject go in Camaras)
+        //{
+        //    go.SetActive(false);
+        //    if (go == Camaras[activeCam].gameObject)
+        //    {
+        //        go.SetActive(true);
+        //    }
+        //}
+    }
 }

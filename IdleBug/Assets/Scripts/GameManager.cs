@@ -349,18 +349,19 @@ public class GameManager : MonoBehaviour
       
         else
         {
+          
+            if (FindObjectOfType<DataAscension>() != null)
+            {
+                DataAscension.Instance.DevolverDatos();
+            }
             if (propiedadesAñosCheck[currentYear] == null)
             {
-                propiedadesAñosCheck[currentYear] = new CheckProperties(currentYear,(int)( propiedadesAñosCheck[currentYear - 1].manzanas * Mathf.Pow(ratioCrecimientoCheckManzanas, currentYear)), (int)(propiedadesAñosCheck[currentYear - 1].seda * Mathf.Pow(ratioCrecimientoCheckSeda, currentYear)), (int)(propiedadesAñosCheck[currentYear - 1].miel * Mathf.Pow(ratioCrecimientoCheckMiel, currentYear)), (int)(propiedadesAñosCheck[currentYear - 1].petalos * Mathf.Pow(ratioCrecimientoCheckPetalos, currentYear)), (int)(propiedadesAñosCheck[currentYear - 1].tokensbase * Mathf.Pow(ratioCrecimientoCheckTokens, currentYear)));
-             
+                propiedadesAñosCheck[currentYear] = new CheckProperties(currentYear, (int)(propiedadesAñosCheck[currentYear - 1].manzanas * Mathf.Pow(ratioCrecimientoCheckManzanas, currentYear)), (int)(propiedadesAñosCheck[currentYear - 1].seda * Mathf.Pow(ratioCrecimientoCheckSeda, currentYear)), (int)(propiedadesAñosCheck[currentYear - 1].miel * Mathf.Pow(ratioCrecimientoCheckMiel, currentYear)), (int)(propiedadesAñosCheck[currentYear - 1].petalos * Mathf.Pow(ratioCrecimientoCheckPetalos, currentYear)), (int)(propiedadesAñosCheck[currentYear - 1].tokensbase * Mathf.Pow(ratioCrecimientoCheckTokens, currentYear)));
+
                 manzNeed.text = TotalManzanas.ToString("0") + " /" + propiedadesAñosCheck[currentYear].manzanas.ToString("0") + " ";
                 sedaNeed.text = TotalSeda.ToString("0") + " /" + propiedadesAñosCheck[currentYear].seda.ToString("0") + " ";
                 mielNeed.text = TotalMiel.ToString("0") + " /" + propiedadesAñosCheck[currentYear].miel.ToString("0") + " ";
                 petalosNeed.text = TotalPetalos.ToString("0") + " /" + propiedadesAñosCheck[currentYear].petalos.ToString("0") + " ";
-            }
-            if (FindObjectOfType<DataAscension>() != null)
-            {
-                DataAscension.Instance.DevolverDatos();
             }
         }
 
@@ -437,7 +438,7 @@ public class GameManager : MonoBehaviour
     }
     void Start()
     {
-
+       
         CalcularComienzo();
     }
     void Cheats()

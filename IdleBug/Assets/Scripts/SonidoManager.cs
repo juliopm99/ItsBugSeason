@@ -73,8 +73,8 @@ public class SonidoManager : MonoBehaviour
     }
     public void CargarVolumenGuardado()
     {
-        if (audioMixer != null) audioMixer.SetFloat("SFXVolume", Mathf.Log10(SfxVolume) * 20);
-        if (audioMixer != null) audioMixer.SetFloat("MusicVolume", Mathf.Log10(MusicVolume) * 20);
+        if (audioMixer != null) audioMixer.SetFloat("SFXvolume", Mathf.Log10(SfxVolume) * 20);
+        if (audioMixer != null) audioMixer.SetFloat("Musicvolume", Mathf.Log10(MusicVolume) * 20);
     }
     public void Restart()
     {
