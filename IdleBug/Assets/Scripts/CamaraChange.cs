@@ -309,7 +309,7 @@ public class CamaraChange : MonoBehaviour
                     {
                         print("AC" + EventSystem.current.currentSelectedGameObject.name);
                     }
-                    if (EventSystem.current.gameObject != null && EventSystem.current.currentSelectedGameObject.name == "Icono1")
+                    if (EventSystem.current.gameObject != null && EventSystem.current.currentSelectedGameObject!=null&& EventSystem.current.currentSelectedGameObject.name == "Icono1")
                     {
                         if (GameManager.Instance.icono1Lleno == "Manzano")
                         {
@@ -334,7 +334,7 @@ public class CamaraChange : MonoBehaviour
 
                         }
                     }
-                    if (EventSystem.current.gameObject != null && EventSystem.current.currentSelectedGameObject.name == "Icono2")
+                    if (EventSystem.current.gameObject != null && EventSystem.current.currentSelectedGameObject != null && EventSystem.current.currentSelectedGameObject.name == "Icono2")
                     {
                         if (GameManager.Instance.icono2Lleno == "Manzano")
                         {

@@ -2479,7 +2479,7 @@ public class GameManager : MonoBehaviour
             menuInvierno.SetActive(true);
             if (CalcularSiPasa())
             {
-                SonidoManager.Instance.Play("Invierno");
+              
                 SonidoManager.Instance.Play("PopUI");
                 infoInvierno.SetActive(true);
                 GameObject.Find("TextoCompletar").GetComponent<Text>().text = "YOU HAVE COMPLETED YEAR " + currentYear;
