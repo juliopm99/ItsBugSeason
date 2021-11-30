@@ -28,6 +28,7 @@ public class CamaraChange : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        BotonCamGeneral = GameObject.Find("MoverCentro").gameObject;
         maxCam = ubicaciones.Length;
         cam = GameObject.FindGameObjectWithTag("MainCamera");
         speed = speedBase;
@@ -162,7 +163,7 @@ public class CamaraChange : MonoBehaviour
         }
     }
     GameObject lastEffect;
-    GameObject lastMenuBordes;
+    GameObject lastMenuBordes; public GameObject BotonCamGeneral;
     public void SetScale(Transform obj)
     {
         obj.localScale = new Vector3(1.5f, 1.5f, 1.5f);
@@ -171,7 +172,7 @@ public class CamaraChange : MonoBehaviour
     {
         obj.localScale = Vector3.one;
     }
-    public GameObject prefabTexto; bool pasadoFlecha = false;bool pasadoFlecha2 = true;
+    public GameObject prefabTexto; bool pasadoFlecha = false; bool pasadoFlecha2 = true;
     // Update is called once per frame
     void Update()
     {
@@ -216,7 +217,7 @@ public class CamaraChange : MonoBehaviour
             }
             if (EventSystem.current.IsPointerOverGameObject())
             {
-            
+
 
                 if (EventSystem.current.currentSelectedGameObject != null && EventSystem.current.currentSelectedGameObject.name == "Icono1")
                 {
@@ -270,18 +271,40 @@ public class CamaraChange : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.D))
         {
             MoverIzquierda();
+            if (activeCam == 3)
+            {
+                BotonCamGeneral.SetActive(false);
+            }
+            else
+            {
+                if (!BotonCamGeneral.activeSelf)
+                {
+                    BotonCamGeneral.SetActive(true);
+                }
+            }
 
         }
         if (Input.GetKeyUp(KeyCode.A))
         {
 
             MoverDerecha();
+            if (activeCam == 3)
+            {
+                BotonCamGeneral.SetActive(false);
+            }
+            else
+            {
+                if (!BotonCamGeneral.activeSelf)
+                {
+                    BotonCamGeneral.SetActive(true);
+                }
+            }
 
         }
         if (Input.GetKeyUp(KeyCode.S))
         {
 
-
+            BotonCamGeneral.SetActive(false);
             VisionGeneral();
         }
 
@@ -299,7 +322,7 @@ public class CamaraChange : MonoBehaviour
                         print("A");
                         Destroy(hitInfo.collider.GetComponentInChildren<Tuto>());
                         GameManager.Instance.flechaTuto1.GetComponent<SpriteRenderer>().enabled = true;
-                      
+
                         pasadoFlecha = true;
 
                     }
@@ -349,7 +372,7 @@ public class CamaraChange : MonoBehaviour
                         SonidoManager.Instance.Play("ClickUI");
                         if (pasadoFlecha2 == true && hitInfo.collider.GetComponent<Manzano>() && GameManager.Instance.flechatuto2.gameObject.GetComponent<SpriteRenderer>().enabled == true)
                         {
-                           if(activeCam!=0) GameManager.Instance.MenuOpen(hitInfo.collider.gameObject);
+                            if (activeCam != 0) GameManager.Instance.MenuOpen(hitInfo.collider.gameObject);
                             GameManager.Instance.flechatuto2.gameObject.GetComponent<SpriteRenderer>().enabled = false;
                             FindObjectOfType<SeasonManager>().started = true;
                         }

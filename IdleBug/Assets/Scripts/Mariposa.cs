@@ -44,6 +44,16 @@ public class Mariposa : MonoBehaviour
         }
 
 
+        MirarDestino();
+    }
+    public void MirarDestino()
+    {
+        if (destino != Vector3.zero)
+        {
+            Vector3 destinazo = new Vector3(destino.x, this.transform.position.y, destino.z);
+            transform.LookAt(destinazo);
+        }
+
     }
     public LayerMask layerMask;
     void InitDirecc()

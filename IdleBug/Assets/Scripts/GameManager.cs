@@ -333,6 +333,7 @@ public class GameManager : MonoBehaviour
     public GameObject particulasMejoraL;
     public GameObject particulasMejoraM;
     public GameObject particulasMejoraS;
+    public GameObject particulasShiny;
     public void SpawnParticlesMejora(Vector3 p)
     {
         Instantiate(particulasMejoraM, p, Quaternion.identity);
@@ -351,6 +352,10 @@ public class GameManager : MonoBehaviour
         {
             GameObject part = Instantiate(particulasMejoraS, p, Quaternion.identity);
             part.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+        }else if (tipo == "Esp")
+        {
+            GameObject part = Instantiate(particulasShiny, p, Quaternion.identity);
+          
         }
 
     }
@@ -765,7 +770,7 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        Cheats();
+        //Cheats();
 
         if (textoAlmacen != null) textoAlmacen.text = actualStorageSilk.ToString("0.0") + " / " + maxSilk;
         if (desbloqueadosGusanos)
@@ -2428,7 +2433,11 @@ public class GameManager : MonoBehaviour
     public void CompraMejora3()
     {
         if (costeMejora3Actual <= actualTokens && totalMejora3Tokens < 100)
-        {
+        {       costeDesbloqueoFlores -= costeDesbloqueoFlores * totalMejora3Tokens / 100;
+            costeDesbloqueoGusanos -= costeDesbloqueoGusanos * totalMejora3Tokens / 100;
+            costeDesbloqueoManzano -= costeDesbloqueoManzano * totalMejora3Tokens / 100;
+            costeDesbloqueoMariposas -= costeDesbloqueoMariposas * totalMejora3Tokens / 100;
+            costeDesbloqueoPanal -= costeDesbloqueoPanal * totalMejora3Tokens / 100;
             actualTokens -= costeMejora3Actual;
             nivelMejora3++;
             costeMejora3Actual = Mathf.FloorToInt(costeMejora3Base * Mathf.Pow(ratioMejora3, nivelMejora3));
@@ -2440,11 +2449,7 @@ public class GameManager : MonoBehaviour
 
 
             }
-            costeDesbloqueoFlores -= costeDesbloqueoFlores * totalMejora3Tokens / 100;
-            costeDesbloqueoGusanos -= costeDesbloqueoGusanos * totalMejora3Tokens / 100;
-            costeDesbloqueoManzano -= costeDesbloqueoManzano * totalMejora3Tokens / 100;
-            costeDesbloqueoMariposas -= costeDesbloqueoMariposas * totalMejora3Tokens / 100;
-            costeDesbloqueoPanal -= costeDesbloqueoPanal * totalMejora3Tokens / 100; SonidoManager.Instance.Play("MejoraUI"); SetDescripcionMejora2Token();
+      SonidoManager.Instance.Play("MejoraUI"); SetDescripcionMejora3Token();
             SetTokensArriba();
         }
     }

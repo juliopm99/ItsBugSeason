@@ -237,7 +237,7 @@ public class InsectGenerator : MonoBehaviour
             {
                 extraShiny = GameManager.Instance.multiplicadorShiny * GameManager.Instance.cantidadHormigasCogidas;
                 texto.GetComponent<TextMesh>().text = "Shiny! +" + extraShiny.ToString() + " ants picked";
-
+                GameManager.Instance.SpawnParticlesMejora(objeto.transform.position,"Esp");
 
             }
             else
@@ -271,7 +271,7 @@ public class InsectGenerator : MonoBehaviour
                 extraShiny = GameManager.Instance.multiplicadorShiny * GameManager.Instance.cantidadAbejasCogidas;
 
                 texto.GetComponent<TextMesh>().text = "Shiny! +" + extraShiny.ToString() + " bees picked";
-
+                GameManager.Instance.SpawnParticlesMejora(objeto.transform.position, "Esp");
             }
             else
             {
@@ -306,7 +306,7 @@ public class InsectGenerator : MonoBehaviour
                 extraShiny = GameManager.Instance.multiplicadorShiny * GameManager.Instance.cantidadGusanosCogidos;
 
                 texto.GetComponent<TextMesh>().text = "Shiny! +" + extraShiny.ToString() + " worms picked";
-
+                GameManager.Instance.SpawnParticlesMejora(objeto.transform.position, "Esp");
             }
             else
             {

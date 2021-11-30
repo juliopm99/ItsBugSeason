@@ -193,12 +193,18 @@ public class SeasonManager : MonoBehaviour
                 }
 
             }
-            if (tiempo >= (tiempoPartida * 2.75f) / 3 && tiempo < tiempoPartida)
+            if (tiempo >= (tiempoPartida * 2.83f) / 3 && tiempo < tiempoPartida)
             {
                 GameManager.Instance.SetFeedBack("Winter is coming soon", "");
             }
-            if (tiempo >= tiempoPartida) if (!fade.activeSelf) fade.SetActive(true); SonidoManager.Instance.Play("Invierno");
-            if (open == false) if (tiempo >= tiempoPartida + 4) { GameManager.Instance.OpenCloseInviernoMenu(); open = true; }
+            if (tiempo >= tiempoPartida && !fade.activeSelf)
+            {
+                fade.SetActive(true); SonidoManager.Instance.Restart(); SonidoManager.Instance.Play("Invierno");
+            }
+            if (open == false)
+            {
+                if (tiempo >= tiempoPartida + 4) { GameManager.Instance.OpenCloseInviernoMenu(); open = true; }
+            }
             if (Time.timeScale == 1) if (tiempo >= tiempoPartida + 6) { Time.timeScale = 0; SonidoManager.Instance.Stop("FondoJuego"); }
             if (spring)
             {
