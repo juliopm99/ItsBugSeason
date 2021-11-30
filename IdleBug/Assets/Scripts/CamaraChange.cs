@@ -79,9 +79,10 @@ public class CamaraChange : MonoBehaviour
 
     }
     public void VisionGeneral()
-    {
+    { GameManager.Instance.MenuClose();
         if (activeCam != 3)
         {
+           
             activeCam = 3;
             ChangeCam(); CheckAll();
 
@@ -99,7 +100,7 @@ public class CamaraChange : MonoBehaviour
             textoAbejas.gameObject.SetActive(false);
             textoCreador.gameObject.SetActive(false);
             textoMariposas.gameObject.SetActive(false);
-            textoAlmacen.gameObject.SetActive(false);
+            //textoAlmacen.gameObject.SetActive(false);
             textoGusanos.gameObject.SetActive(false);
         }
         else if (activeCam == 1)
@@ -126,7 +127,7 @@ public class CamaraChange : MonoBehaviour
             textoAbejas.gameObject.SetActive(false);
             textoCreador.gameObject.SetActive(true);
             textoMariposas.gameObject.SetActive(true);
-            textoAlmacen.gameObject.SetActive(false);
+            //textoAlmacen.gameObject.SetActive(false);
             textoGusanos.gameObject.SetActive(false);
 
 
@@ -141,7 +142,7 @@ public class CamaraChange : MonoBehaviour
             textoAbejas.gameObject.SetActive(true);
             textoCreador.gameObject.SetActive(true);
             textoMariposas.gameObject.SetActive(true);
-            textoAlmacen.gameObject.SetActive(true);
+            //textoAlmacen.gameObject.SetActive(true);
             textoGusanos.gameObject.SetActive(true);
 
         }
@@ -155,7 +156,7 @@ public class CamaraChange : MonoBehaviour
             textoAbejas.gameObject.SetActive(true);
             textoCreador.gameObject.SetActive(false);
             textoMariposas.gameObject.SetActive(false);
-            textoAlmacen.gameObject.SetActive(false);
+            //textoAlmacen.gameObject.SetActive(false);
             textoGusanos.gameObject.SetActive(false);
         }
     }
@@ -218,18 +219,18 @@ public class CamaraChange : MonoBehaviour
 
         if (Input.GetKeyUp(KeyCode.D))
         {
-            GameManager.Instance.MenuClose();
+          
             MoverDerecha();
         }
         if (Input.GetKeyUp(KeyCode.A))
         {
-            GameManager.Instance.MenuClose();
+        
 
             MoverIzquierda();
         }
         if (Input.GetKeyUp(KeyCode.S))
         {
-            GameManager.Instance.MenuClose();
+           
 
             VisionGeneral();
         }
@@ -244,7 +245,7 @@ public class CamaraChange : MonoBehaviour
                 {
                     if (activeCam != 3)
                     {
-                        print("AC");
+                       
                         if ((hitInfo.collider.tag == "InsectoSuelo"&&hitInfo.collider.GetComponent<Tuto>()))
                         {
                             print("A");
@@ -262,6 +263,8 @@ public class CamaraChange : MonoBehaviour
                     }
                     else
                     {
+                       
+                        GameManager.Instance.SetFeedBack("Can´t pick up bugs from here");
                         if (hitInfo.collider.GetComponent<Tuto>())
                         {
                             GameObject texto = Instantiate(prefabTexto, hitInfo.point + Vector3.up * 2f, Quaternion.identity);
@@ -272,7 +275,7 @@ public class CamaraChange : MonoBehaviour
                         }
                     }
 
-                    GameManager.Instance.SetFeedBack("Can´t pick up bugs from here");
+                   
 
 
 
@@ -294,10 +297,69 @@ public class CamaraChange : MonoBehaviour
                 {
                     if (!EventSystem.current.IsPointerOverGameObject())
                     {
+                        print(hitInfo.collider.name);
                         if (GameManager.Instance.menuBlock.activeSelf || GameManager.Instance.menuCompras.activeSelf) SonidoManager.Instance.Play("BotonesUI");
                         GameManager.Instance.MenuClose();
                     }
                 }
+                if (EventSystem.current.IsPointerOverGameObject())
+                {
+
+                    if (EventSystem.current.currentSelectedGameObject != null)
+                    {
+                        print("AC" + EventSystem.current.currentSelectedGameObject.name);
+                    }
+                    if (EventSystem.current.gameObject != null && EventSystem.current.currentSelectedGameObject.name == "Icono1")
+                    {
+                        if (GameManager.Instance.icono1Lleno == "Manzano")
+                        {
+                            GameManager.Instance.MenuOpen(FindObjectOfType<Manzano>().gameObject); GameManager.Instance.MenuOpen(FindObjectOfType<Manzano>().gameObject);
+
+                        }
+                        if (GameManager.Instance.icono1Lleno == "G")
+                        {
+                            GameManager.Instance.MenuOpen(FindObjectOfType<Gusanero>().gameObject); GameManager.Instance.MenuOpen(FindObjectOfType<Gusanero>().gameObject);
+                        }
+                        if (GameManager.Instance.icono1Lleno == "P")
+                        {
+                            GameManager.Instance.MenuOpen(FindObjectOfType<Panal>().gameObject); GameManager.Instance.MenuOpen(FindObjectOfType<Panal>().gameObject);
+                        }
+                        if (GameManager.Instance.icono1Lleno == "M")
+                        {
+                            GameManager.Instance.MenuOpen(FindObjectOfType<Mariposero>().gameObject); GameManager.Instance.MenuOpen(FindObjectOfType<Mariposero>().gameObject);
+                        }
+                        if (GameManager.Instance.icono1Lleno == "F")
+                        {
+                            GameManager.Instance.MenuOpen(FindObjectOfType<FlorHub>().gameObject); GameManager.Instance.MenuOpen(FindObjectOfType<FlorHub>().gameObject);
+
+                        }
+                    }
+                    if (EventSystem.current.gameObject != null && EventSystem.current.currentSelectedGameObject.name == "Icono2")
+                    {
+                        if (GameManager.Instance.icono2Lleno == "Manzano")
+                        {
+                            GameManager.Instance.MenuOpen(FindObjectOfType<Manzano>().gameObject); GameManager.Instance.MenuOpen(FindObjectOfType<Manzano>().gameObject);
+
+                        }
+                        if (GameManager.Instance.icono2Lleno == "G")
+                        {
+                            GameManager.Instance.MenuOpen(FindObjectOfType<Gusanero>().gameObject); GameManager.Instance.MenuOpen(FindObjectOfType<Gusanero>().gameObject);
+                        }
+                        if (GameManager.Instance.icono2Lleno == "P")
+                        {
+                            GameManager.Instance.MenuOpen(FindObjectOfType<Panal>().gameObject); GameManager.Instance.MenuOpen(FindObjectOfType<Panal>().gameObject);
+                        }
+                        if (GameManager.Instance.icono2Lleno == "M")
+                        {
+                            GameManager.Instance.MenuOpen(FindObjectOfType<Mariposero>().gameObject); GameManager.Instance.MenuOpen(FindObjectOfType<Mariposero>().gameObject);
+                        }
+                        if (GameManager.Instance.icono2Lleno == "F")
+                        {
+                            GameManager.Instance.MenuOpen(FindObjectOfType<FlorHub>().gameObject); GameManager.Instance.MenuOpen(FindObjectOfType<FlorHub>().gameObject);
+                        }
+                    }
+                }
+
 
             }
         }
