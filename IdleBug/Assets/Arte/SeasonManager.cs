@@ -122,17 +122,20 @@ public class SeasonManager : MonoBehaviour
             bool lluviainicio = lluvia;
             GetComponent<SeasonVisuales>().seasonValue = Mathf.Lerp(0, 1, tiempo / tiempoPartida);
             if (tiempo < tiempoPartida / 3)
-            { mensajeSeason2.text = "";  mensajeSeason.text = "Spring: +" + GameManager.Instance.tGenManzPrimaveraPorcentaje + "% apple generation";
+            {
+                mensajeSeason2.text = ""; mensajeSeason.text = "Spring: +" + GameManager.Instance.tGenManzPrimaveraPorcentaje + "% apple generation";
                 if (spring == false)
                 {
-                   
+                    SonidoManager.Instance.Play("CambioEstacion");
+
+
                     spring = true;
                     GameManager.Instance.SetSeason("spring");
                     summer = false;
                     autumn = false;
                     GameManager.Instance.SetFeedBack("Spring started", 2f);
 
-                  
+
 
 
 
@@ -153,6 +156,8 @@ public class SeasonManager : MonoBehaviour
                 mensajeSeason2.text = "";
                 if (summer == false)
                 {
+                    SonidoManager.Instance.Play("CambioEstacion");
+
                     spring = false;
                     summer = true;
                     GameManager.Instance.SetSeason("summer");
@@ -164,24 +169,26 @@ public class SeasonManager : MonoBehaviour
                 }
             }
             if (tiempo >= (tiempoPartida * 2) / 3 && tiempo < tiempoPartida)
-            {  mensajeSeason.text = "Autumn: -" + GameManager.Instance.tMenosGenManzOtonoPorcentaje + "% apple generation";
+            {
+                mensajeSeason.text = "Autumn: -" + GameManager.Instance.tMenosGenManzOtonoPorcentaje + "% apple generation";
 
-                    if (GameManager.Instance.desbloqueadosPanales)
-                    {
-                        mensajeSeason2.text = "Autumn: +" + GameManager.Instance.tMenosPolinOtonoPorcentaje + "% pollination time";
-                    }
-                    else
-                    {
-                        mensajeSeason2.text = "";
-                    }
+                if (GameManager.Instance.desbloqueadosPanales)
+                {
+                    mensajeSeason2.text = "Autumn: +" + GameManager.Instance.tMenosPolinOtonoPorcentaje + "% pollination time";
+                }
+                else
+                {
+                    mensajeSeason2.text = "";
+                }
                 if (autumn == false)
                 {
+                    SonidoManager.Instance.Play("CambioEstacion");
                     spring = false; summer = false;
                     GameManager.Instance.SetSeason("autumn");
                     autumn = true;
                     GameManager.Instance.SetFeedBack("Autumn started", "");
 
-                  
+
 
                 }
 
@@ -190,7 +197,7 @@ public class SeasonManager : MonoBehaviour
             {
                 GameManager.Instance.SetFeedBack("Winter is coming soon", "");
             }
-            if (tiempo >= tiempoPartida) if(!fade.activeSelf)fade.SetActive(true); SonidoManager.Instance.Play("Invierno");
+            if (tiempo >= tiempoPartida) if (!fade.activeSelf) fade.SetActive(true); SonidoManager.Instance.Play("Invierno");
             if (open == false) if (tiempo >= tiempoPartida + 4) { GameManager.Instance.OpenCloseInviernoMenu(); open = true; }
             if (Time.timeScale == 1) if (tiempo >= tiempoPartida + 6) { Time.timeScale = 0; SonidoManager.Instance.Stop("FondoJuego"); }
             if (spring)
@@ -352,7 +359,7 @@ public class SeasonManager : MonoBehaviour
                 GameManager.Instance.SetEvento("lluvia");
                 GameManager.Instance.SetFeedBack("It started to rain...", "");
                 SonidoManager.Instance.Play("LLuvia");
-             
+
 
                 //Datos
             }
@@ -372,7 +379,7 @@ public class SeasonManager : MonoBehaviour
                 GameManager.Instance.SetFeedBack("A drought has started", "");
                 SonidoManager.Instance.Play("Sequia");
 
-             
+
                 //Datos
             }
             else if (sequia == false && sequiainicio == true)

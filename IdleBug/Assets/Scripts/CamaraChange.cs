@@ -179,6 +179,59 @@ public class CamaraChange : MonoBehaviour
         if (Physics.Raycast(ray2, out hitInfo2, Mathf.Infinity, mask))
         {
 
+            if (hitInfo2.transform.tag == "InsectoSuelo")
+            {
+                if (activeCam != 3)
+                {
+
+                    Cursor.Instance.SetCursor(true);
+
+                }
+                else
+                {
+
+                    Cursor.Instance.SetCursor(true);
+
+                }
+
+
+
+
+
+            }
+            else if (hitInfo2.transform.tag == "Edificio")
+            {
+                Cursor.Instance.SetCursor(true);
+
+            }
+            else
+            {
+                if (!EventSystem.current.IsPointerOverGameObject())
+                {
+                    Cursor.Instance.SetCursor(false);
+
+                   
+                }
+            }
+            if (EventSystem.current.IsPointerOverGameObject())
+            {
+              if (EventSystem.current.currentSelectedGameObject != null)
+                    {
+                        print("AC" + EventSystem.current.currentSelectedGameObject.name);
+                    }
+             
+                if (EventSystem.current.currentSelectedGameObject != null && EventSystem.current.currentSelectedGameObject.name == "Icono1")
+                {
+                    Cursor.Instance.SetCursor(true);
+                    print("22222222222222222222222)SHUDG");
+                }
+                if (EventSystem.current.currentSelectedGameObject != null && EventSystem.current.currentSelectedGameObject.name == "Icono2")
+                {
+                    Cursor.Instance.SetCursor(true);
+
+                    print("1111111111111111111111)SHUDG");
+                }
+            }
             if (hitInfo2.transform.tag == "Edificio")
             {
                 if (!EventSystem.current.IsPointerOverGameObject())
@@ -190,6 +243,7 @@ public class CamaraChange : MonoBehaviour
                         {
                             if (lastEffect != null) lastEffect.SetActive(false);
                             g.gameObject.SetActive(true);
+                            Cursor.Instance.SetCursor(true);
                             lastEffect = g.gameObject;
                         }
                     }
@@ -245,14 +299,14 @@ public class CamaraChange : MonoBehaviour
                 {
                     if (activeCam != 3)
                     {
-                       
-                        if ((hitInfo.collider.tag == "InsectoSuelo"&&hitInfo.collider.GetComponent<Tuto>()))
+
+                        if ((hitInfo.collider.tag == "InsectoSuelo" && hitInfo.collider.GetComponent<Tuto>()))
                         {
                             print("A");
                             Destroy(hitInfo.collider.GetComponentInChildren<Tuto>());
                             foreach (Tuto go in GameObject.FindObjectsOfType<Tuto>())
                             {
-                               if(go.GetComponent<SpriteRenderer>()!=null)go.gameObject.GetComponent<SpriteRenderer>().enabled = true;
+                                if (go.GetComponent<SpriteRenderer>() != null) go.gameObject.GetComponent<SpriteRenderer>().enabled = true;
                             }
                             print(GameObject.FindObjectOfType<Tuto>().name);
                             pasadoFlecha = true;
@@ -263,7 +317,7 @@ public class CamaraChange : MonoBehaviour
                     }
                     else
                     {
-                       
+
                         GameManager.Instance.SetFeedBack("Can´t pick up bugs from here");
                         if (hitInfo.collider.GetComponent<Tuto>())
                         {
@@ -275,7 +329,7 @@ public class CamaraChange : MonoBehaviour
                         }
                     }
 
-                   
+
 
 
 
@@ -284,7 +338,7 @@ public class CamaraChange : MonoBehaviour
                 {
                     if (!EventSystem.current.IsPointerOverGameObject())
                     {
-                        if (pasadoFlecha==true&&hitInfo.collider.GetComponent<Hormiguero>() && GameObject.FindObjectOfType<Tuto>().gameObject.GetComponent<SpriteRenderer>().enabled == true)
+                        if (pasadoFlecha == true && hitInfo.collider.GetComponent<Hormiguero>() && GameObject.FindObjectOfType<Tuto>().gameObject.GetComponent<SpriteRenderer>().enabled == true)
                         {
                             print("AB");
                             GameObject.FindObjectOfType<Tuto>().gameObject.GetComponent<SpriteRenderer>().enabled = false;
@@ -305,11 +359,8 @@ public class CamaraChange : MonoBehaviour
                 if (EventSystem.current.IsPointerOverGameObject())
                 {
 
-                    if (EventSystem.current.currentSelectedGameObject != null)
-                    {
-                        print("AC" + EventSystem.current.currentSelectedGameObject.name);
-                    }
-                    if (EventSystem.current.gameObject != null && EventSystem.current.currentSelectedGameObject!=null&& EventSystem.current.currentSelectedGameObject.name == "Icono1")
+                   
+                    if (EventSystem.current.gameObject != null && EventSystem.current.currentSelectedGameObject != null && EventSystem.current.currentSelectedGameObject.name == "Icono1")
                     {
                         if (GameManager.Instance.icono1Lleno == "Manzano")
                         {
