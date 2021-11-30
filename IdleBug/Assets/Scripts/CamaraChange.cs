@@ -79,10 +79,11 @@ public class CamaraChange : MonoBehaviour
 
     }
     public void VisionGeneral()
-    { GameManager.Instance.MenuClose();
+    {
+        GameManager.Instance.MenuClose();
         if (activeCam != 3)
         {
-           
+
             activeCam = 3;
             ChangeCam(); CheckAll();
 
@@ -170,7 +171,7 @@ public class CamaraChange : MonoBehaviour
     {
         obj.localScale = Vector3.one;
     }
-    public GameObject prefabTexto;bool pasadoFlecha = false;
+    public GameObject prefabTexto; bool pasadoFlecha = false;bool pasadoFlecha2 = true;
     // Update is called once per frame
     void Update()
     {
@@ -210,26 +211,21 @@ public class CamaraChange : MonoBehaviour
                 {
                     Cursor.Instance.SetCursor(false);
 
-                   
+
                 }
             }
             if (EventSystem.current.IsPointerOverGameObject())
             {
-              if (EventSystem.current.currentSelectedGameObject != null)
-                    {
-                        print("AC" + EventSystem.current.currentSelectedGameObject.name);
-                    }
-             
+            
+
                 if (EventSystem.current.currentSelectedGameObject != null && EventSystem.current.currentSelectedGameObject.name == "Icono1")
                 {
                     Cursor.Instance.SetCursor(true);
-                    print("22222222222222222222222)SHUDG");
                 }
                 if (EventSystem.current.currentSelectedGameObject != null && EventSystem.current.currentSelectedGameObject.name == "Icono2")
                 {
                     Cursor.Instance.SetCursor(true);
 
-                    print("1111111111111111111111)SHUDG");
                 }
             }
             if (hitInfo2.transform.tag == "Edificio")
@@ -273,18 +269,18 @@ public class CamaraChange : MonoBehaviour
 
         if (Input.GetKeyUp(KeyCode.D))
         {
-          
-            MoverDerecha();
+            MoverIzquierda();
+
         }
         if (Input.GetKeyUp(KeyCode.A))
         {
-        
 
-            MoverIzquierda();
+            MoverDerecha();
+
         }
         if (Input.GetKeyUp(KeyCode.S))
         {
-           
+
 
             VisionGeneral();
         }
@@ -297,36 +293,47 @@ public class CamaraChange : MonoBehaviour
             {
                 if (hitInfo.collider.tag == "InsectoSuelo")
                 {
+                    if ((hitInfo.collider.tag == "InsectoSuelo" && hitInfo.collider.GetComponent<Tuto>()))
+                    {
+                        print("A");
+                        Destroy(hitInfo.collider.GetComponentInChildren<Tuto>());
+                        GameManager.Instance.flechaTuto1.GetComponent<SpriteRenderer>().enabled = true;
+                      
+                        pasadoFlecha = true;
+
+                    }
+                    GameObject.FindObjectOfType<InsectGenerator>().CogerInsecto(hitInfo.collider.gameObject);
+                    GameManager.Instance.MenuClose();
                     if (activeCam != 3)
                     {
 
-                        if ((hitInfo.collider.tag == "InsectoSuelo" && hitInfo.collider.GetComponent<Tuto>()))
-                        {
-                            print("A");
-                            Destroy(hitInfo.collider.GetComponentInChildren<Tuto>());
-                            foreach (Tuto go in GameObject.FindObjectsOfType<Tuto>())
-                            {
-                                if (go.GetComponent<SpriteRenderer>() != null) go.gameObject.GetComponent<SpriteRenderer>().enabled = true;
-                            }
-                            print(GameObject.FindObjectOfType<Tuto>().name);
-                            pasadoFlecha = true;
+                        //if ((hitInfo.collider.tag == "InsectoSuelo" && hitInfo.collider.GetComponent<Tuto>()))
+                        //{
+                        //    print("A");
+                        //    Destroy(hitInfo.collider.GetComponentInChildren<Tuto>());
+                        //    foreach (Tuto go in GameObject.FindObjectsOfType<Tuto>())
+                        //    {
+                        //        if (go.GetComponent<SpriteRenderer>() != null) go.gameObject.GetComponent<SpriteRenderer>().enabled = true;
+                        //    }
+                        //    print(GameObject.FindObjectOfType<Tuto>().name);
+                        //    pasadoFlecha = true;
 
-                        }
-                        GameObject.FindObjectOfType<InsectGenerator>().CogerInsecto(hitInfo.collider.gameObject);
-                        GameManager.Instance.MenuClose();
+                        //}
+                        //GameObject.FindObjectOfType<InsectGenerator>().CogerInsecto(hitInfo.collider.gameObject);
+                        //GameManager.Instance.MenuClose();
                     }
                     else
                     {
 
-                        GameManager.Instance.SetFeedBack("Can´t pick up bugs from here");
-                        if (hitInfo.collider.GetComponent<Tuto>())
-                        {
-                            GameObject texto = Instantiate(prefabTexto, hitInfo.point + Vector3.up * 2f, Quaternion.identity);
-                            texto.GetComponent<TextMesh>().text = "Press A/S/D or screen borders to move";
-                            texto.GetComponent<TextMesh>().characterSize = 4;
-                            texto.GetComponent<TextMesh>().fontStyle = FontStyle.Bold;
+                        //GameManager.Instance.SetFeedBack("Can´t pick up bugs from here");
+                        //if (hitInfo.collider.GetComponent<Tuto>())
+                        //{
+                        //    GameObject texto = Instantiate(prefabTexto, hitInfo.point + Vector3.up * 2f, Quaternion.identity);
+                        //    texto.GetComponent<TextMesh>().text = "Press A/S/D or screen borders to move";
+                        //    texto.GetComponent<TextMesh>().characterSize = 4;
+                        //    texto.GetComponent<TextMesh>().fontStyle = FontStyle.Bold;
 
-                        }
+                        //}
                     }
 
 
@@ -338,11 +345,18 @@ public class CamaraChange : MonoBehaviour
                 {
                     if (!EventSystem.current.IsPointerOverGameObject())
                     {
-                        if (pasadoFlecha == true && hitInfo.collider.GetComponent<Hormiguero>() && GameObject.FindObjectOfType<Tuto>().gameObject.GetComponent<SpriteRenderer>().enabled == true)
+                        if (pasadoFlecha2 == true && hitInfo.collider.GetComponent<Manzano>() && GameManager.Instance.flechatuto2.gameObject.GetComponent<SpriteRenderer>().enabled == true)
                         {
-                            print("AB");
-                            GameObject.FindObjectOfType<Tuto>().gameObject.GetComponent<SpriteRenderer>().enabled = false;
+                           if(activeCam!=0) GameManager.Instance.MenuOpen(hitInfo.collider.gameObject);
+                            GameManager.Instance.flechatuto2.gameObject.GetComponent<SpriteRenderer>().enabled = false;
                             FindObjectOfType<SeasonManager>().started = true;
+                        }
+                        if (pasadoFlecha == true && hitInfo.collider.GetComponent<Hormiguero>() && GameManager.Instance.flechaTuto1.gameObject.GetComponent<SpriteRenderer>().enabled == true)
+                        {
+                            if (activeCam != 0) GameManager.Instance.MenuOpen(hitInfo.collider.gameObject);
+                            pasadoFlecha2 = true;
+                            GameManager.Instance.flechaTuto1.gameObject.GetComponent<SpriteRenderer>().enabled = false;
+                            GameManager.Instance.flechatuto2.gameObject.GetComponent<SpriteRenderer>().enabled = true;
                         }
                         GameManager.Instance.MenuOpen(hitInfo.collider.gameObject);
                     }
@@ -359,7 +373,7 @@ public class CamaraChange : MonoBehaviour
                 if (EventSystem.current.IsPointerOverGameObject())
                 {
 
-                   
+
                     if (EventSystem.current.gameObject != null && EventSystem.current.currentSelectedGameObject != null && EventSystem.current.currentSelectedGameObject.name == "Icono1")
                     {
                         if (GameManager.Instance.icono1Lleno == "Manzano")

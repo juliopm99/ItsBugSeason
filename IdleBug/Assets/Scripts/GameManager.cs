@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    public GameObject flechaTuto1;
+    public GameObject flechatuto2;
     TextMesh textoAlmacen;
     [Header("No se toca")]
     public int chanceShiny = 0;
@@ -356,6 +358,10 @@ public class GameManager : MonoBehaviour
     public void CloseInitMsg(GameObject go)
     {
         go.SetActive(false);
+    }
+    public void AOpenInitMsg(GameObject go)
+    {
+        go.SetActive(true);
     }
     public GameObject capullo;
     public float escalaBase = 7;
