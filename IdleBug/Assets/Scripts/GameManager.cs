@@ -363,7 +363,16 @@ public class GameManager : MonoBehaviour
     void CalcularComienzo()
     {
         SonidoManager.Instance.Restart();
-        menuFondo = GameObject.Find("Fondamen").gameObject;
+        foreach(Image go in FindObjectOfType<Canvas>().GetComponentsInChildren<Image>(includeInactive: true))
+        {
+            if (go.gameObject.name == "Fondamen")
+            {
+                menuFondo = go.gameObject;
+                break;
+            }
+        }
+       
+        menuFondo.SetActive(false);
         SonidoManager.Instance.Play("FondoJuego");
         SonidoManager.Instance.Play("EmpezarPartida");
         SonidoManager.Instance.Stop("Invierno");
@@ -371,6 +380,7 @@ public class GameManager : MonoBehaviour
 
         if (currentYear == 0 && FindObjectOfType<DataAscension>() == null)
         {
+            menuFondo.SetActive(true);
             costeMejora1Actual = costeMejora1Base;
             costeMejora2Actual = costeMejora2Base;
             costeMejora3Actual = costeMejora3Base;
