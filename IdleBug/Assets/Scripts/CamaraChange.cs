@@ -293,6 +293,7 @@ public class CamaraChange : MonoBehaviour
             {
                 if (hitInfo.collider.tag == "InsectoSuelo")
                 {
+                    SonidoManager.Instance.Play("ClickUI");
                     if ((hitInfo.collider.tag == "InsectoSuelo" && hitInfo.collider.GetComponent<Tuto>()))
                     {
                         print("A");
@@ -345,6 +346,7 @@ public class CamaraChange : MonoBehaviour
                 {
                     if (!EventSystem.current.IsPointerOverGameObject())
                     {
+                        SonidoManager.Instance.Play("ClickUI");
                         if (pasadoFlecha2 == true && hitInfo.collider.GetComponent<Manzano>() && GameManager.Instance.flechatuto2.gameObject.GetComponent<SpriteRenderer>().enabled == true)
                         {
                            if(activeCam!=0) GameManager.Instance.MenuOpen(hitInfo.collider.gameObject);
