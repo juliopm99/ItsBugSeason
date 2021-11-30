@@ -28,6 +28,10 @@ public class MainMenu : MonoBehaviour
     {
         mainPanel.SetActive(!mainPanel.activeSelf);
     }
+    public void OpenClose(GameObject go)
+    {
+        go.SetActive(!go.activeSelf);
+    }
     public float MusicVolumeSave
     {
         set

@@ -16,7 +16,7 @@ public class SeasonPantallaInicio : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        GetComponent<SeasonVisuales>().fuerzaCalor = 0;
         tiempoActual += Time.realtimeSinceStartup;
         if (adelante)
         {

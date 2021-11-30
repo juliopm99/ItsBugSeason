@@ -40,8 +40,7 @@ public class SeasonVisuales : MonoBehaviour
     bool deSequia;
     public GameObject arenaObjeto;
     public GameObject directionalLight;
-    public float fuerzaSombras;
-    float fuerzaCalor;
+    public float fuerzaCalor;
 
 
     // Start is called before the first frame update
