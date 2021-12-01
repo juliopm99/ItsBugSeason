@@ -27,7 +27,8 @@ public class PauseMenu : MonoBehaviour
     public void Exit()
     {
         SaveVolumeSettings();
-        Application.Quit();
+        SonidoManager.Instance.Restart();
+        SceneManager.LoadScene("MainMenu");
     }
     public void OpenCloseMainPanel()
     {

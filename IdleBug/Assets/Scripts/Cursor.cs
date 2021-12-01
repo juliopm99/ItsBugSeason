@@ -11,7 +11,7 @@ public class Cursor : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        UnityEngine.Cursor.SetCursor(flecha, new Vector2(118, 30), CursorMode.Auto);
+        UnityEngine.Cursor.SetCursor(flecha, new Vector2(118/32, 30/32), CursorMode.Auto);
     }
     private static Cursor _instance;
 
@@ -43,13 +43,13 @@ public class Cursor : MonoBehaviour
         if (esMano)
         {
             manita = true;
-            UnityEngine.Cursor.SetCursor(mano, new Vector2(188, 46), CursorMode.Auto);
+            UnityEngine.Cursor.SetCursor(mano, new Vector2(188/32, 46/32), CursorMode.Auto);
 
         }
         else
         {
             manita = false;
-            UnityEngine.Cursor.SetCursor(flecha, new Vector2(118, 30), CursorMode.Auto);
+            UnityEngine.Cursor.SetCursor(flecha, new Vector2(118/32, 30/32), CursorMode.Auto);
            
         }
     }
@@ -57,11 +57,11 @@ public class Cursor : MonoBehaviour
     {
         if (manita)
         {
-            UnityEngine.Cursor.SetCursor(flecha, new Vector2(118, 30), CursorMode.Auto);
+            UnityEngine.Cursor.SetCursor(flecha, new Vector2(118 / 32, 30 / 32), CursorMode.Auto);
         }
         else
         {
-            UnityEngine.Cursor.SetCursor(mano, new Vector2(188, 46), CursorMode.Auto);
+            UnityEngine.Cursor.SetCursor(mano, new Vector2(188 / 32, 46 / 32), CursorMode.Auto);
         }
     }
 
