@@ -1515,6 +1515,7 @@ public class GameManager : MonoBehaviour
         }
         else if (tipo == "Panal")
         {
+            if (botonMejora3.activeSelf) botonMejora3.SetActive(false);
             nombre.text = "Beehive";
             descripcion.text = descripcionPanal;
             botonMejora1.GetComponentInChildren<Text>().text = nombreMejora1Panal;
