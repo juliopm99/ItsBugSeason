@@ -29,7 +29,7 @@ public class Hormiguero : MonoBehaviour
     {
         if (poblacionActual >= poblacionMinimaEnBase + poblacionMinimaMision && poblacionActual - poblacionOcupada >= poblacionMinimaMision/*&&!spawneando*/)
         {
-            print("SE CUMPE");
+
             //DIFERENCIAR MANZANAS DISPONIBLES
 
             foreach (Manzana go in GameObject.FindObjectsOfType<Manzana>())
@@ -61,13 +61,13 @@ public class Hormiguero : MonoBehaviour
         if (GameManager.Instance.hormiguerosTotal > 1)
         {
             rand = Random.Range(0, GameManager.Instance.hormiguerosTotal - 1);
-            print(rand + "randomgeeeeee");
+
             if (rand > GameManager.Instance.hormiguerosDesactivados.Length)
             {
                 rand = 0;
             }
         }
-        print(rand + "randomg");
+
         StartCoroutine(SpawnHormigasMision(manz,this.transform.position));//CAMBIAR
         spawneando = false;
     }
@@ -86,7 +86,7 @@ public class Hormiguero : MonoBehaviour
         yield return new WaitForSeconds(tiempoEntreHormigasSpawn);
 
         GameObject hormigaInstanciada = (GameObject)Instantiate(prefabHormiga, spawnPos, Quaternion.identity);
-        print("primerahormiga" + spawnPos);
+
         hormigaInstanciada.GetComponent<Hormiga>().enMision = true;
         hormigaInstanciada.GetComponent<Hormiga>().destinoManzana = manz;
         hormigaInstanciada.GetComponent<Hormiga>().speedMission = speedMission-(speedMission*GameManager.Instance.reduccionVelocidadHormLLuvia/100);

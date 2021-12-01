@@ -70,11 +70,11 @@ public class CamaraChange : MonoBehaviour
 
         activeCam--;
 
-        print(activeCam);
+
         if (activeCam < 0)
         {
             activeCam = maxCam - 1;
-            print(activeCam);
+
         }
         ChangeCam(); CheckAll();
 
@@ -319,7 +319,7 @@ public class CamaraChange : MonoBehaviour
                     SonidoManager.Instance.Play("ClickUI");
                     if ((hitInfo.collider.tag == "InsectoSuelo" && hitInfo.collider.GetComponent<Tuto>()))
                     {
-                        print("A");
+
                         Destroy(hitInfo.collider.GetComponentInChildren<Tuto>());
                         GameManager.Instance.flechaTuto1.GetComponent<SpriteRenderer>().enabled = true;
 
@@ -390,68 +390,70 @@ public class CamaraChange : MonoBehaviour
                 {
                     if (!EventSystem.current.IsPointerOverGameObject())
                     {
-                        print(hitInfo.collider.name);
+
                         if (GameManager.Instance.menuBlock.activeSelf || GameManager.Instance.menuCompras.activeSelf) SonidoManager.Instance.Play("BotonesUI");
                         GameManager.Instance.MenuClose();
-                    }
-                }
-                if (EventSystem.current.IsPointerOverGameObject())
-                {
-
-
-                    if (EventSystem.current.gameObject != null && EventSystem.current.currentSelectedGameObject != null && EventSystem.current.currentSelectedGameObject.name == "Icono1")
-                    {
-                        if (GameManager.Instance.icono1Lleno == "Manzano")
-                        {
-                            GameManager.Instance.MenuOpen(FindObjectOfType<Manzano>().gameObject); GameManager.Instance.MenuOpen(FindObjectOfType<Manzano>().gameObject);
-
-                        }
-                        if (GameManager.Instance.icono1Lleno == "G")
-                        {
-                            GameManager.Instance.MenuOpen(FindObjectOfType<Gusanero>().gameObject); GameManager.Instance.MenuOpen(FindObjectOfType<Gusanero>().gameObject);
-                        }
-                        if (GameManager.Instance.icono1Lleno == "P")
-                        {
-                            GameManager.Instance.MenuOpen(FindObjectOfType<Panal>().gameObject); GameManager.Instance.MenuOpen(FindObjectOfType<Panal>().gameObject);
-                        }
-                        if (GameManager.Instance.icono1Lleno == "M")
-                        {
-                            GameManager.Instance.MenuOpen(FindObjectOfType<Mariposero>().gameObject); GameManager.Instance.MenuOpen(FindObjectOfType<Mariposero>().gameObject);
-                        }
-                        if (GameManager.Instance.icono1Lleno == "F")
-                        {
-                            GameManager.Instance.MenuOpen(FindObjectOfType<FlorHub>().gameObject); GameManager.Instance.MenuOpen(FindObjectOfType<FlorHub>().gameObject);
-
-                        }
-                    }
-                    if (EventSystem.current.gameObject != null && EventSystem.current.currentSelectedGameObject != null && EventSystem.current.currentSelectedGameObject.name == "Icono2")
-                    {
-                        if (GameManager.Instance.icono2Lleno == "Manzano")
-                        {
-                            GameManager.Instance.MenuOpen(FindObjectOfType<Manzano>().gameObject); GameManager.Instance.MenuOpen(FindObjectOfType<Manzano>().gameObject);
-
-                        }
-                        if (GameManager.Instance.icono2Lleno == "G")
-                        {
-                            GameManager.Instance.MenuOpen(FindObjectOfType<Gusanero>().gameObject); GameManager.Instance.MenuOpen(FindObjectOfType<Gusanero>().gameObject);
-                        }
-                        if (GameManager.Instance.icono2Lleno == "P")
-                        {
-                            GameManager.Instance.MenuOpen(FindObjectOfType<Panal>().gameObject); GameManager.Instance.MenuOpen(FindObjectOfType<Panal>().gameObject);
-                        }
-                        if (GameManager.Instance.icono2Lleno == "M")
-                        {
-                            GameManager.Instance.MenuOpen(FindObjectOfType<Mariposero>().gameObject); GameManager.Instance.MenuOpen(FindObjectOfType<Mariposero>().gameObject);
-                        }
-                        if (GameManager.Instance.icono2Lleno == "F")
-                        {
-                            GameManager.Instance.MenuOpen(FindObjectOfType<FlorHub>().gameObject); GameManager.Instance.MenuOpen(FindObjectOfType<FlorHub>().gameObject);
-                        }
                     }
                 }
 
 
             }
+            if (EventSystem.current.IsPointerOverGameObject())
+            {
+
+
+                if (EventSystem.current.currentSelectedGameObject != null && EventSystem.current.currentSelectedGameObject.name == "Icono1")
+                {
+                    if (GameManager.Instance.icono1Lleno == "Manzano")
+                    {
+
+                        GameManager.Instance.MenuOpen(FindObjectOfType<Manzano>().gameObject); GameManager.Instance.MenuOpen(FindObjectOfType<Manzano>().gameObject);
+
+                    }
+                    if (GameManager.Instance.icono1Lleno == "G")
+                    {
+                        GameManager.Instance.MenuOpen(FindObjectOfType<Gusanero>().gameObject); GameManager.Instance.MenuOpen(FindObjectOfType<Gusanero>().gameObject);
+                    }
+                    if (GameManager.Instance.icono1Lleno == "P")
+                    {
+                        GameManager.Instance.MenuOpen(FindObjectOfType<Panal>().gameObject); GameManager.Instance.MenuOpen(FindObjectOfType<Panal>().gameObject);
+                    }
+                    if (GameManager.Instance.icono1Lleno == "M")
+                    {
+                        GameManager.Instance.MenuOpen(FindObjectOfType<Mariposero>().gameObject); GameManager.Instance.MenuOpen(FindObjectOfType<Mariposero>().gameObject);
+                    }
+                    if (GameManager.Instance.icono1Lleno == "F")
+                    {
+                        GameManager.Instance.MenuOpen(FindObjectOfType<FlorHub>().gameObject); GameManager.Instance.MenuOpen(FindObjectOfType<FlorHub>().gameObject);
+
+                    }
+                }
+                if (EventSystem.current.currentSelectedGameObject != null && EventSystem.current.currentSelectedGameObject.name == "Icono2")
+                {
+                    if (GameManager.Instance.icono2Lleno == "Manzano")
+                    {
+                        GameManager.Instance.MenuOpen(FindObjectOfType<Manzano>().gameObject); GameManager.Instance.MenuOpen(FindObjectOfType<Manzano>().gameObject);
+
+                    }
+                    if (GameManager.Instance.icono2Lleno == "G")
+                    {
+                        GameManager.Instance.MenuOpen(FindObjectOfType<Gusanero>().gameObject); GameManager.Instance.MenuOpen(FindObjectOfType<Gusanero>().gameObject);
+                    }
+                    if (GameManager.Instance.icono2Lleno == "P")
+                    {
+                        GameManager.Instance.MenuOpen(FindObjectOfType<Panal>().gameObject); GameManager.Instance.MenuOpen(FindObjectOfType<Panal>().gameObject);
+                    }
+                    if (GameManager.Instance.icono2Lleno == "M")
+                    {
+                        GameManager.Instance.MenuOpen(FindObjectOfType<Mariposero>().gameObject); GameManager.Instance.MenuOpen(FindObjectOfType<Mariposero>().gameObject);
+                    }
+                    if (GameManager.Instance.icono2Lleno == "F")
+                    {
+                        GameManager.Instance.MenuOpen(FindObjectOfType<FlorHub>().gameObject); GameManager.Instance.MenuOpen(FindObjectOfType<FlorHub>().gameObject);
+                    }
+                }
+            }
+
         }
         if (cambiando == true)
         {

@@ -27,7 +27,7 @@ public class Gusano : MonoBehaviour
             this.transform.position = Vector3.MoveTowards(this.transform.position, origen, speed * Time.deltaTime);
             if (Vector3.Distance(this.transform.position, origen) < 0.3f)
             {
-                print("HUM");
+
                 foreach (SkinnedMeshRenderer mr in GetComponentsInChildren<SkinnedMeshRenderer>())
                 {
                     mr.enabled = false;

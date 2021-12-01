@@ -213,19 +213,19 @@ public class SeasonManager : MonoBehaviour
                 {
                     baseSequiaEvento = 7;
                     baseLluviaEvento = 8;
-                    print("primaveracalor");
+
                 }
                 else if (frio)
                 {
                     baseSequiaEvento = 3;
                     baseLluviaEvento = 4;
-                    print("primaverafrio");
+
                 }
                 else
                 {
                     baseSequiaEvento = 5f;
                     baseLluviaEvento = 6f;
-                    print("primaveranormal");
+
                 }
             }
             else if (summer)
@@ -235,19 +235,19 @@ public class SeasonManager : MonoBehaviour
                 {
                     baseSequiaEvento = 9;
                     baseLluviaEvento = 10;
-                    print("veranocalor");
+
                 }
                 else if (frio)
                 {
                     baseSequiaEvento = 6;
                     baseLluviaEvento = 7;
-                    print("veranofrio");
+
                 }
                 else
                 {
                     baseSequiaEvento = 7;
                     baseLluviaEvento = 8;
-                    print("veranoanormal");
+
                 }
             }
             else if (autumn)
@@ -257,19 +257,19 @@ public class SeasonManager : MonoBehaviour
                 {
                     baseSequiaEvento = 4;
                     baseLluviaEvento = 5;
-                    print("otonocalor");
+
                 }
                 else if (frio)
                 {
                     baseSequiaEvento = 9;
                     baseLluviaEvento = 10;
-                    print("otonofrio");
+
                 }
                 else
                 {
                     baseSequiaEvento = 3;
                     baseLluviaEvento = 4;
-                    print("otononormal");
+
                 }
             }
 
@@ -294,7 +294,7 @@ public class SeasonManager : MonoBehaviour
                             GetComponent<SeasonVisuales>().sequia = true;
                             eventoActivo = true;
                             tmp = tiempoEventoDuracion;
-                            print("sequia");
+
                         }
                         if (randomLluviaSequia >= baseLluviaEvento)
                         {
@@ -304,7 +304,7 @@ public class SeasonManager : MonoBehaviour
 
                             eventoActivo = true;
                             tmp = tiempoEventoDuracion;
-                            print("lluvia");
+
                         }
                     }
                     else

@@ -51,6 +51,7 @@ public class DataAscension : MonoBehaviour
         dCosteMejora5Actual = GameManager.Instance.costeMejora5Actual;
         dNivelMejora5 = GameManager.Instance.nivelMejora5;
         dTotalMejora5Tokens = GameManager.Instance.totalMejora5Tokens;
+        listaCheck = GameManager.Instance.propiedadesAñosCheck;
     }
     public void DevolverDatos()
     {
@@ -88,6 +89,7 @@ public class DataAscension : MonoBehaviour
         GameManager.Instance.costeDesbloqueoManzano -= GameManager.Instance.costeDesbloqueoManzano * dTotalMejora3Tokens / 100;
         GameManager.Instance.costeDesbloqueoMariposas -= GameManager.Instance.costeDesbloqueoMariposas * dTotalMejora3Tokens / 100;
         GameManager.Instance.costeDesbloqueoPanal -= GameManager.Instance.costeDesbloqueoPanal * dTotalMejora3Tokens / 100;
+        GameManager.Instance.propiedadesAñosCheck = listaCheck;
         Destroy(this.gameObject);
 
     }
@@ -109,6 +111,7 @@ public class DataAscension : MonoBehaviour
     public float dCosteMejora5Actual;
     public int dNivelMejora5;
     public float dTotalMejora5Tokens;
+    public List<CheckProperties> listaCheck;
 
     // Update is called once per frame
     void Update()

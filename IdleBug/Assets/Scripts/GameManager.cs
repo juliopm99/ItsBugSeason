@@ -8,6 +8,8 @@ public class GameManager : MonoBehaviour
 {
     public GameObject flechaTuto1;
     public GameObject flechatuto2;
+    public GameObject flechaGUs;
+    public GameObject flechaMar;
     TextMesh textoAlmacen;
     [Header("No se toca")]
     public int chanceShiny = 0;
@@ -73,7 +75,6 @@ public class GameManager : MonoBehaviour
         get => gusanosParados;
         set
         {
-            print("Set");
             gusanosParados = value;
             if (gusanosParados)
             {
@@ -81,7 +82,7 @@ public class GameManager : MonoBehaviour
                 {
                     foreach (GameObject gusano in gusanosListaSuelo)
                     {
-                        print("paran");
+
                         gusano.GetComponent<Gusano>().Parado = true;
                     }
                 }
@@ -92,7 +93,6 @@ public class GameManager : MonoBehaviour
                 {
                     foreach (GameObject gusano in gusanosListaSuelo)
                     {
-                        print("noparan");
                         gusano.GetComponent<Gusano>().Parado = false;
                     }
                 }
@@ -352,10 +352,11 @@ public class GameManager : MonoBehaviour
         {
             GameObject part = Instantiate(particulasMejoraS, p, Quaternion.identity);
             part.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-        }else if (tipo == "Esp")
+        }
+        else if (tipo == "Esp")
         {
             GameObject part = Instantiate(particulasShiny, p, Quaternion.identity);
-          
+
         }
 
     }
@@ -374,7 +375,7 @@ public class GameManager : MonoBehaviour
     void CalcularComienzo()
     {
         SonidoManager.Instance.Restart();
-        foreach(Image go in FindObjectOfType<Canvas>().GetComponentsInChildren<Image>(includeInactive: true))
+        foreach (Image go in FindObjectOfType<Canvas>().GetComponentsInChildren<Image>(includeInactive: true))
         {
             if (go.gameObject.name == "Fondamen")
             {
@@ -382,7 +383,12 @@ public class GameManager : MonoBehaviour
                 break;
             }
         }
-       
+        añoCheck = GameObject.Find("AñoCheck").GetComponent<Text>();
+        manzNeed = GameObject.Find("ManzNeed").GetComponent<Text>();
+        sedaNeed = GameObject.Find("SedaNeed").GetComponent<Text>();
+        mielNeed = GameObject.Find("MielNeed").GetComponent<Text>();
+        petalosNeed = GameObject.Find("PetalsNeed").GetComponent<Text>();
+        textoAlmacen = GameObject.Find("TextoAlmacen").GetComponent<TextMesh>();
         menuFondo.SetActive(false);
         SonidoManager.Instance.Play("FondoJuego");
         SonidoManager.Instance.Play("EmpezarPartida");
@@ -406,27 +412,19 @@ public class GameManager : MonoBehaviour
         else
         {
             menuFondo.SetActive(false);
-            FindObjectOfType<SeasonManager>().started = true;
+            //FindObjectOfType<SeasonManager>().started = true;
 
             if (FindObjectOfType<DataAscension>() != null)
             {
                 DataAscension.Instance.DevolverDatos();
             }
-            if (propiedadesAñosCheck[currentYear] == null)
-            {
-                propiedadesAñosCheck[currentYear] = new CheckProperties(currentYear, (int)(propiedadesAñosCheck[currentYear - 1].manzanas * Mathf.Pow(ratioCrecimientoCheckManzanas, currentYear)), (int)(propiedadesAñosCheck[currentYear - 1].seda * Mathf.Pow(ratioCrecimientoCheckSeda, currentYear)), (int)(propiedadesAñosCheck[currentYear - 1].miel * Mathf.Pow(ratioCrecimientoCheckMiel, currentYear)), (int)(propiedadesAñosCheck[currentYear - 1].petalos * Mathf.Pow(ratioCrecimientoCheckPetalos, currentYear)), (int)(propiedadesAñosCheck[currentYear - 1].tokensbase * Mathf.Pow(ratioCrecimientoCheckTokens, currentYear)));
 
-                manzNeed.text = TotalManzanas.ToString("0") + " /" + propiedadesAñosCheck[currentYear].manzanas.ToString("0") + " ";
-                sedaNeed.text = TotalSeda.ToString("0") + " /" + propiedadesAñosCheck[currentYear].seda.ToString("0") + " ";
-                mielNeed.text = TotalMiel.ToString("0") + " /" + propiedadesAñosCheck[currentYear].miel.ToString("0") + " ";
-                petalosNeed.text = TotalPetalos.ToString("0") + " /" + propiedadesAñosCheck[currentYear].petalos.ToString("0") + " ";
-            }
         }
 
-        capacidadTotalHormigas = (((int)mejora1HnivelActual - 1) * (int)cantidadSumadaMejora1H) + capacidadPorHormigueroBase;
-        capacidadTotalAbejas = (((int)mejora1PnivelActual - 1) * (int)cantidadSumadaMejora1P) + capacidadAbejasBase;
-        capacidadTotalGusanos = (((int)mejora1GnivelActual - 1) * (int)cantidadSumadaMejora1G) + capacidadPorGusaneroBase;
-        capacidadTotalMariposas = (((int)mejora1HnivelActual - 1) * (int)cantidadSumadaMejora1MA) + capacidadPorMariposeroBase;
+        capacidadTotalHormigas = (((int)mejora1HnivelActual - 1) * (int)cantidadSumadaMejora1H) + capacidadPorHormigueroActual;
+        capacidadTotalAbejas = (((int)mejora1PnivelActual - 1) * (int)cantidadSumadaMejora1P) + capacidadAbejasActual;
+        capacidadTotalGusanos = (((int)mejora1GnivelActual - 1) * (int)cantidadSumadaMejora1G) + capacidadPorGusaneroActual;
+        capacidadTotalMariposas = (((int)mejora1HnivelActual - 1) * (int)cantidadSumadaMejora1MA) + capacidadPorMariposeroActual;
         abejasFuera = 0;
         gusanosFuera = 0;
         mariposasFuera = 0;
@@ -467,12 +465,7 @@ public class GameManager : MonoBehaviour
         mejora2MACosteActual = mejora2MACosteBase;
         mejora3MACosteActual = mejora3MACosteBase;
 
-        añoCheck = GameObject.Find("AñoCheck").GetComponent<Text>();
-        manzNeed = GameObject.Find("ManzNeed").GetComponent<Text>();
-        sedaNeed = GameObject.Find("SedaNeed").GetComponent<Text>();
-        mielNeed = GameObject.Find("MielNeed").GetComponent<Text>();
-        petalosNeed = GameObject.Find("PetalsNeed").GetComponent<Text>();
-        textoAlmacen = GameObject.Find("TextoAlmacen").GetComponent<TextMesh>();
+
         GameObject.Find("TextoCreador").GetComponent<TextMesh>().text = "Cost: " + gusanosNecesarios + " worms";
         CalculosCheck();
 
@@ -486,12 +479,27 @@ public class GameManager : MonoBehaviour
 
     public void CalculosCheck()
     {
+        if (propiedadesAñosCheck.Count== currentYear)
+        {
+         
+            //print(propiedadesAñosCheck.Length);
+            //print(propiedadesAñosCheck[currentYear].año);
+            propiedadesAñosCheck.Add(new CheckProperties(currentYear, (int)(propiedadesAñosCheck[currentYear - 1].manzanas * Mathf.Pow(ratioCrecimientoCheckManzanas, currentYear)), (int)(propiedadesAñosCheck[currentYear - 1].seda * Mathf.Pow(ratioCrecimientoCheckSeda, currentYear)), (int)(propiedadesAñosCheck[currentYear - 1].miel * Mathf.Pow(ratioCrecimientoCheckMiel, currentYear)), (int)(propiedadesAñosCheck[currentYear - 1].petalos * Mathf.Pow(ratioCrecimientoCheckPetalos, currentYear)), (int)(propiedadesAñosCheck[currentYear - 1].tokensbase * Mathf.Pow(ratioCrecimientoCheckTokens, currentYear))));
 
-        añoCheck.text = "Year: " + propiedadesAñosCheck[currentYear].año + " ";
-        manzNeed.text = TotalManzanas.ToString("0") + " /" + propiedadesAñosCheck[currentYear].manzanas.ToString("0") + " ";
-        sedaNeed.text = TotalSeda.ToString("0") + " /" + propiedadesAñosCheck[currentYear].seda.ToString("0") + " ";
-        mielNeed.text = TotalMiel.ToString("0") + " /" + propiedadesAñosCheck[currentYear].miel.ToString("0") + " ";
-        petalosNeed.text = TotalPetalos.ToString("0") + " /" + propiedadesAñosCheck[currentYear].petalos.ToString("0") + " ";
+            manzNeed.text = TotalManzanas.ToString("0") + " /" + propiedadesAñosCheck[currentYear].manzanas.ToString("0") + " ";
+            sedaNeed.text = TotalSeda.ToString("0") + " /" + propiedadesAñosCheck[currentYear].seda.ToString("0") + " ";
+            mielNeed.text = TotalMiel.ToString("0") + " /" + propiedadesAñosCheck[currentYear].miel.ToString("0") + " ";
+            petalosNeed.text = TotalPetalos.ToString("0") + " /" + propiedadesAñosCheck[currentYear].petalos.ToString("0") + " ";
+        }
+        else
+        {
+            añoCheck.text = "Year: " + (propiedadesAñosCheck[currentYear].año + 1) + " ";
+            manzNeed.text = TotalManzanas.ToString("0") + " /" + propiedadesAñosCheck[currentYear].manzanas.ToString("0") + " ";
+            sedaNeed.text = TotalSeda.ToString("0") + " /" + propiedadesAñosCheck[currentYear].seda.ToString("0") + " ";
+            mielNeed.text = TotalMiel.ToString("0") + " /" + propiedadesAñosCheck[currentYear].miel.ToString("0") + " ";
+            petalosNeed.text = TotalPetalos.ToString("0") + " /" + propiedadesAñosCheck[currentYear].petalos.ToString("0") + " ";
+        }
+
 
 
     }
@@ -511,7 +519,7 @@ public class GameManager : MonoBehaviour
     public float cheatXSegundoS = 5;
     void Cheats()
     {
-        if (Input.GetKey(KeyCode.J))
+        if (Input.GetKey(KeyCode.J) && Input.GetKey(KeyCode.Q))
         {
             if (Input.GetKeyDown(KeyCode.I))
             {
@@ -631,6 +639,14 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+        if(desbloqueadasMariposas && gusanosTotal - gusanosNecesarios >= 0 && mariposasTotal + 1 <= capacidadTotalMariposas)
+        {
+            flechaMar.GetComponent<SpriteRenderer>().enabled = true;
+        }
+        else if(flechaMar.GetComponent<SpriteRenderer>().enabled == true)
+        {
+            flechaMar.GetComponent<SpriteRenderer>().enabled = false;
+        }
 
         if (totalManzanas >= costeDesbloqueoManzano && !desbloqueadosManzanos)
 
@@ -661,7 +677,7 @@ public class GameManager : MonoBehaviour
                 icono2Lleno = ""; icono2.gameObject.SetActive(false);
             }
         }
-        if (totalManzanas >= costeDesbloqueoGusanos&&!desbloqueadosGusanos)
+        if (totalManzanas >= costeDesbloqueoGusanos && !desbloqueadosGusanos)
         {
             if (!icono1.gameObject.activeSelf)
             {
@@ -770,7 +786,7 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        //Cheats();
+        Cheats();
 
         if (textoAlmacen != null) textoAlmacen.text = actualStorageSilk.ToString("0.0") + " / " + maxSilk;
         if (desbloqueadosGusanos)
@@ -784,9 +800,10 @@ public class GameManager : MonoBehaviour
                 actualStorageSilk += sedaPorSegundo * Time.deltaTime;
                 if (actualStorageSilk > maxSilk)
                 {
+                    flechaGUs.GetComponent<SpriteRenderer>().enabled = true;
                     SetFeedBack("Silk storage full", "");
                     actualStorageSilk = maxSilk;
-                    SpawnParticlesMejora(FindObjectOfType<AlmacenSeda>().transform.position,"Pequeno");
+                    SpawnParticlesMejora(FindObjectOfType<AlmacenSeda>().transform.position, "Pequeno");
                     SonidoManager.Instance.Play("AlmacenLLeno");
                 }
 
@@ -836,7 +853,6 @@ public class GameManager : MonoBehaviour
                 desbloqueadosHormigueros = true;
 
             }
-            print("Tengo" + hormigasTotal + " hormigas");
             if (hormigasFuera < maxHormigasFuera)
             {
                 hormigasFuera++;
@@ -866,7 +882,7 @@ public class GameManager : MonoBehaviour
                 desbloqueadosPanales = true;
 
             }
-            print("Tengo" + abejasTotal + " abejas");
+
             if (abejasFuera < maxAbejasFuera)
             {
                 abejasFuera++;
@@ -891,7 +907,7 @@ public class GameManager : MonoBehaviour
     }
     void ActualizarTextoHormigas()
     {
-        capacidadTotalHormigas = (((int)mejora1HnivelActual - 1) * (int)cantidadSumadaMejora1H) + capacidadPorHormigueroBase;
+        capacidadTotalHormigas = (((int)mejora1HnivelActual - 1) * (int)cantidadSumadaMejora1H) + capacidadPorHormigueroActual;
 
         hormiguero.poblacionActual = hormigasTotal;
         hormiguero.capacidadActual = capacidadTotalHormigas;
@@ -921,7 +937,7 @@ public class GameManager : MonoBehaviour
         {
             gusanosTotal++;
 
-            print("Tengo" + gusanosTotal + " gusanos");
+
             if (gusanosFuera < maxGusanosFuera)
             {
                 gusanosFuera++;
@@ -941,9 +957,12 @@ public class GameManager : MonoBehaviour
         //if (actualStorageSilk == maxSilk)
         if (actualStorageSilk > 1) SpawnParticlesMejora(capullo.transform.position, "Pequeno");
         if (CamaraChange.Instance.activeCam == 1) SonidoManager.Instance.Play("AlmacenVaciar");
+        SetFeedBack("Silk storage empty");
         TotalSeda += actualStorageSilk;
         actualStorageSilk = 0;
         if (gusanosParados == true) GusanosParados = false;
+        flechaGUs.GetComponent<SpriteRenderer>().enabled = false;
+
         //}
 
     }
@@ -967,7 +986,7 @@ public class GameManager : MonoBehaviour
     void ActualizarTextoGusanos()
     {
 
-        capacidadTotalGusanos = (((int)mejora1GnivelActual - 1) * (int)cantidadSumadaMejora1G) + capacidadPorGusaneroBase;
+        capacidadTotalGusanos = (((int)mejora1GnivelActual - 1) * (int)cantidadSumadaMejora1G) + capacidadPorGusaneroActual;
 
         if (GameObject.Find("TextoGusanos") != null) GameObject.Find("TextoGusanos").GetComponent<TextMesh>().text = (string)(gusanosTotal + " / " + capacidadTotalGusanos);
 
@@ -996,11 +1015,11 @@ public class GameManager : MonoBehaviour
                 PerderGusano();
 
             }
-            if (CamaraChange.Instance.activeCam == 0) SonidoManager.Instance.Play("ManzanasCaer");
+          
 
             mariposasTotal++;
 
-            print("Tengo" + mariposasTotal + " gusanos");
+
             if (mariposasFuera < maxMariposasFuera)
             {
                 mariposasFuera++;
@@ -1009,7 +1028,8 @@ public class GameManager : MonoBehaviour
 
 
             }
-            SonidoManager.Instance.Play("CrearMariposa");
+            SonidoManager.Instance.Play("MariposasCrear");
+            SpawnParticlesMejora(FindObjectOfType<CreadorMariposas>().transform.position,"Esp");
             ActualizarTextoMariposas();
             ActualizarTextoGusanos();
 
@@ -1028,7 +1048,7 @@ public class GameManager : MonoBehaviour
     void ActualizarTextoMariposas()
     {
 
-        capacidadTotalMariposas = (((int)mejora1MAnivelActual - 1) * (int)cantidadSumadaMejora1MA) + capacidadPorMariposeroBase;
+        capacidadTotalMariposas = (((int)mejora1MAnivelActual - 1) * (int)cantidadSumadaMejora1MA) + capacidadPorMariposeroActual;
 
         if (GameObject.Find("TextoCreador") != null) GameObject.Find("TextoCreador").GetComponent<TextMesh>().text = "Cost: " + gusanosNecesarios + " worms";
         if (GameObject.Find("TextoMariposas") != null) GameObject.Find("TextoMariposas").GetComponent<TextMesh>().text = (string)(mariposasTotal + " / " + capacidadTotalMariposas);
@@ -1055,7 +1075,7 @@ public class GameManager : MonoBehaviour
 
     void ActualizarTextoAbejas()
     {
-        capacidadTotalAbejas = (((int)mejora1PnivelActual - 1) * (int)cantidadSumadaMejora1P) + capacidadAbejasBase;
+        capacidadTotalAbejas = (((int)mejora1PnivelActual - 1) * (int)cantidadSumadaMejora1P) + capacidadAbejasActual;
         panal.poblacionActual = (int)abejasTotal;
         panal.capacidadActual = capacidadTotalAbejas;
         if (GameObject.Find("TextoAbejas") != null) GameObject.Find("TextoAbejas").GetComponent<TextMesh>().text = (string)(abejasTotal + " / " + capacidadTotalAbejas);
@@ -1260,10 +1280,14 @@ public class GameManager : MonoBehaviour
     public float mejora3MAnivelActual = 1;
     public float cantidadSumadaMejora3MA = 1;
 
+    [Range(0.0f, 1f)]
+    public float timescaleEnMenusObj = 0.5f;
+
     public void MenuOpen(GameObject go)
     {
-
         MenuClose();
+        Time.timeScale = timescaleEnMenusObj;
+
         botonMejora3.SetActive(true);
         if (go.GetComponent<Panal>())
         {
@@ -1772,7 +1796,7 @@ public class GameManager : MonoBehaviour
     }
     public void ClickBotonBlock()
     {
-        print("clickbotonblock" + tipoOpen);
+
         string tipo = tipoOpen;
         if (tipo == "Hormiguero")
         {
@@ -2154,7 +2178,7 @@ public class GameManager : MonoBehaviour
     }
     public void MenuClose()
     {
-
+        Time.timeScale = 1;
         menuBlock.SetActive(false);
         menuCompras.SetActive(false);
     }
@@ -2187,7 +2211,7 @@ public class GameManager : MonoBehaviour
         menuStats.SetActive(!menuStats.activeSelf);
     }
 
-    public CheckProperties[] propiedadesAñosCheck;
+    public List<CheckProperties> propiedadesAñosCheck;
     public int currentYear = 0;
     public GameObject menuInvierno;
     public GameObject infoInvierno;
@@ -2254,7 +2278,7 @@ public class GameManager : MonoBehaviour
         if (!CalcularSiPasa())
         {
             //RESTART GAMEEEEEE
-            print("PERDITE");
+
             ReiniciarEscena();
         }
         else
@@ -2268,18 +2292,18 @@ public class GameManager : MonoBehaviour
     }
     public void CloseUpgradesMenu()
     {
-        if (!CalcularSiPasa())
-        {
-            //RESTART GAMEEEEEE
-            print("PERDITE");
-        }
-        else
-        {
+        //if (!CalcularSiPasa())
+        //{
+        //    //RESTART GAMEEEEEE
 
-            upgradesInvierno.SetActive(false);
-            menuInvierno.SetActive(false);
+        //}
+        //else
+        //{
 
-        }
+        upgradesInvierno.SetActive(false);
+        menuInvierno.SetActive(false);
+
+        //}
     }
     public void SetTokensArriba()
     {
@@ -2295,7 +2319,7 @@ public class GameManager : MonoBehaviour
     }
     public void SetDescripcionOriginalUpgrades()
     {
-        GameObject.Find("NombreMejora").GetComponent<Text>().text = "Click any upgrade to buy it permanently. You can save your tokens for next year";
+        GameObject.Find("NombreMejora").GetComponent<Text>().text = "Click any upgrade to buy it permanently. You can save your tokens for next year.";
         GameObject.Find("NivelMejora").GetComponent<Text>().text = "";
         GameObject.Find("TotalMejora").GetComponent<Text>().text = "";
         GameObject.Find("CosteMejora").GetComponent<Text>().text = "";
@@ -2420,7 +2444,8 @@ public class GameManager : MonoBehaviour
             actualTokens -= costeMejora2Actual;
             nivelMejora2++;
             costeMejora2Actual = Mathf.FloorToInt(costeMejora2Base * Mathf.Pow(ratioMejora2, nivelMejora2));
-            totalMejora2Tokens = nivelMejora2 * cantidadMejora2;
+            totalMejora2Tokens = (nivelMejora2 - 1) * cantidadMejora2;
+
             capacidadAbejasActual += (int)cantidadMejora2;
             capacidadPorGusaneroActual += (int)cantidadMejora2;
             capacidadPorHormigueroActual += (int)cantidadMejora2;
@@ -2433,7 +2458,8 @@ public class GameManager : MonoBehaviour
     public void CompraMejora3()
     {
         if (costeMejora3Actual <= actualTokens && totalMejora3Tokens < 100)
-        {       costeDesbloqueoFlores -= costeDesbloqueoFlores * totalMejora3Tokens / 100;
+        {
+            costeDesbloqueoFlores -= costeDesbloqueoFlores * totalMejora3Tokens / 100;
             costeDesbloqueoGusanos -= costeDesbloqueoGusanos * totalMejora3Tokens / 100;
             costeDesbloqueoManzano -= costeDesbloqueoManzano * totalMejora3Tokens / 100;
             costeDesbloqueoMariposas -= costeDesbloqueoMariposas * totalMejora3Tokens / 100;
@@ -2441,7 +2467,7 @@ public class GameManager : MonoBehaviour
             actualTokens -= costeMejora3Actual;
             nivelMejora3++;
             costeMejora3Actual = Mathf.FloorToInt(costeMejora3Base * Mathf.Pow(ratioMejora3, nivelMejora3));
-            totalMejora3Tokens = nivelMejora3 * cantidadMejora3Porcentaje;
+
             if (totalMejora3Tokens >= 100)
             {
                 totalMejora3Tokens = 100;
@@ -2449,7 +2475,7 @@ public class GameManager : MonoBehaviour
 
 
             }
-      SonidoManager.Instance.Play("MejoraUI"); SetDescripcionMejora3Token();
+            SonidoManager.Instance.Play("MejoraUI"); totalMejora3Tokens = (nivelMejora3 - 1) * cantidadMejora3Porcentaje; SetDescripcionMejora3Token();
             SetTokensArriba();
         }
     }
@@ -2461,7 +2487,7 @@ public class GameManager : MonoBehaviour
             actualTokens -= costeMejora4Actual;
             nivelMejora4++;
             costeMejora4Actual = Mathf.FloorToInt(costeMejora4Base * Mathf.Pow(ratioMejora4, nivelMejora4));
-            totalMejora4Tokens = nivelMejora4 * cantidadMejora4;
+            totalMejora4Tokens = (nivelMejora4 - 1) * cantidadMejora4;
             if (totalMejora4Tokens >= 75)
             {
                 totalMejora4Tokens = 75;
@@ -2470,6 +2496,7 @@ public class GameManager : MonoBehaviour
 
             }
             chanceShiny = (int)totalMejora4Tokens;
+
             SetTokensArriba(); SonidoManager.Instance.Play("MejoraUI"); SetDescripcionMejora4Token();
         }
     }
@@ -2500,10 +2527,10 @@ public class GameManager : MonoBehaviour
             menuInvierno.SetActive(true);
             if (CalcularSiPasa())
             {
-              
+
                 SonidoManager.Instance.Play("PopUI");
                 infoInvierno.SetActive(true);
-                GameObject.Find("TextoCompletar").GetComponent<Text>().text = "YOU HAVE COMPLETED YEAR " + currentYear;
+                GameObject.Find("TextoCompletar").GetComponent<Text>().text = "YOU HAVE COMPLETED YEAR " + (currentYear + 1);
 
                 GameObject.Find("ManzanasNecesarias").GetComponent<Text>().text = "Apples need: " + TotalManzanas + " / " + propiedadesAñosCheck[currentYear].manzanas.ToString("0");
                 GameObject.Find("SedaNecesarias").GetComponent<Text>().text = "Silk need: " + TotalSeda + " / " + propiedadesAñosCheck[currentYear].seda.ToString("0");
@@ -2516,7 +2543,7 @@ public class GameManager : MonoBehaviour
                 GameObject.Find("SedaTokens").GetComponent<Text>().text = "Bonus tokens : + " + valores[1];
                 GameObject.Find("MielTokens").GetComponent<Text>().text = "Bonus tokens : + " + valores[2];
                 GameObject.Find("PetalosTokens").GetComponent<Text>().text = "Bonus tokens : + " + valores[3];
-                GameObject.Find("TextoBotonCompletar").GetComponent<Text>().text = "Continue to winter upgrades. Get " + propiedadesAñosCheck[currentYear].tokensbase + " extra tokens for surviving year " + currentYear;
+                GameObject.Find("TextoBotonCompletar").GetComponent<Text>().text = "Continue to winter upgrades. Get " + propiedadesAñosCheck[currentYear].tokensbase + " extra tokens for surviving year " + (currentYear + 1);
 
             }
             else
@@ -2524,7 +2551,7 @@ public class GameManager : MonoBehaviour
                 SonidoManager.Instance.Play("GameOver");
                 SonidoManager.Instance.Play("PopUI");
                 infoInvierno.SetActive(true);
-                GameObject.Find("TextoCompletar").GetComponent<Text>().text = "YOU FAILED YEAR " + currentYear;
+                GameObject.Find("TextoCompletar").GetComponent<Text>().text = "YOU FAILED YEAR " + (currentYear + 1);
                 GameObject.Find("ManzanasNecesarias").GetComponent<Text>().text = "Apples need: " + TotalManzanas + " / " + propiedadesAñosCheck[currentYear].manzanas;
                 GameObject.Find("SedaNecesarias").GetComponent<Text>().text = "Silk need: " + TotalSeda + " / " + propiedadesAñosCheck[currentYear].seda;
                 GameObject.Find("MielNecesarias").GetComponent<Text>().text = "Honey need: " + TotalMiel + " / " + propiedadesAñosCheck[currentYear].miel;
@@ -2550,7 +2577,6 @@ public class GameManager : MonoBehaviour
 
             if (actualManz >= actualCosteM)
             {
-                print("HUM2" + actualCosteM + actualManz);
 
                 actualManz -= actualCosteM;
                 tokenManz++;
@@ -2558,7 +2584,6 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                print("HUM3" + actualCosteM + actualManz);
                 break;
             }
         }
