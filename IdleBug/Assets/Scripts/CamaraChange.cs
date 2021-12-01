@@ -100,7 +100,7 @@ public class CamaraChange : MonoBehaviour
             SonidoManager.Instance.Stop("AbejaFondo");
             textoHormigas.gameObject.SetActive(true);
             textoAbejas.gameObject.SetActive(false);
-            textoCreador.gameObject.SetActive(false);
+            if (GameManager.Instance.desbloqueadasMariposas) textoCreador.gameObject.SetActive(false);
             textoMariposas.gameObject.SetActive(false);
             //textoAlmacen.gameObject.SetActive(false);
             textoGusanos.gameObject.SetActive(false);
@@ -113,7 +113,7 @@ public class CamaraChange : MonoBehaviour
             SonidoManager.Instance.Stop("AbejaFondo");
             textoHormigas.gameObject.SetActive(false);
             textoAbejas.gameObject.SetActive(false);
-            textoCreador.gameObject.SetActive(false);
+            if (GameManager.Instance.desbloqueadasMariposas) textoCreador.gameObject.SetActive(false);
             textoMariposas.gameObject.SetActive(false);
             textoAlmacen.gameObject.SetActive(true);
             textoGusanos.gameObject.SetActive(true);
@@ -127,7 +127,7 @@ public class CamaraChange : MonoBehaviour
             SonidoManager.Instance.Stop("AbejaFondo");
             textoHormigas.gameObject.SetActive(false);
             textoAbejas.gameObject.SetActive(false);
-            textoCreador.gameObject.SetActive(true);
+            if (GameManager.Instance.desbloqueadasMariposas) textoCreador.gameObject.SetActive(true);
             textoMariposas.gameObject.SetActive(true);
             //textoAlmacen.gameObject.SetActive(false);
             textoGusanos.gameObject.SetActive(false);
@@ -142,7 +142,7 @@ public class CamaraChange : MonoBehaviour
             SonidoManager.Instance.Stop("AbejaFondo");
             textoHormigas.gameObject.SetActive(true);
             textoAbejas.gameObject.SetActive(true);
-            textoCreador.gameObject.SetActive(true);
+            if (GameManager.Instance.desbloqueadasMariposas) textoCreador.gameObject.SetActive(true);
             textoMariposas.gameObject.SetActive(true);
             //textoAlmacen.gameObject.SetActive(true);
             textoGusanos.gameObject.SetActive(true);
@@ -156,7 +156,7 @@ public class CamaraChange : MonoBehaviour
             SonidoManager.Instance.Stop("MariposasFondo");
             textoHormigas.gameObject.SetActive(false);
             textoAbejas.gameObject.SetActive(true);
-            textoCreador.gameObject.SetActive(false);
+            if(GameManager.Instance.desbloqueadasMariposas)textoCreador.gameObject.SetActive(false);
             textoMariposas.gameObject.SetActive(false);
             //textoAlmacen.gameObject.SetActive(false);
             textoGusanos.gameObject.SetActive(false);

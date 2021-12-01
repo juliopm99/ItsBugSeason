@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     public GameObject flechatuto2;
     public GameObject flechaGUs;
     public GameObject flechaMar;
+    public GameObject textoMariposasCreador;
     TextMesh textoAlmacen;
     [Header("No se toca")]
     public int chanceShiny = 0;
@@ -54,7 +55,7 @@ public class GameManager : MonoBehaviour
     public float frecuenciaAparicionGusaneros = 6;
     public float frecuenciaAparicionMariposero = 20;
     public float frecuenciaAparicionFloresMariposas = 3;
-
+   
     private static GameManager _instance;
 
     public static GameManager Instance
@@ -412,7 +413,7 @@ public class GameManager : MonoBehaviour
         else
         {
             menuFondo.SetActive(false);
-            //FindObjectOfType<SeasonManager>().started = true;
+            FindObjectOfType<SeasonManager>().started = true;
 
             if (FindObjectOfType<DataAscension>() != null)
             {
@@ -468,6 +469,7 @@ public class GameManager : MonoBehaviour
 
         GameObject.Find("TextoCreador").GetComponent<TextMesh>().text = "Cost: " + gusanosNecesarios + " worms";
         CalculosCheck();
+        if (!desbloqueadasMariposas) textoMariposasCreador.SetActive(false);
 
     }
     public Text añoCheck;
@@ -639,7 +641,9 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if(desbloqueadasMariposas && gusanosTotal - gusanosNecesarios >= 0 && mariposasTotal + 1 <= capacidadTotalMariposas)
+        if (desbloqueadasMariposas) textoMariposasCreador.SetActive(true);
+
+        if (desbloqueadasMariposas && gusanosTotal - gusanosNecesarios >= 0 && mariposasTotal + 1 <= capacidadTotalMariposas)
         {
             flechaMar.GetComponent<SpriteRenderer>().enabled = true;
         }
@@ -818,12 +822,14 @@ public class GameManager : MonoBehaviour
             petalosPorSegundo = (mariposasTotal * petalosPorMariposaSegundo + (mariposasTotal * petalosPorMariposaSegundo * multiplicadorPetalosSegundo / 100)) - ((mariposasTotal * petalosPorMariposaSegundo + (mariposasTotal * petalosPorMariposaSegundo * multiplicadorPetalosSegundo / 100)) * reduccionProdMaripSequia / 100);
             TotalPetalos += petalosPorSegundo * Time.deltaTime;
         }
-        CalculosCheck();
+     
+            CalculosCheck();
         ActualizarTextoMenu();
         ActualizarTextoAbejas();
         ActualizarTextoGusanos();
         ActualizarTextoMariposas();
         ActualizarTextoHormigas();
+      
     }
 
     public Text TextoHormigas;
